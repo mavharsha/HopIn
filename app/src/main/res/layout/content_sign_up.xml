@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c)
+  ~ Sree Harsha Mamilla
+  ~ Pasyanthi
+  ~ github/mavharsha
+  ~
+  -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -11,10 +19,8 @@
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:focusableInTouchMode="true"
-    android:descendantFocusability="beforeDescendants"
-    tools:context="sk.maverick.harsha.hopin.Login"
-    tools:showIn="@layout/activity_login">
-
+    tools:context="sk.maverick.harsha.hopin.SignUp"
+    tools:showIn="@layout/activity_sign_up">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -25,26 +31,21 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/login_text_view"
-            android:text="Login"
+            android:id="@+id/sign_up_text_view"
+            android:text="SignUp"
             android:textColor="@color/primaryText"
             android:textSize="40sp"
             android:contentDescription="Login"/>
-        <!--<ImageView
-            android:layout_width="125dp"
-            android:layout_height="125dp"
-            android:background="@drawable/icon"
-            ></ImageView>-->
 
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-       android:orientation="vertical"
+        android:layout_weight="2"
+        android:orientation="vertical"
         >
         <EditText
-            android:id="@+id/username_edit_text"
+            android:id="@+id/sign_up_username_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/primaryText"
@@ -54,7 +55,17 @@
             android:singleLine="true"
             />
         <EditText
-            android:id="@+id/password_edit_text"
+            android:id="@+id/sign_up_phone_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="PhoneNumber"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/primaryText"
+            android:paddingBottom="15dp"
+            android:inputType="phone" />
+        <EditText
+            android:id="@+id/sign_up_password_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"
@@ -64,34 +75,47 @@
             android:paddingBottom="15dp"
 
             />
+        <EditText
+            android:id="@+id/sign_up_repassword_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Re-Type Password"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/primaryText"
+            android:paddingBottom="15dp"
+
+            />
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/login_button"
-            android:onClick="login"
+            android:id="@+id/sign_up_register_btn"
+            android:onClick="SignUp"
             android:layout_marginTop="15dp"
             android:textColor="@color/primaryText"
             android:background="@color/colorAccent"
-            android:text="Login" />
+            android:text="Register" />
 
     </LinearLayout>
 
     <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="1"
-    android:gravity="bottom|center_horizontal">
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="bottom|center_horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/signup_text_view"
-            android:text="SignUp"
+            android:id="@+id/sign_up_old_user_tv"
+            android:text="Returning User"
             android:textColor="@color/primaryText"
-            android:padding="10dp"
             android:clickable="true"
-            android:onClick="signUp"
+            android:padding="10dp"
+            android:onClick="backToLogin"
             android:contentDescription="SignUp"/>
 
     </LinearLayout>
+
 </LinearLayout>

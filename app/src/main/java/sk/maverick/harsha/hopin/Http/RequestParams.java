@@ -1,6 +1,6 @@
 /*
  * Copyright (c)
- * Sree  Harsha Mamilla
+ * Sree Harsha Mamilla
  * Pasyanthi
  * github/mavharsha
  *
@@ -11,11 +11,9 @@ package sk.maverick.harsha.hopin.Http;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class RequestParams {
-    
+
     private String uri;
-    private String method = "GET";
     private Map<String, String> params = new HashMap<>();
 
     public String getUri() {
@@ -24,14 +22,6 @@ public class RequestParams {
 
     public void setUri(String uri) {
         this.uri = uri;
-    }
-
-    public String getMethod() {
-        return method;
-    }
-
-    public void setMethod(String method) {
-        this.method = method;
     }
 
     public Map<String, String> getParams() {
@@ -43,8 +33,6 @@ public class RequestParams {
     }
 
     public void setParam(String key, String value){
-
         params.put(key, value);
-
     }
 }
