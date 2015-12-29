@@ -55,10 +55,14 @@ public class SignUp extends AppCompatActivity {
         oldUser.setTypeface(roboto_thin);
 
     }
-    
+
     public void backToLogin(View view){
 
         finish();
+    }
+
+    public void register(View view){
+
     }
 
 }

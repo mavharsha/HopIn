@@ -90,7 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/sign_up_register_btn"
-            android:onClick="SignUp"
+            android:onClick="register"
             android:layout_marginTop="15dp"
             android:textColor="@color/primaryText"
             android:background="@color/colorAccent"
