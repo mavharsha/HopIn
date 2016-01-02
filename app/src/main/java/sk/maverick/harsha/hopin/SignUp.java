@@ -10,16 +10,25 @@ package sk.maverick.harsha.hopin;
 
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.IOException;
+
+import sk.maverick.harsha.hopin.Http.HttpManager;
+import sk.maverick.harsha.hopin.Http.RequestParams;
+import sk.maverick.harsha.hopin.Util.RegexValidator;
+
 public class SignUp extends AppCompatActivity {
 
+    protected final static String TAG = "LoginActivity";
     private EditText username, phone, password, repassword;
     private Button register;
     private TextView signup,oldUser;
@@ -57,12 +66,75 @@ public class SignUp extends AppCompatActivity {
     }
 
     public void backToLogin(View view){
-
         finish();
     }
 
     public void register(View view){
 
+        String username_text, phone_text, pass_text, repass_text;
+
+        username_text   = username.getText().toString();
+        phone_text      = phone.getText().toString();
+        pass_text       = password.getText().toString();
+        repass_text     = repassword.getText().toString();
+
+        boolean validUsername = RegexValidator.validateName(username_text);
+        boolean validPhone = RegexValidator.validatePhoneNumber(phone_text);
+        boolean validPassword = RegexValidator.validatePassword(pass_text);
+        boolean passwordsMatch = pass_text.equals(repass_text);
+
+
+        if(!validUsername){
+            username.setError("Invalid UserName");
+        }
+
+        if(!validPhone){
+            phone.setError("Invalid Phone number");
+        }
+
+        if(!validPassword){
+            password.setError("Invalid");
+        }
+        if(!passwordsMatch){
+            repassword.setError("Doesn't Match");
+        }
+
+
+        if(validUsername && validPassword && validPhone && passwordsMatch){
+            // TODO
+            //call async task to register the user
+            RequestParams request = new RequestParams();
+            request.setUri("http://localhost:3000/register");
+            request.setParam("username", username_text);
+            request.setParam("password", pass_text);
+            request.setParam("phonenumber", phone_text);
+            Log.v(TAG, "Request being sent with params " + request.getUri() + request.getParams().toString());
+            new AsyncSignUp().execute(request);
+        }
+
+    }
+
+    private class AsyncSignUp extends AsyncTask<RequestParams, Void, String>{
+
+        protected String doInBackground(RequestParams... params) {
+
+            String response = null;
+            try {
+                 response = HttpManager.postData(params[0]);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            Log.v(TAG, "Do background, async call goes to the server");
+            return response;
+        }
+
+        protected void onPostExecute(String result) {
+
+            Log.v(TAG, "Result is "+ result);
+        }
     }
 
 }

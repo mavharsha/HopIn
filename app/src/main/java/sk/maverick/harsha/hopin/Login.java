@@ -10,6 +10,7 @@ import android.text.util.Linkify;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.util.Log;
 
@@ -24,6 +25,7 @@ public class Login extends AppCompatActivity {
     private EditText username, password;
     private TextView login_textView, signup_textView;
     private Button login;
+    private ProgressBar pb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +60,10 @@ public class Login extends AppCompatActivity {
         password = (EditText) findViewById(R.id.password_edit_text);
         login_textView = (TextView) findViewById(R.id.login_text_view);
         signup_textView = (TextView) findViewById(R.id.signup_text_view);
+        pb = (ProgressBar) findViewById(R.id.login_progressBar);
+        login  = (Button) findViewById(R.id.login_button);
 
+        pb.setVisibility(View.INVISIBLE);
         signup_textView.setPaintFlags(signup_textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         Linkify.addLinks(signup_textView, Linkify.ALL);
 
@@ -70,7 +75,6 @@ public class Login extends AppCompatActivity {
         Typeface roboto_thin = Typeface.createFromAsset(getAssets(), "Roboto-Thin.ttf");
         login_textView.setTypeface(roboto_thin);
         signup_textView.setTypeface(roboto_thin);
-        login  = (Button) findViewById(R.id.login_button);
     }
 
 
@@ -79,6 +83,7 @@ public class Login extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
 
+            pb.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -88,7 +93,11 @@ public class Login extends AppCompatActivity {
             try {
                 HttpManager.getData(params[0]);
                 Log.i(TAG,"Async task fired");
+
+                wait(1000);
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
@@ -98,6 +107,7 @@ public class Login extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             Log.i(TAG,"Async post execute. The result is "+ result);
+            pb.setVisibility(View.INVISIBLE);
 
         }
     }
