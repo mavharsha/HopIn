@@ -8,10 +8,12 @@
 
 package sk.maverick.harsha.hopin;
 
+import android.app.ProgressDialog;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.util.Linkify;
 import android.util.Log;
@@ -23,7 +25,9 @@ import android.widget.TextView;
 import java.io.IOException;
 
 import sk.maverick.harsha.hopin.Http.HttpManager;
+import sk.maverick.harsha.hopin.Http.HttpResponse;
 import sk.maverick.harsha.hopin.Http.RequestParams;
+import sk.maverick.harsha.hopin.Util.ConnectionManager;
 import sk.maverick.harsha.hopin.Util.RegexValidator;
 
 public class SignUp extends AppCompatActivity {
@@ -109,32 +113,51 @@ public class SignUp extends AppCompatActivity {
             request.setParam("password", pass_text);
             request.setParam("phonenumber", phone_text);
             Log.v(TAG, "Request being sent with params " + request.getUri() + request.getParams().toString());
-            new AsyncSignUp().execute(request);
+
+
+            if(ConnectionManager.isConnected(SignUp.this)){
+                new AsyncSignUp().execute(request);
+            }else{
+                Snackbar.make(findViewById(R.id.sign_up_coordinator), "No Internet connection", Snackbar.LENGTH_SHORT).show();
+            }
         }
 
     }
 
-    private class AsyncSignUp extends AsyncTask<RequestParams, Void, String>{
+    private class AsyncSignUp extends AsyncTask<RequestParams, Void, HttpResponse>{
+        private ProgressDialog progressDialog;
 
-        protected String doInBackground(RequestParams... params) {
+        @Override
+        protected void onPreExecute() {
 
-            String response = null;
+            progressDialog = new ProgressDialog(SignUp.this );
+            progressDialog.setTitle("Registering");
+            progressDialog.show();
+        }
+
+        protected HttpResponse doInBackground(RequestParams... params) {
+
+            HttpResponse response = null;
             try {
                  response = HttpManager.postData(params[0]);
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
 
             Log.v(TAG, "Do background, async call goes to the server");
             return response;
         }
 
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(HttpResponse result) {
 
-            Log.v(TAG, "Result is "+ result);
+            progressDialog.dismiss();
+            if(result.getStatusCode() == 200){
+                Snackbar.make(findViewById(R.id.sign_up_coordinator), "Successfully registered", Snackbar.LENGTH_LONG).show();
+                Log.v(TAG, "Result is "+ result.getBody());
+            }else
+            {
+                Snackbar.make(findViewById(R.id.sign_up_coordinator), "Error! Couldn't register", Snackbar.LENGTH_SHORT).show();
+            }
         }
     }
-
 }

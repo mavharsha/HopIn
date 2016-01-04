@@ -5,6 +5,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.util.Linkify;
 import android.view.View;
@@ -17,7 +18,9 @@ import android.util.Log;
 import java.io.IOException;
 
 import sk.maverick.harsha.hopin.Http.HttpManager;
+import sk.maverick.harsha.hopin.Http.HttpResponse;
 import sk.maverick.harsha.hopin.Http.RequestParams;
+import sk.maverick.harsha.hopin.Util.ConnectionManager;
 
 public class Login extends AppCompatActivity {
 
@@ -31,7 +34,7 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        //Initialize the views and
+        //Initialize the views and typeface
         init();
 
     }
@@ -43,10 +46,21 @@ public class Login extends AppCompatActivity {
             username.setError("Invalid username");
             password.setError("Invalid password");
             Log.v(TAG, "login clicked. username is ");
-         }
+         }else
+         {
+             if(ConnectionManager.isConnected(Login.this)){
 
-       /* RequestParams request = new RequestParams();
-        request.setUri("http://www.google.com");*/
+                 RequestParams request = new RequestParams();
+                 request.setUri("http://localhost:3000/login");
+                 request.setParam("username", username.getText().toString());
+                 request.setParam("password", password.getText().toString());
+
+                 new LoginAsync().execute(request);
+             }else
+             {
+                 Snackbar.make(findViewById(R.id.login_coordinator), "", Snackbar.LENGTH_LONG).show();
+             }
+         }
     }
 
 
@@ -78,7 +92,7 @@ public class Login extends AppCompatActivity {
     }
 
 
-    private class LoginAsync extends AsyncTask<RequestParams, Void, String> {
+    private class LoginAsync extends AsyncTask<RequestParams, Void, HttpResponse> {
 
         @Override
         protected void onPreExecute() {
@@ -87,26 +101,23 @@ public class Login extends AppCompatActivity {
         }
 
         @Override
-        protected String doInBackground(RequestParams... params) {
+        protected HttpResponse doInBackground(RequestParams... params) {
 
-            String result;
+            HttpResponse httpResponse = null;
             try {
-                HttpManager.getData(params[0]);
+                 httpResponse =  HttpManager.postData(params[0]);
                 Log.i(TAG,"Async task fired");
 
-                wait(1000);
             } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
-            return null;
+            return httpResponse;
         }
 
         @Override
-        protected void onPostExecute(String result) {
-            Log.i(TAG,"Async post execute. The result is "+ result);
+        protected void onPostExecute(HttpResponse result) {
+            Log.i(TAG,"Async post execute. The result is "+ result.getBody());
             pb.setVisibility(View.INVISIBLE);
 
         }

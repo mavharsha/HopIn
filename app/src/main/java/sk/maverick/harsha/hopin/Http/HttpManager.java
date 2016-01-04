@@ -33,8 +33,9 @@ public class HttpManager {
     }
 
 
-    public static String postData(RequestParams requestParams) throws IOException{
+    public static HttpResponse postData(RequestParams requestParams) throws IOException{
 
+        HttpResponse httpResponse = new HttpResponse();
         String uri = requestParams.getUri();
         String params = requestParams.getParams().toString();
         Log.v(TAG, "MAP to string is  "+ params.toString());
@@ -55,6 +56,9 @@ public class HttpManager {
                 .build();
         Response response = okHttpClient.newCall(request).execute();
 
-        return response.body().string();
+        httpResponse.setStatusCode(response.code());
+        httpResponse.setBody(response.body().string());
+
+        return httpResponse;
     }
 }
