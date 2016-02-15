@@ -58,7 +58,7 @@ public class Login extends AppCompatActivity {
                  new LoginAsync().execute(request);
              }else
              {
-                 Snackbar.make(findViewById(R.id.login_coordinator), "", Snackbar.LENGTH_LONG).show();
+                 Snackbar.make(findViewById(R.id.login_coordinator), "No Internet", Snackbar.LENGTH_LONG).show();
              }
          }
     }
@@ -94,13 +94,11 @@ public class Login extends AppCompatActivity {
 
     private class LoginAsync extends AsyncTask<RequestParams, Void, HttpResponse> {
 
-        @Override
         protected void onPreExecute() {
 
             pb.setVisibility(View.VISIBLE);
         }
 
-        @Override
         protected HttpResponse doInBackground(RequestParams... params) {
 
             HttpResponse httpResponse = null;
@@ -111,15 +109,17 @@ public class Login extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             return httpResponse;
         }
 
-        @Override
         protected void onPostExecute(HttpResponse result) {
-            Log.i(TAG,"Async post execute. The result is "+ result.getBody());
-            pb.setVisibility(View.INVISIBLE);
 
+            if(result == null){
+                Snackbar.make(findViewById(R.id.login_coordinator), "Error! Please try later", Snackbar.LENGTH_LONG).show();
+            }
+
+            Log.v(TAG,"Async post execute. The result is "+ result.getBody());
+            pb.setVisibility(View.INVISIBLE);
         }
     }
 }

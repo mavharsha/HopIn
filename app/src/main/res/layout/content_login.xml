@@ -43,6 +43,7 @@
         android:layout_weight="1"
        android:orientation="vertical"
         >
+
         <EditText
             android:id="@+id/username_edit_text"
             android:layout_width="match_parent"
