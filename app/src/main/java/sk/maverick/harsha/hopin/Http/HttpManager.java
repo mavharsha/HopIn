@@ -3,23 +3,24 @@ package sk.maverick.harsha.hopin.Http;
 
 import android.util.Log;
 
-import com.squareup.okhttp.FormEncodingBuilder;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class HttpManager {
 
     private final static String TAG = "HTTPManager";
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private static OkHttpClient okHttpClient = new OkHttpClient();
+
+
 
     public static String getData(RequestParams requestParams) throws IOException {
 
@@ -47,6 +48,7 @@ public class HttpManager {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         RequestBody requestBody = RequestBody.create(JSON, data.toString());
 
         Log.v(TAG, "Json data is "+ data.toString());

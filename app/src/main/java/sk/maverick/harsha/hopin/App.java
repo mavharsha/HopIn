@@ -31,5 +31,6 @@ public class App extends Application {
         new OkHttpClient.Builder()
                 .addNetworkInterceptor(new StethoInterceptor())
                 .build();
+
     }
 }
