@@ -8,6 +8,8 @@
 
 package sk.maverick.harsha.hopin;
 
+import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -17,15 +19,21 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private final static String TAG  = "MainActivity";
-
+    CircleImageView profile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,8 +45,9 @@ public class Home extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                /* Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
+                startActivity(new Intent(Home.this, CreateEvent.class));
             }
         });
 
@@ -51,7 +60,25 @@ public class Home extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View headerLayout =
+                navigationView.getHeaderView(0);
+
+        profile = (CircleImageView) headerLayout.findViewById(R.id.profile_image);
+
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_SHORT).show();
+
+                startActivity(new Intent(Home.this, Profile.class));
+
+            }
+        });
+
+
     }
+
 
     @Override
     public void onBackPressed() {
@@ -61,6 +88,10 @@ public class Home extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+    }
+
+    public void onProfileClicked(View view){
+        Toast.makeText(Home.this, "Clicked", Toast.LENGTH_SHORT);
     }
 
     @Override
@@ -85,6 +116,8 @@ public class Home extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -93,19 +126,18 @@ public class Home extends AppCompatActivity
 
         if (id == R.id.nav_firstFragment) {
 
-
-
         } else if (id == R.id.nav_secondFragment) {
-
 
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
+            startActivity(new Intent(Home.this, LocationPicker.class));
 
-        } else if (id == R.id.nav_send) {
 
+        } else if (id == R.id.nav_security) {
+            startActivity(new Intent(Home.this, Security.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

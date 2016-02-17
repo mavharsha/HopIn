@@ -18,15 +18,12 @@ import okhttp3.OkHttpClient;
 /**
  * Created by Harsha on 2/14/2016.
  */
-public class App extends Application {
+public class App extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
-        Stetho.initialize(
-                Stetho.newInitializerBuilder(this)
-                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
-                        .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
-                        .build());
+
+        Stetho.initializeWithDefaults(this);
 
         new OkHttpClient.Builder()
                 .addNetworkInterceptor(new StethoInterceptor())
