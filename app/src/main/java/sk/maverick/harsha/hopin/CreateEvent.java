@@ -10,18 +10,26 @@ package sk.maverick.harsha.hopin;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
 import java.util.Calendar;
 
@@ -39,6 +47,9 @@ public class CreateEvent extends AppCompatActivity {
     @Bind(R.id.createevent_ipl_eventtype) TextInputLayout layout_eventType;
     @Bind(R.id.createevent_eventtype) EditText eventType;
 
+    @Bind(R.id.createevent_ipl_seatsavailable) TextInputLayout layout_seatsavailable;
+    @Bind(R.id.createevent_seatsavailable) EditText seatsavailable;
+
     @Bind(R.id.createevent_ipl_eventdate) TextInputLayout layout_eventDate;
     @Bind(R.id.createevent_eventdate) EditText eventDate;
 
@@ -48,9 +59,18 @@ public class CreateEvent extends AppCompatActivity {
     @Bind(R.id.createevent_ipl_pickuptime) TextInputLayout layout_pickupTime;
     @Bind(R.id.createevent_pickuptime) EditText pickupTime;
 
+    @Bind(R.id.createevent_ipl_eventlocation) TextInputLayout layout_eventLocation;
+    @Bind(R.id.createevent_eventlocation) EditText eventLocation;
+
+    @Bind(R.id.createevent_ipl_pickuplocation) TextInputLayout layout_pickupLocation;
+    @Bind(R.id.createevent_pickuplocation) EditText pickupLocation;
+
 
     private static final String TAG = "CREATEEVENT";
     private Calendar calendar;
+    private int REQUEST_EVENT_PLACE_PICKER = 1;
+    private int REQUEST_PICKUP_PLACE_PICKER = 2;
+
 
 
     @Override
@@ -61,18 +81,31 @@ public class CreateEvent extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        init();
     }
+
+    private void init() {
+
+        Typeface roboto_thin = Typeface.createFromAsset(getAssets(), "Roboto-Thin.ttf");
+        eventName.setTypeface(roboto_thin);
+        eventType.setTypeface(roboto_thin);
+        seatsavailable.setTypeface(roboto_thin);
+        eventDate.setTypeface(roboto_thin);
+        eventTime.setTypeface(roboto_thin);
+        pickupTime.setTypeface(roboto_thin);
+        eventLocation.setTypeface(roboto_thin);
+        pickupLocation.setTypeface(roboto_thin);
+    }
+
     @OnClick(R.id.createevent_datedialog)
     public void onClickDateDialog(View view) {
 
         Log.v(TAG, "Yes Butterknife works");
-        Toast.makeText(CreateEvent.this,
-                "Yes ButterKnife works", Toast.LENGTH_SHORT).show();
-        calendar = Calendar.getInstance();
+        hideSoftKeyboard(view);
 
+        calendar = Calendar.getInstance();
         new DatePickerDialog(CreateEvent.this, dateDialogListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();;
     }
 
@@ -80,8 +113,8 @@ public class CreateEvent extends AppCompatActivity {
     public void onClickEventTimeDialog(View view) {
 
         Log.v(TAG, "Yes Butterknife works");
-        Toast.makeText(CreateEvent.this,
-                "Yes ButterKnife works", Toast.LENGTH_SHORT).show();
+        hideSoftKeyboard(view);
+
         calendar = Calendar.getInstance();
         new TimePickerDialog(CreateEvent.this, eventTimeDialogListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show();
     }
@@ -91,8 +124,7 @@ public class CreateEvent extends AppCompatActivity {
     public void onClickPickUpTimeDialog(View view) {
 
         Log.v(TAG, "Yes Butterknife works");
-        Toast.makeText(CreateEvent.this,
-                "Yes ButterKnife works", Toast.LENGTH_SHORT).show();
+        hideSoftKeyboard(view);
 
         calendar = Calendar.getInstance();
         new TimePickerDialog(CreateEvent.this, pickupTimeDialogListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show();
@@ -100,20 +132,42 @@ public class CreateEvent extends AppCompatActivity {
 
     }
 
-    @OnClick(R.id.createevent_eventlocation)
+    @OnClick(R.id.createevent_eventlocationpicker)
     public void onClickEventLocation(View view) {
 
-        Log.v(TAG, "Yes Butterknife works");
-        Toast.makeText(CreateEvent.this,
-                "Yes ButterKnife works", Toast.LENGTH_SHORT).show();
+        Log.v(TAG, "Yes Butter knife works");
+        hideSoftKeyboard(view);
+
+
+        try {
+            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
+            startActivityForResult(builder.build(CreateEvent.this), REQUEST_EVENT_PLACE_PICKER);
+
+        } catch (GooglePlayServicesRepairableException e) {
+            // ...
+        } catch (GooglePlayServicesNotAvailableException e) {
+            // ...
+        }
     }
 
-    @OnClick(R.id.createevent_pickuplocation)
+    @OnClick(R.id.createevent_pickuplocationpicker)
     public void onClickPickUpLocation(View view) {
 
         Log.v(TAG, "Yes Butterknife works");
-        Toast.makeText(CreateEvent.this,
-                "Yes ButterKnife works", Toast.LENGTH_SHORT).show();
+        hideSoftKeyboard(view);
+
+
+        try {
+            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
+            startActivityForResult(builder.build(CreateEvent.this), REQUEST_PICKUP_PLACE_PICKER);
+
+        } catch (GooglePlayServicesRepairableException e) {
+            // ...
+        } catch (GooglePlayServicesNotAvailableException e) {
+            // ...
+        }
     }
 
     @OnClick(R.id.createevent_confirm)
@@ -122,6 +176,9 @@ public class CreateEvent extends AppCompatActivity {
         Log.v(TAG, "Yes Butterknife works");
         Toast.makeText(CreateEvent.this,
                 "Yes ButterKnife works", Toast.LENGTH_SHORT).show();
+        hideSoftKeyboard(view);
+
+        validateInputs();
     }
 
     DatePickerDialog.OnDateSetListener dateDialogListener = new DatePickerDialog.OnDateSetListener() {
@@ -145,4 +202,48 @@ public class CreateEvent extends AppCompatActivity {
             pickupTime.setText(hourOfDay + ":" + minute);
         }
     };
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_EVENT_PLACE_PICKER) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(data, this);
+
+                if (place.getAddress()!= null){
+
+                    eventLocation.setText(place.getAddress());
+                }
+                else{
+                    Toast.makeText(this, "Couldn't find the address, Please choose another location", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+
+        if (requestCode == REQUEST_PICKUP_PLACE_PICKER) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(data, this);
+
+                if (place.getAddress()!= null){
+
+                    pickupLocation.setText(place.getAddress());
+                }
+                else{
+                    Toast.makeText(this, "Couldn't find the address, Please choose another location", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    }
+
+    public void hideSoftKeyboard(View v){
+
+        InputMethodManager inm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        inm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+    }
+
+    private void validateInputs() {
+
+
+    }
+
+
 }
