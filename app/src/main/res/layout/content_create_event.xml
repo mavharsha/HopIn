@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c)
   ~ Sree Harsha Mamilla
   ~ Pasyanthi
@@ -7,12 +6,11 @@
   ~
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -21,44 +19,178 @@
     tools:context="sk.maverick.harsha.hopin.CreateEvent"
     tools:showIn="@layout/create_event">
 
+    <ProgressBar
+        android:id="@+id/createevent_progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="invisible" />
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/input_layout_create_event"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/input_create_event"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Event Name" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/createevent_ipl_eventname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/input_layout_event_type"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/createevent_eventname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Event Name" />
 
-        <EditText
-            android:id="@+id/input_event_type"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Event Type" />
+            </android.support.design.widget.TextInputLayout>
 
-    </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/createevent_ipl_eventtype"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
+                <EditText
+                    android:id="@+id/createevent_eventtype"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Event Type" />
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/input_layout_seats_available"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            </android.support.design.widget.TextInputLayout>
 
-        <EditText
-            android:id="@+id/input_seats_available"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Seats Available" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-    </android.support.design.widget.TextInputLayout>
-</LinearLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/createevent_ipl_eventdate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2">
+
+                    <EditText
+                        android:id="@+id/createevent_eventdate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:ems="10"
+                        android:hint="Event Date"
+                        android:inputType="date" />
+                </android.support.design.widget.TextInputLayout>
+
+                <Button
+                    android:id="@+id/createevent_datedialog"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Date Dialog" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/createevent_ipl_eventtime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2">
+
+                    <EditText
+                        android:id="@+id/createevent_eventtime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:ems="10"
+                        android:hint="Event up Time"
+                        android:inputType="time" />
+                </android.support.design.widget.TextInputLayout>
+
+                <Button
+                    android:id="@+id/createevent_eventtimedialog"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Time Dialog" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/createevent_ipl_pickuptime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2">
+
+                    <EditText
+                        android:id="@+id/createevent_pickuptime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:ems="10"
+                        android:hint="Pick up Time"
+                        android:inputType="time" />
+                </android.support.design.widget.TextInputLayout>
+
+                <Button
+                    android:id="@+id/createevent_pickuptimedialog"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Time Dialog" />
+            </LinearLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/createvent_ipl_seatavailable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/createevent_seatsavailable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Seats Available" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp">
+
+                <Button
+                    android:id="@+id/createevent_eventlocation"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Event Location" />
+
+                <Button
+                    android:id="@+id/createevent_pickuplocation"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Pick up Location" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/createevent_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Create"
+                android:layout_marginTop="10dp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+</FrameLayout>
