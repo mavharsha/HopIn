@@ -26,12 +26,12 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/profile_image"
         android:clickable="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         app:border_width="1dp"
         app:border_color="#FF000000"
-        android:src="@android:drawable/sym_def_app_icon" />
+        android:src="@drawable/avatar_1" />
 
     <TextView
         android:layout_width="match_parent"

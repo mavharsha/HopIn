@@ -23,9 +23,13 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -49,7 +53,7 @@ import sk.maverick.harsha.hopin.Models.Event;
 import sk.maverick.harsha.hopin.Util.ConnectionManager;
 import sk.maverick.harsha.hopin.Util.RegexValidator;
 
-public class CreateEvent extends AppCompatActivity {
+public class CreateEvent extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     @Bind(R.id.createevent_progressbar) ProgressBar progressBar;
 
@@ -61,6 +65,9 @@ public class CreateEvent extends AppCompatActivity {
 
     @Bind(R.id.createevent_ipl_seatsavailable) TextInputLayout layout_seatsavailable;
     @Bind(R.id.createevent_seatsavailable) EditText seatsavailable;
+
+    @Bind(R.id.createevent_tv_passpreference)TextView tv_passpreference;
+    @Bind(R.id.createevent_passpreference) Spinner passpreference;
 
     @Bind(R.id.createevent_ipl_eventdate) TextInputLayout layout_eventDate;
     @Bind(R.id.createevent_eventdate) EditText eventDate;
@@ -83,7 +90,12 @@ public class CreateEvent extends AppCompatActivity {
     private int REQUEST_EVENT_PLACE_PICKER = 1;
     private int REQUEST_PICKUP_PLACE_PICKER = 2;
     private int day, month, year, eventTimeHour, eventTimeMinute,pickUpTimeHour,pickUpTimeMinute;
-
+    private String preference;
+    private static final String[] preferences = new String[] {
+            "Both",
+            "Male",
+            "Female"
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,12 +125,18 @@ public class CreateEvent extends AppCompatActivity {
         layout_eventName.setTypeface(roboto_light);
         layout_eventType.setTypeface(roboto_light);
         layout_seatsavailable.setTypeface(roboto_light);
+        tv_passpreference.setTypeface(roboto_light);
         layout_eventDate.setTypeface(roboto_light);
         layout_eventTime.setTypeface(roboto_light);
         layout_pickupTime.setTypeface(roboto_light);
         layout_eventLocation.setTypeface(roboto_light);
         layout_pickupLocation.setTypeface(roboto_light);
 
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item,
+                preferences);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        passpreference.setAdapter(adapter);
 
         /*Typeface roboto_thin = Typeface.createFromAsset(getAssets(), "Roboto-Thin.ttf");
         eventName.setTypeface(roboto_thin);
@@ -211,6 +229,7 @@ public class CreateEvent extends AppCompatActivity {
         }
     }
 
+
     @OnClick(R.id.createevent_confirm)
     public void onClickCreate(View view) {
 
@@ -264,6 +283,8 @@ public class CreateEvent extends AppCompatActivity {
 
 
     }
+
+
 
     DatePickerDialog.OnDateSetListener dateDialogListener = new DatePickerDialog.OnDateSetListener() {
         @Override
@@ -369,6 +390,12 @@ public class CreateEvent extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        int index = passpreference.getSelectedItemPosition();
+        preference = preferences[index];
+    }
+
 
     private class CreateEventAsync extends AsyncTask<RequestParams, Void, HttpResponse>{
 
@@ -386,8 +413,6 @@ public class CreateEvent extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-
             return httpResponse;
         }
 

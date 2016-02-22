@@ -71,7 +71,7 @@
                 android:id="@+id/createevent_ipl_seatsavailable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                >
 
                 <EditText
                     android:id="@+id/createevent_seatsavailable"
@@ -84,6 +84,28 @@
 
             </android.support.design.widget.TextInputLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:id="@+id/createevent_tv_passpreference"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="7"
+                android:textSize="18sp"
+                android:text="Passenger Preference"
+                android:layout_marginLeft="4dp" />
+
+            <Spinner
+                android:id="@+id/createevent_passpreference"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"/>
+
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -102,6 +124,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:ems="10"
+                        android:clickable="false"
+                        android:focusableInTouchMode="false"
                         android:hint="Event Date"
                         android:inputType="date"
                         android:maxLines="1"
@@ -136,6 +160,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:ems="10"
+                        android:clickable="false"
+                        android:focusableInTouchMode="false"
                         android:hint="Event up Time"
                         android:inputType="time"
                         android:maxLines="1"
@@ -169,6 +195,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:ems="10"
+                        android:clickable="false"
+                        android:focusableInTouchMode="false"
                         android:hint="Pick up Time"
                         android:inputType="time"
                         android:maxLines="1"

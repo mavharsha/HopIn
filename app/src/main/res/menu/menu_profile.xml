@@ -1,0 +1,18 @@
+<!--
+  ~ Copyright (c)
+  ~ Sree Harsha Mamilla
+  ~ Pasyanthi
+  ~ github/mavharsha
+  ~
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="sk.maverick.harsha.hopin.Login">
+    <item
+        android:id="@+id/edit_profile"
+        android:orderInCategory="100"
+        android:title="Edit Profile"
+        app:showAsAction="always" />
+</menu>

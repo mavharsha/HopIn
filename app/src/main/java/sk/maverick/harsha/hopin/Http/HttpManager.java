@@ -23,7 +23,9 @@ public class HttpManager {
 
 
 
-    public static String getData(RequestParams requestParams) throws IOException {
+    public static HttpResponse getData(RequestParams requestParams) throws IOException {
+
+        HttpResponse httpResponse = new HttpResponse();
 
         String uri = requestParams.getUri();
 
@@ -31,7 +33,10 @@ public class HttpManager {
                 .url(uri)
                 .build();
         Response response = okHttpClient.newCall(request).execute();
-        return response.body().toString();
+
+        httpResponse.setStatusCode(response.code());
+        httpResponse.setBody(response.body().string());
+        return httpResponse;
     }
 
 
