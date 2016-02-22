@@ -16,6 +16,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:focusableInTouchMode="true"
     tools:context="sk.maverick.harsha.hopin.CreateEvent"
     tools:showIn="@layout/create_event">
 
@@ -53,7 +54,8 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/createevent_ipl_eventtype"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
 
                 <EditText
                     android:id="@+id/createevent_eventtype"
@@ -68,7 +70,8 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/createevent_ipl_seatsavailable"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
 
                 <EditText
                     android:id="@+id/createevent_seatsavailable"
@@ -84,7 +87,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/createevent_ipl_eventdate"
@@ -99,7 +103,7 @@
                         android:layout_gravity="center_horizontal"
                         android:ems="10"
                         android:hint="Event Date"
-                        android:inputType="none|date"
+                        android:inputType="date"
                         android:maxLines="1"
                         android:singleLine="true"/>
                 </android.support.design.widget.TextInputLayout>
@@ -117,7 +121,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/createevent_ipl_eventtime"
@@ -132,7 +137,7 @@
                         android:layout_gravity="center_horizontal"
                         android:ems="10"
                         android:hint="Event up Time"
-                        android:inputType="time|none"
+                        android:inputType="time"
                         android:maxLines="1"
                         android:singleLine="true"/>
                 </android.support.design.widget.TextInputLayout>
@@ -149,7 +154,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/createevent_ipl_pickuptime"
@@ -164,7 +170,7 @@
                         android:layout_gravity="center_horizontal"
                         android:ems="10"
                         android:hint="Pick up Time"
-                        android:inputType="time|none"
+                        android:inputType="time"
                         android:maxLines="1"
                         android:singleLine="true"
                         android:editable="false" />
@@ -182,7 +188,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/createevent_ipl_eventlocation"
@@ -198,8 +205,7 @@
                         android:ems="10"
                         android:hint="Event Location"
                         android:maxLines="1"
-                        android:singleLine="true"
-                         />
+                        android:singleLine="true" />
                 </android.support.design.widget.TextInputLayout>
 
                 <Button
@@ -216,7 +222,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/createevent_ipl_pickuplocation"

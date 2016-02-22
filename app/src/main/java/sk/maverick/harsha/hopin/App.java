@@ -13,6 +13,8 @@ import android.app.Application;
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
 import okhttp3.OkHttpClient;
 
 /**
@@ -24,6 +26,7 @@ public class App extends Application{
         super.onCreate();
 
         Stetho.initializeWithDefaults(this);
+        JodaTimeAndroid.init(this);
 
         new OkHttpClient.Builder()
                 .addNetworkInterceptor(new StethoInterceptor())

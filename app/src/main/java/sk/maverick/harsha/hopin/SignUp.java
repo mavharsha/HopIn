@@ -154,6 +154,7 @@ public class SignUp extends AppCompatActivity {
             if(result.getStatusCode() == 200){
                 Snackbar.make(findViewById(R.id.sign_up_coordinator), "Successfully registered", Snackbar.LENGTH_LONG).show();
                 Log.v(TAG, "Result is "+ result.getBody());
+                finish();
             }else
             {
                 Snackbar.make(findViewById(R.id.sign_up_coordinator), "Error! Couldn't register", Snackbar.LENGTH_SHORT).show();

@@ -116,8 +116,12 @@ public class Login extends AppCompatActivity {
 
             if(result == null){
                 Snackbar.make(findViewById(R.id.login_coordinator), "Error! Please try later", Snackbar.LENGTH_LONG).show();
-            }
+            }else if (result.getStatusCode() == 200){
 
+                // get the token an save it in shared preferences
+                startActivity(new Intent(Login.this, Home.class));
+
+            }
             Log.v(TAG,"Async post execute. The result is "+ result.getBody());
             pb.setVisibility(View.INVISIBLE);
         }

@@ -8,6 +8,10 @@
 
 package sk.maverick.harsha.hopin.Util;
 
+import org.joda.time.DateTime;
+
+import java.util.Calendar;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,6 +62,24 @@ public class RegexValidator {
 
     public  static boolean validateDate(int month, int day, int year){
 
+        if(month<=12 && month >= 10 && day <=31 && day >= 1 && year >=2016 && year <= 9999){
+            return true;
+        }
+
         return false;
+    }
+
+    public  static boolean validateFutureDate(int month, int day, int year){
+
+        Calendar calendar =  Calendar.getInstance();
+
+        calendar.set(year, month,day);
+        Date date = calendar.getTime();
+
+        if(date.before(Calendar.getInstance().getTime())){
+            return false;
+        }
+
+        return true;
     }
 }

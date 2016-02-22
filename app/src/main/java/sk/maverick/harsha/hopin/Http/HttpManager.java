@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -38,16 +39,15 @@ public class HttpManager {
 
         HttpResponse httpResponse = new HttpResponse();
         String uri = requestParams.getUri();
+/*
         String params = requestParams.getParams().toString();
-        Log.v(TAG, "MAP to string is  "+ params.toString());
+*/
+        HashMap map = (HashMap) requestParams.getParams();
+        Log.v(TAG, "MAP to string is  "+ map.toString());
 
 
         JSONObject data = null;
-        try {
-            data = new JSONObject(params);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        data = new JSONObject(map);
 
         RequestBody requestBody = RequestBody.create(JSON, data.toString());
 
