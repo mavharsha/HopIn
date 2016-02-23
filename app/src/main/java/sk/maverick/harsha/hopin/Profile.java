@@ -8,6 +8,7 @@
 
 package sk.maverick.harsha.hopin;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -34,6 +35,12 @@ public class Profile extends AppCompatActivity {
     @Bind(R.id.profile_phonenumber) EditText phonenumber;
     @Bind(R.id.profile_emergencycnt1) EditText emergencycnt1;
     @Bind(R.id.profile_emergencycnt2) EditText emergencycnt2;
+
+    @Bind(R.id.profile_emergencycnt1number) EditText emergencycntnum1;
+    @Bind(R.id.profile_emergencycnt2number) EditText emergencycntnum2;
+
+
+
 
 
     @Override
@@ -78,9 +85,10 @@ public class Profile extends AppCompatActivity {
 
     private class GetProfileAsync extends AsyncTask<RequestParams, Void, HttpResponse>{
 
+        ProgressDialog progressDialog;
         @Override
         protected void onPreExecute() {
-            super.onPreExecute();
+
         }
 
 
@@ -115,7 +123,8 @@ public class Profile extends AppCompatActivity {
 
             emergencycnt1.setText("Harsha");
             emergencycnt2.setText("DumbKing");
-
+            emergencycntnum1.setText("1234567890");
+            emergencycntnum2.setText("1234567890");
         }
 
     }

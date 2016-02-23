@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import java.io.IOException;
 
+import butterknife.Bind;
 import sk.maverick.harsha.hopin.Http.HttpManager;
 import sk.maverick.harsha.hopin.Http.HttpResponse;
 import sk.maverick.harsha.hopin.Http.RequestParams;
@@ -33,9 +34,12 @@ import sk.maverick.harsha.hopin.Util.RegexValidator;
 public class SignUp extends AppCompatActivity {
 
     protected final static String TAG = "LoginActivity";
-    private EditText username, phone, password, repassword;
+    private EditText username, phone, password, repassword, firstname, lastname;
     private Button register;
     private TextView signup,oldUser;
+
+    @Bind(R.id.signup_ipl_fristname) EditText ipl_firstname;
+    @Bind(R.id.signup_ipl_lastname) EditText ipl_lastname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +51,10 @@ public class SignUp extends AppCompatActivity {
 
     private void init(){
         username    = (EditText) findViewById(R.id.sign_up_username_et);
+
         phone       = (EditText) findViewById(R.id.sign_up_phone_et);
+        firstname   = (EditText)findViewById(R.id.sign_up_firstname);
+        lastname    = (EditText) findViewById(R.id.sign_up_lastname);
         password    = (EditText) findViewById(R.id.sign_up_password_et);
         repassword  = (EditText) findViewById(R.id.sign_up_repassword_et);
         oldUser     = (TextView) findViewById(R.id.sign_up_old_user_tv);
@@ -75,17 +82,21 @@ public class SignUp extends AppCompatActivity {
 
     public void register(View view){
 
-        String username_text, phone_text, pass_text, repass_text;
+        String username_text, phone_text, pass_text, repass_text, firstname_text, lastname_text;
 
         username_text   = username.getText().toString();
+        firstname_text  = firstname.getText().toString();
+        lastname_text   = lastname.getText().toString();
         phone_text      = phone.getText().toString();
         pass_text       = password.getText().toString();
         repass_text     = repassword.getText().toString();
 
-        boolean validUsername = RegexValidator.validateName(username_text);
-        boolean validPhone = RegexValidator.validatePhoneNumber(phone_text);
-        boolean validPassword = RegexValidator.validatePassword(pass_text);
-        boolean passwordsMatch = pass_text.equals(repass_text);
+        boolean validUsername   = RegexValidator.validateName(username_text);
+        boolean validFirstName  = RegexValidator.validateName(firstname_text);
+        boolean validLastName   = RegexValidator.validateName(lastname_text);
+        boolean validPhone      = RegexValidator.validatePhoneNumber(phone_text);
+        boolean validPassword   = RegexValidator.validatePassword(pass_text);
+        boolean passwordsMatch  = pass_text.equals(repass_text);
 
 
         if(!validUsername){
@@ -103,8 +114,16 @@ public class SignUp extends AppCompatActivity {
             repassword.setError("Doesn't Match");
         }
 
+        if(!validFirstName){
+            ipl_firstname.setError("Invalid Name");
+        }
 
-        if(validUsername && validPassword && validPhone && passwordsMatch){
+        if(!validFirstName){
+            ipl_lastname.setError("Invalid Name");
+        }
+
+
+        if(validUsername && validPassword && validPhone && passwordsMatch && validFirstName && validLastName){
             // TODO
             //call async task to register the user
             RequestParams request = new RequestParams();
@@ -112,6 +131,9 @@ public class SignUp extends AppCompatActivity {
             request.setParam("username", username_text);
             request.setParam("password", pass_text);
             request.setParam("phonenumber", phone_text);
+            request.setParam("firstname", firstname_text);
+            request.setParam("lastname", lastname_text);
+
             Log.v(TAG, "Request being sent with params " + request.getUri() + request.getParams().toString());
 
 

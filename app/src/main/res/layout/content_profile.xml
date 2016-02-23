@@ -41,7 +41,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Porfile Name" />
+            android:text="Porfile Name"
+            android:layout_marginTop="15dp" />
 
 
     </LinearLayout>
@@ -128,40 +129,85 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"/>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/profile_ipl_emergencycnt1"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            >
+            android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/profile_emergencycnt1"
-                android:layout_width="match_parent"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/profile_ipl_emergencycnt1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:enabled="false"
-                android:hint="Emergency Contact 1"
-                android:maxLines="1"
-                android:singleLine="true" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_weight="1">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/profile_ipl_emergencycnt2"
+                <EditText
+                    android:id="@+id/profile_emergencycnt1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:enabled="false"
+                    android:hint="Emergency Contact 1"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/profile_ipl_emergencycnt1number"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/profile_emergencycnt1number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:enabled="false"
+                    android:hint="Number"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            >
+            android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/profile_emergencycnt2"
-                android:layout_width="match_parent"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/profile_ipl_emergencycnt2"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:enabled="false"
-                android:hint="Emergency Contact 2"
-                android:maxLines="1"
-                android:singleLine="true" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_weight="1">
 
+                <EditText
+                    android:id="@+id/profile_emergencycnt2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:enabled="false"
+                    android:hint="Emergency Contact 1"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/profile_ipl_emergencycnt2number"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/profile_emergencycnt2number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:enabled="false"
+                    android:hint="Number"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
 
     </LinearLayout>
 

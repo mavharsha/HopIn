@@ -12,7 +12,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -37,6 +37,7 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONObject;
 
@@ -49,11 +50,10 @@ import butterknife.OnClick;
 import sk.maverick.harsha.hopin.Http.HttpManager;
 import sk.maverick.harsha.hopin.Http.HttpResponse;
 import sk.maverick.harsha.hopin.Http.RequestParams;
-import sk.maverick.harsha.hopin.Models.Event;
 import sk.maverick.harsha.hopin.Util.ConnectionManager;
 import sk.maverick.harsha.hopin.Util.RegexValidator;
 
-public class CreateEvent extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class CreateEvent extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     @Bind(R.id.createevent_progressbar) ProgressBar progressBar;
 
@@ -86,11 +86,14 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
 
 
     private static final String TAG = "CREATEEVENT";
+    public static final String MyPREFERENCES = "MyPrefs" ;
+
     private Calendar calendar;
     private int REQUEST_EVENT_PLACE_PICKER = 1;
     private int REQUEST_PICKUP_PLACE_PICKER = 2;
     private int day, month, year, eventTimeHour, eventTimeMinute,pickUpTimeHour,pickUpTimeMinute;
     private String preference;
+    LatLng locationltlng, pickupltlng;
     private static final String[] preferences = new String[] {
             "Both",
             "Male",
@@ -112,7 +115,7 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
 
     private void init() {
 
-        Typeface roboto_light = Typeface.createFromAsset(getAssets(), "Roboto-Light.ttf");
+        /*Typeface roboto_light = Typeface.createFromAsset(getAssets(), "Roboto-Light.ttf");
         eventName.setTypeface(roboto_light);
         eventType.setTypeface(roboto_light);
         seatsavailable.setTypeface(roboto_light);
@@ -130,12 +133,13 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
         layout_eventTime.setTypeface(roboto_light);
         layout_pickupTime.setTypeface(roboto_light);
         layout_eventLocation.setTypeface(roboto_light);
-        layout_pickupLocation.setTypeface(roboto_light);
+        layout_pickupLocation.setTypeface(roboto_light);*/
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item,
                 preferences);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        passpreference.setOnItemSelectedListener(this);
         passpreference.setAdapter(adapter);
 
         /*Typeface roboto_thin = Typeface.createFromAsset(getAssets(), "Roboto-Thin.ttf");
@@ -245,12 +249,23 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
 
             if(ConnectionManager.isConnected(CreateEvent.this)){
 
+                SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
+                String restoredusername = prefs.getString("username", null);
+                String restoredToken = prefs.getString("token", null);
+
+
                 RequestParams request = new RequestParams();
                 request.setUri("http://localhost:3000/createevent");
+
+                request.setParam("username", restoredusername);
+                request.setParam("token", restoredToken);
+
                 request.setParam("eventName", eventName.getText().toString());
                 request.setParam("eventType", eventType.getText().toString());
 
                 request.setParam("seatsAvailable", seatsavailable.getText().toString());
+                request.setParam("preferences", preference);
 
                 request.setParam("dateDay", ""+day);
                 request.setParam("dateMonth", ""+month);
@@ -266,9 +281,15 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
                 request.setParam("eventLocation", eventLocation.getText().toString());
                 request.setParam("pickUpLocation", pickupLocation.getText().toString());
 
-                Log.v(TAG, new JSONObject(request.getParams()).toString());
-                Log.v(TAG, "CreateEvent sending a request to the server");
+                request.setParam("eventLocationLat", ""+ locationltlng.latitude);
+                request.setParam("eventLocationLng", ""+ locationltlng.longitude);
 
+                request.setParam("pickUpLocationLat", ""+ pickupltlng.latitude);
+                request.setParam("pickUpLocationLng", ""+ pickupltlng.longitude);
+
+                Log.v(TAG, new JSONObject(request.getParams()).toString());
+
+                Log.v(TAG, "CreateEvent sending a request to the server");
                 new CreateEventAsync().execute(request);
             }else
             {
@@ -329,7 +350,7 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
 /*
                     address = address.replace(',',' ');
 */
-
+                    locationltlng = place.getLatLng();
                     eventLocation.setText(address);
                 }
                 else{
@@ -347,7 +368,7 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
 /*
                     address = address.replace(',',' ');
 */
-
+                    pickupltlng = place.getLatLng();
                     pickupLocation.setText(address);
                 }
                 else{
@@ -391,12 +412,28 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
         int index = passpreference.getSelectedItemPosition();
         preference = preferences[index];
+        Toast.makeText(getApplicationContext(), "Clicked " + preference , Toast.LENGTH_SHORT).show();
+
     }
 
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    /*  @Override
+      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+          int index = passpreference.getSelectedItemPosition();
+          preference = preferences[index];
+
+          Toast.makeText(getApplicationContext(), "Clicked " + preference , Toast.LENGTH_SHORT).show();
+      }
+
+  */
     private class CreateEventAsync extends AsyncTask<RequestParams, Void, HttpResponse>{
 
 
@@ -432,17 +469,32 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
 /*
 Sample Event JSON POST
 {
-"eventName":"event",
+"username":"haha",
+"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiaGFoYSJ9.mhoPQprPVe1B8jRrNlJBZXEq6ou24pEsYaxEFlj1bYA",
+
+"eventName":"event name",
 "eventType":"type",
 "seatsAvailable":"4",
-"pickUpTimeHour":"15",
-"eventTimeHour":"15",
-"pickUpTimeMinute":"30",
-"eventTimeMinute":"15",
-"dateYear":"2016",
-"dateDay":"24",
+"preferences":null,
+
+"dateDay":"25",
 "dateMonth":"1",
-"eventLocation":"6000 J Street, Sacramento, CA 95819, United States",
-"pickUpLocation":"Student Union, 6000 J Street, Sacramento, CA 95819, United States"
+"dateYear":"2016",
+
+"eventTimeHour":"4",
+"eventTimeMinute":"24",
+
+"pickUpTimeHour":"4",
+"pickUpTimeMinute":"15",
+
+"eventLocationLat":"38.5853955",
+"eventLocationLng":"-121.4133355",
+
+"pickUpLocationLat":"38.58563499999999",
+"pickUpLocationLng":"-121.415764",
+
+"eventLocation":"1100 Howe Ave, Sacramento, CA 95825, United States",
+"pickUpLocation":"1111 Howe Ave #300, Sacramento, CA 95825, United States"
 }
+
 */

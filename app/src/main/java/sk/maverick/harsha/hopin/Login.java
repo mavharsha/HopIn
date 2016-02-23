@@ -1,6 +1,8 @@
 package sk.maverick.harsha.hopin;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -15,6 +17,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 import sk.maverick.harsha.hopin.Http.HttpManager;
@@ -25,10 +30,14 @@ import sk.maverick.harsha.hopin.Util.ConnectionManager;
 public class Login extends AppCompatActivity {
 
     protected final static String TAG = "LoginActivity";
+    public static final String MyPREFERENCES = "MyPrefs" ;
+
     private EditText username, password;
     private TextView login_textView, signup_textView;
     private Button login;
     private ProgressBar pb;
+
+    SharedPreferences sharedpreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +86,9 @@ public class Login extends AppCompatActivity {
         pb = (ProgressBar) findViewById(R.id.login_progressBar);
         login  = (Button) findViewById(R.id.login_button);
 
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
+
         pb.setVisibility(View.INVISIBLE);
         signup_textView.setPaintFlags(signup_textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         Linkify.addLinks(signup_textView, Linkify.ALL);
@@ -118,11 +130,30 @@ public class Login extends AppCompatActivity {
                 Snackbar.make(findViewById(R.id.login_coordinator), "Error! Please try later", Snackbar.LENGTH_LONG).show();
             }else if (result.getStatusCode() == 200){
 
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+
+                String response = result.getBody();
+                JSONObject resultJson = null;
+                Log.v(TAG, "The response is "+ response);
+                try {
+                     resultJson = new JSONObject(response);
+
+                    editor.putString("username", resultJson.getString("username"));
+                    editor.putString("token", resultJson.getString("token"));
+                    Log.v(TAG, "The username is "+ resultJson.getString("username"));
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                editor.commit();
+
+
                 // get the token an save it in shared preferences
                 startActivity(new Intent(Login.this, Home.class));
 
             }
-            Log.v(TAG,"Async post execute. The result is "+ result.getBody());
             pb.setVisibility(View.INVISIBLE);
         }
     }
