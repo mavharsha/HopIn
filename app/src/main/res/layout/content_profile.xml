@@ -39,6 +39,7 @@
             android:src="@drawable/avatar_1" />
 
         <TextView
+            android:id="@+id/profile_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Porfile Name"
@@ -186,7 +187,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:enabled="false"
-                    android:hint="Emergency Contact 1"
+                    android:hint="Emergency Contact 2"
                     android:maxLines="1"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>

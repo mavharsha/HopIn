@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c)
+  ~ Sree Harsha Mamilla
+  ~ Pasyanthi
+  ~ github/mavharsha
+  ~
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="sk.maverick.harsha.hopin.UpdateProfile"
+    tools:showIn="@layout/activity_update_profile">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.8"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/updateprofile_image"
+            android:clickable="true"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            app:border_width="1dp"
+            app:border_color="#FF000000"
+            android:src="@drawable/avatar_1" />
+
+        <TextView
+            android:id="@+id/updateprofile_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Porfile Name"
+            android:layout_marginTop="15dp" />
+
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose Avatar"
+        android:layout_marginBottom="0dp" />
+    <View
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@android:color/darker_gray"
+    android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_marginBottom="10dp">
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/updateprofile_avatar1"
+            android:clickable="true"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            android:onClick="changeAvatar"
+            android:tag="1"
+            app:border_width="1dp"
+            app:border_color="#FF000000"
+            android:src="@drawable/avatar_1" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/updateprofile_avatar2"
+            android:clickable="true"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            android:onClick="changeAvatar"
+            android:tag="2"
+            app:border_width="1dp"
+            app:border_color="#FF000000"
+            android:src="@drawable/avatar_4" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/updateprofile_avatar3"
+            android:clickable="true"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            android:onClick="changeAvatar"
+            android:tag="3"
+            app:border_width="1dp"
+            app:border_color="#FF000000"
+            android:src="@drawable/avatar_8" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/updateprofile_avatar4"
+            android:clickable="true"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            android:onClick="changeAvatar"
+            android:tag="4"
+            app:border_width="1dp"
+            app:border_color="#FF000000"
+            android:src="@drawable/avatar_9" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/updateprofile_avatar5"
+            android:clickable="true"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            android:onClick="changeAvatar"
+            android:tag="5"
+            app:border_width="1dp"
+            app:border_color="#FF000000"
+            android:src="@drawable/avatar_11" />
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Personal Details"
+        android:layout_marginBottom="0dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/updateprofile_ipl_firstname"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/wallet_secondary_text_holo_dark"
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/updateprofile_firstname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="First Name"
+                    android:maxLines="1"
+                    android:textColor="@color/wallet_secondary_text_holo_dark"
+                    android:theme="@style/MyEditTextTheme"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/updateprofile_ipl_lastname"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/wallet_secondary_text_holo_dark"
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/updateprofile_lasttname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Last Name"
+                    android:maxLines="1"
+                    android:textColor="@color/wallet_secondary_text_holo_dark"
+                    android:theme="@style/MyEditTextTheme"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/updateprofile_ipl_phonenumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/wallet_secondary_text_holo_dark"
+            >
+
+            <EditText
+                android:id="@+id/updateprofile_phonenumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="PhoneNumber"
+                android:maxLines="1"
+                android:textColor="@color/wallet_secondary_text_holo_dark"
+                android:theme="@style/MyEditTextTheme"
+                android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Emergency Contacts"
+            android:textSize="14sp"
+            android:layout_marginTop="15dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/updateprofile_ipl_emergencycnt1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/wallet_secondary_text_holo_dark"
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/updateprofile_emergencycnt1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Emergency Contact 1"
+                    android:textColor="@color/wallet_secondary_text_holo_dark"
+                    android:theme="@style/MyEditTextTheme"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/updateprofile_ipl_emergencycnt1number"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/wallet_secondary_text_holo_dark"
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/updateprofile_emergencycnt1number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Number"
+                    android:textColor="@color/wallet_secondary_text_holo_dark"
+                    android:theme="@style/MyEditTextTheme"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/updateprofile_ipl_emergencycnt2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/wallet_secondary_text_holo_dark"
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/updateprofile_emergencycnt2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Emergency Contact 2"
+                    android:maxLines="1"
+                    android:textColor="@color/wallet_secondary_text_holo_dark"
+                    android:theme="@style/MyEditTextTheme"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/updateprofile_ipl_emergencycnt2number"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/wallet_secondary_text_holo_dark"
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/updateprofile_emergencycnt2number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Number"
+                    android:textColor="@color/wallet_secondary_text_holo_dark"
+                    android:theme="@style/MyEditTextTheme"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>
+

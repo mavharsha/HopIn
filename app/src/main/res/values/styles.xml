@@ -8,6 +8,14 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="MyEditTextTheme" parent="Theme.AppCompat.Light">
+        <!-- Used for the bottom line when not selected / focused -->
+        <item name="colorControlNormal">#80bebebe</item>
+        <!-- colorControlActivated & colorControlHighlight use the colorAccent color by default -->
+        <item name="colorControlActivated">#80bebebe</item>
+        <item name="colorControlHighlight">#80bebebe</item>
+    </style>
+
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

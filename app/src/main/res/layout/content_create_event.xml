@@ -47,6 +47,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Event Name"
                     android:maxLines="1"
+                    android:theme="@style/MyEditTextTheme"
+                    android:textColor="@color/wallet_secondary_text_holo_dark"
                     android:singleLine="true"/>
 
             </android.support.design.widget.TextInputLayout>
@@ -63,6 +65,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Event Type"
                     android:maxLines="1"
+                    android:theme="@style/MyEditTextTheme"
+                    android:textColor="@color/wallet_secondary_text_holo_dark"
                     android:singleLine="true"/>
 
             </android.support.design.widget.TextInputLayout>
@@ -79,6 +83,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Seats Available"
                     android:maxLines="1"
+                    android:theme="@style/MyEditTextTheme"
+                    android:textColor="@color/wallet_secondary_text_holo_dark"
                     android:singleLine="true"
                     android:inputType="number" />
 
@@ -103,6 +109,7 @@
                 android:id="@+id/createevent_passpreference"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:textColor="@color/wallet_secondary_text_holo_dark"
                 android:layout_weight="3"/>
 
             </LinearLayout>
@@ -133,6 +140,8 @@
                         android:focusableInTouchMode="false"
                         android:hint="Event Date"
                         android:inputType="date"
+                        android:theme="@style/MyEditTextTheme"
+                        android:textColor="@color/wallet_secondary_text_holo_dark"
                         android:maxLines="1"
                         android:singleLine="true"/>
                 </android.support.design.widget.TextInputLayout>
@@ -169,6 +178,8 @@
                         android:focusableInTouchMode="false"
                         android:hint="Event up Time"
                         android:inputType="time"
+                        android:theme="@style/MyEditTextTheme"
+                        android:textColor="@color/wallet_secondary_text_holo_dark"
                         android:maxLines="1"
                         android:singleLine="true"/>
                 </android.support.design.widget.TextInputLayout>
@@ -205,8 +216,9 @@
                         android:hint="Pick up Time"
                         android:inputType="time"
                         android:maxLines="1"
-                        android:singleLine="true"
-                        android:editable="false" />
+                        android:theme="@style/MyEditTextTheme"
+                        android:textColor="@color/wallet_secondary_text_holo_dark"
+                        android:singleLine="true"/>
                 </android.support.design.widget.TextInputLayout>
 
                 <Button
@@ -238,6 +250,8 @@
                         android:ems="10"
                         android:hint="Event Location"
                         android:maxLines="1"
+                        android:theme="@style/MyEditTextTheme"
+                        android:textColor="@color/wallet_secondary_text_holo_dark"
                         android:singleLine="true" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -272,8 +286,9 @@
                         android:ems="10"
                         android:hint="Pick up Location"
                         android:maxLines="1"
-                        android:singleLine="true"
-                         />
+                        android:theme="@style/MyEditTextTheme"
+                        android:textColor="@color/wallet_secondary_text_holo_dark"
+                        android:singleLine="true"/>
                 </android.support.design.widget.TextInputLayout>
 
                 <Button
@@ -285,8 +300,6 @@
                     android:text="Location Picker" />
 
             </LinearLayout>
-
-
 
             <Button
                 android:id="@+id/createevent_confirm"

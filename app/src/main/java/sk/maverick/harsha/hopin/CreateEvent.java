@@ -475,7 +475,7 @@ Sample Event JSON POST
 "eventName":"event name",
 "eventType":"type",
 "seatsAvailable":"4",
-"preferences":null,
+"preferences":"female",
 
 "dateDay":"25",
 "dateMonth":"1",

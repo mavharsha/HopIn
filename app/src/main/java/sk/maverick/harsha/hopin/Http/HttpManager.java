@@ -21,16 +21,42 @@ public class HttpManager {
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private static OkHttpClient okHttpClient = new OkHttpClient();
 
-
-
     public static HttpResponse getData(RequestParams requestParams) throws IOException {
 
         HttpResponse httpResponse = new HttpResponse();
 
         String uri = requestParams.getUri();
+        Log.v(TAG, "The URL is " + uri);
 
         Request request = new Request.Builder()
                 .url(uri)
+                .build();
+        Response response = okHttpClient.newCall(request).execute();
+
+        httpResponse.setStatusCode(response.code());
+        httpResponse.setBody(response.body().string());
+        return httpResponse;
+    }
+
+
+    public static HttpResponse putData(RequestParams requestParams) throws IOException {
+
+        HttpResponse httpResponse = new HttpResponse();
+
+        String uri = requestParams.getUri();
+        Log.v(TAG, "The URL is " + uri);
+        HashMap map = (HashMap) requestParams.getParams();
+        Log.v(TAG, "MAP to string is  "+ map.toString());
+
+
+        JSONObject data = null;
+        data = new JSONObject(map);
+
+        RequestBody requestBody = RequestBody.create(JSON, data.toString());
+
+        Request request = new Request.Builder()
+                .url(uri)
+                .put(requestBody)
                 .build();
         Response response = okHttpClient.newCall(request).execute();
 

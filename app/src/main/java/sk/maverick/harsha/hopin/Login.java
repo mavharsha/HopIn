@@ -140,6 +140,7 @@ public class Login extends AppCompatActivity {
 
                     editor.putString("username", resultJson.getString("username"));
                     editor.putString("token", resultJson.getString("token"));
+                    editor.putBoolean("isloggedin", true);
                     Log.v(TAG, "The username is "+ resultJson.getString("username"));
 
 
@@ -148,11 +149,9 @@ public class Login extends AppCompatActivity {
                 }
 
                 editor.commit();
-
-
                 // get the token an save it in shared preferences
                 startActivity(new Intent(Login.this, Home.class));
-
+                finish();
             }
             pb.setVisibility(View.INVISIBLE);
         }
