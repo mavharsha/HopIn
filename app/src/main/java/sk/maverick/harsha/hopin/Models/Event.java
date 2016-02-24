@@ -15,147 +15,182 @@ import java.util.Map;
  * Created by Harsha on 2/21/2016.
  */
 public class Event {
+    String id;
+    String username;
 
-    String eventName;
-    String eventType;
-    String seatsAvailabale;
-    int eventDateDay;
-    int eventDateMonth;
-    int eventDateYear;
-    int eventTimeHour;
-    int eventTimeMinute;
-    int pickupTimeHour;
-    int pickupTimeMinute;
-    String eventLocation;
-    String pickUpLocation;
-    Map<String, String> eventlist = new HashMap<>();
+    String eventname;
+    String eventtype;
+    String seatsavailabale;
+    String preferences;
 
-    public int getEventDateDay() {
-        return eventDateDay;
+    int eventdateday;
+    int eventdatemonth;
+    int eventdateyear;
+
+    int eventtimehour;
+    int eventtimeminute;
+
+    int pickuptimehour;
+    int pickuptimeminute;
+
+    double eventlocationlng;
+    double eventlocationlat;
+
+    double pickuplocationlng;
+    double pickuplocationlat;
+
+    String eventlocation;
+    String pickuplocation;
+
+    public int getEventdateday() {
+        return eventdateday;
     }
 
-
-    public void setEventDateDay(int eventDateDay) {
-        this.eventDateDay = eventDateDay;
+    public void setEventdateday(int eventdateday) {
+        this.eventdateday = eventdateday;
     }
 
-    public int getEventDateMonth() {
-        return eventDateMonth;
+    public int getEventdatemonth() {
+        return eventdatemonth;
     }
 
-    public void setEventDateMonth(int eventDateMonth) {
-        this.eventDateMonth = eventDateMonth;
+    public void setEventdatemonth(int eventdatemonth) {
+        this.eventdatemonth = eventdatemonth;
     }
 
-    public int getEventDateYear() {
-        return eventDateYear;
+    public int getEventdateyear() {
+        return eventdateyear;
     }
 
-    public void setEventDateYear(int eventDateYear) {
-        this.eventDateYear = eventDateYear;
+    public void setEventdateyear(int eventdateyear) {
+        this.eventdateyear = eventdateyear;
     }
 
-    public String getEventLocation() {
-        return eventLocation;
+    public String getEventlocation() {
+        return eventlocation;
     }
 
-    public void setEventLocation(String eventLocation) {
-        this.eventLocation = eventLocation;
+    public void setEventlocation(String eventlocation) {
+        this.eventlocation = eventlocation;
     }
 
-    public String getEventName() {
-        return eventName;
+    public double getEventlocationlat() {
+        return eventlocationlat;
     }
 
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
+    public void setEventlocationlat(double eventlocationlat) {
+        this.eventlocationlat = eventlocationlat;
     }
 
-    public int getEventTimeHour() {
-        return eventTimeHour;
+    public double getEventlocationlng() {
+        return eventlocationlng;
     }
 
-    public void setEventTimeHour(int eventTimeHour) {
-        this.eventTimeHour = eventTimeHour;
+    public void setEventlocationlng(double eventlocationlng) {
+        this.eventlocationlng = eventlocationlng;
     }
 
-    public int getEventTimeMinute() {
-        return eventTimeMinute;
+    public String getEventname() {
+        return eventname;
     }
 
-    public void setEventTimeMinute(int eventTimeMinute) {
-        this.eventTimeMinute = eventTimeMinute;
+    public void setEventname(String eventname) {
+        this.eventname = eventname;
     }
 
-    public String getEventType() {
-        return eventType;
+    public int getEventtimehour() {
+        return eventtimehour;
     }
 
-    public void setEventType(String eventType) {
-        this.eventType = eventType;
+    public void setEventtimehour(int eventtimehour) {
+        this.eventtimehour = eventtimehour;
     }
 
-    public String getPickUpLocation() {
-        return pickUpLocation;
+    public int getEventtimeminute() {
+        return eventtimeminute;
     }
 
-    public void setPickUpLocation(String pickUpLocation) {
-        this.pickUpLocation = pickUpLocation;
+    public void setEventtimeminute(int eventtimeminute) {
+        this.eventtimeminute = eventtimeminute;
     }
 
-    public int getPickupTimeHour() {
-        return pickupTimeHour;
+    public String getEventtype() {
+        return eventtype;
     }
 
-    public void setPickupTimeHour(int pickupTimeHour) {
-        this.pickupTimeHour = pickupTimeHour;
+    public void setEventtype(String eventtype) {
+        this.eventtype = eventtype;
     }
 
-    public int getPickupTimeMinute() {
-        return pickupTimeMinute;
+    public String getId() {
+        return id;
     }
 
-    public void setPickupTimeMinute(int pickupTimeMinute) {
-        this.pickupTimeMinute = pickupTimeMinute;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getSeatsAvailabale() {
-        return seatsAvailabale;
+    public String getPickuplocation() {
+        return pickuplocation;
     }
 
-    public void setSeatsAvailabale(String seatsAvailabale) {
-        this.seatsAvailabale = seatsAvailabale;
+    public void setPickuplocation(String pickuplocation) {
+        this.pickuplocation = pickuplocation;
     }
 
-    public Map<String, String> getEventlist() {
-        return eventlist;
+    public double getPickuplocationlat() {
+        return pickuplocationlat;
     }
 
-    public void setEventlist(Map<String, String> eventlist) {
-        this.eventlist = eventlist;
+    public void setPickuplocationlat(double pickuplocationlat) {
+        this.pickuplocationlat = pickuplocationlat;
     }
 
-    public void setEventAttribute(String key, String value){
-
-        eventlist.put(key, value);
+    public double getPickuplocationlng() {
+        return pickuplocationlng;
     }
 
+    public void setPickuplocationlng(double pickuplocationlng) {
+        this.pickuplocationlng = pickuplocationlng;
+    }
 
-    @Override
-    public String toString() {
-        return "Event{" +
-                "eventDateDay=" + eventDateDay +
-                ", eventName='" + eventName + '\'' +
-                ", eventType='" + eventType + '\'' +
-                ", seatsAvailabale='" + seatsAvailabale + '\'' +
-                ", eventDateMonth=" + eventDateMonth +
-                ", eventDateYear=" + eventDateYear +
-                ", eventTimeHour=" + eventTimeHour +
-                ", eventTimeMinute=" + eventTimeMinute +
-                ", pickupTimeHour=" + pickupTimeHour +
-                ", pickupTimeMinute=" + pickupTimeMinute +
-                ", eventLocation='" + eventLocation + '\'' +
-                ", pickUpLocation='" + pickUpLocation + '\'' +
-                '}';
+    public int getPickuptimehour() {
+        return pickuptimehour;
+    }
+
+    public void setPickuptimehour(int pickuptimehour) {
+        this.pickuptimehour = pickuptimehour;
+    }
+
+    public int getPickuptimeminute() {
+        return pickuptimeminute;
+    }
+
+    public void setPickuptimeminute(int pickuptimeminute) {
+        this.pickuptimeminute = pickuptimeminute;
+    }
+
+    public String getPreferences() {
+        return preferences;
+    }
+
+    public void setPreferences(String preferences) {
+        this.preferences = preferences;
+    }
+
+    public String getSeatsavailabale() {
+        return seatsavailabale;
+    }
+
+    public void setSeatsavailabale(String seatsavailabale) {
+        this.seatsavailabale = seatsavailabale;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

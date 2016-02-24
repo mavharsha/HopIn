@@ -11,4 +11,5 @@
     <dimen name="md_keylines">10dp</dimen>
     <dimen name="list_subheading">14sp</dimen>
     <dimen name="topmargin_below_appbar">58dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>

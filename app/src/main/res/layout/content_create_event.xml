@@ -39,7 +39,8 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/createevent_ipl_eventname"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="0dp"
+                android:layout_weight="1">
 
                 <EditText
                     android:id="@+id/createevent_eventname"
@@ -56,8 +57,9 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/createevent_ipl_eventtype"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1">
 
                 <EditText
                     android:id="@+id/createevent_eventtype"
@@ -74,8 +76,8 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/createevent_ipl_seatsavailable"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="0dp"
+                android:layout_weight="1">
 
                 <EditText
                     android:id="@+id/createevent_seatsavailable"
@@ -92,9 +94,10 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:orientation="horizontal"
-            android:layout_marginTop="15dp">
+            android:layout_marginTop="15dp"
+            android:layout_weight="1">
 
             <TextView
                 android:id="@+id/createevent_tv_passpreference"
@@ -120,9 +123,10 @@
                 android:layout_marginTop="2dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:orientation="horizontal"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:layout_weight="1">
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/createevent_ipl_eventdate"
@@ -158,9 +162,10 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:orientation="horizontal"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:layout_weight="1">
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/createevent_ipl_eventtime"
@@ -195,9 +200,10 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:orientation="horizontal"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:layout_weight="1">
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/createevent_ipl_pickuptime"
@@ -232,9 +238,10 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:orientation="horizontal"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:layout_weight="1">
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/createevent_ipl_eventlocation"
@@ -268,9 +275,10 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:orientation="horizontal"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:layout_weight="1">
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/createevent_ipl_pickuplocation"
@@ -304,9 +312,10 @@
             <Button
                 android:id="@+id/createevent_confirm"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:text="Create"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="10dp"
+                android:layout_weight="1" />
 
         </LinearLayout>
 
