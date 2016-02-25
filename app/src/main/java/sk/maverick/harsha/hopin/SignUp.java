@@ -66,6 +66,8 @@ public class SignUp extends AppCompatActivity {
 
         Typeface roboto_light = Typeface.createFromAsset(getAssets(), "Roboto-Light.ttf");
         username.setTypeface(roboto_light);
+        firstname.setTypeface(roboto_light);
+        lastname.setTypeface(roboto_light);
         phone.setTypeface(roboto_light);
         password.setTypeface(roboto_light);
         repassword.setTypeface(roboto_light);

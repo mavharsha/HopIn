@@ -45,9 +45,7 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         //Initialize the views and typeface
         init();
-
     }
-
     // On press for login button
     public void login(View view){
 
@@ -142,8 +140,6 @@ public class Login extends AppCompatActivity {
                     editor.putString("token", resultJson.getString("token"));
                     editor.putBoolean("isloggedin", true);
                     Log.v(TAG, "The username is "+ resultJson.getString("username"));
-
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -152,6 +148,8 @@ public class Login extends AppCompatActivity {
                 // get the token an save it in shared preferences
                 startActivity(new Intent(Login.this, Home.class));
                 finish();
+            }else if(result.getStatusCode() != 200){
+                Snackbar.make(findViewById(R.id.login_coordinator), "Invalid Credentials", Snackbar.LENGTH_LONG).show();
             }
             pb.setVisibility(View.INVISIBLE);
         }

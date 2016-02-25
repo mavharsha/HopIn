@@ -478,6 +478,10 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
 
                             }
                         }).show();
+            }else if(result.getStatusCode() !=200){
+                if(result == null){
+                    Snackbar.make(findViewById(R.id.createevent_coordinator), "Error! Please try later", Snackbar.LENGTH_LONG).show();
+                }
             }
 
         }

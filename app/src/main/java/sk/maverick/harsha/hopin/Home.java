@@ -28,6 +28,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -243,14 +246,21 @@ public class Home extends AppCompatActivity
 
                 JSONObject jsonObject = null;
                 JSONObject details;
+                Moshi moshi = new Moshi.Builder().build();
+                JsonAdapter<sk.maverick.harsha.hopin.Models.Profile> jsonAdapter = moshi.adapter(sk.maverick.harsha.hopin.Models.Profile.class);
+
+
                 try {
                     jsonObject = new JSONObject(response.getBody());
                     username_tx = jsonObject.getString("username");
 
                     details = jsonObject.getJSONObject("details");
-                    avatar_tx = details.getString("avatar");
+                    sk.maverick.harsha.hopin.Models.Profile profile = jsonAdapter.fromJson(details.toString());
+                    avatar_tx = profile.getAvatar();
 
                 } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
                 updateNavUi();
