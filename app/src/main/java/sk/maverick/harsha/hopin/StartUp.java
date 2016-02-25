@@ -21,7 +21,7 @@ public class StartUp extends AppCompatActivity {
 
         SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
-        Boolean isLoggedIn = prefs.getBoolean("islogedin", false);
+        Boolean isLoggedIn = prefs.getBoolean("isloggedin", false);
 
         Log.v(TAG, "Logged in? "+ isLoggedIn);
 

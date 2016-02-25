@@ -8,6 +8,7 @@
 
 package sk.maverick.harsha.hopin;
 
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -15,6 +16,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -52,26 +54,28 @@ import sk.maverick.harsha.hopin.Models.Event;
 import sk.maverick.harsha.hopin.Util.DividerItemDecorator;
 
 
-public class CreatedEventFragment extends Fragment {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class SearchEventsFragment extends Fragment {
 
     private final static String TAG  = "CREATEDEVENTFRAG";
     public static final String MyPREFERENCES = "MyPrefs" ;
     ContentAdapter contentAdapter;
     Marker marker;
-
-
     private List <Event> mdataset = new ArrayList<>();
 
-    public CreatedEventFragment() {
 
+    public SearchEventsFragment() {
+        // Required empty public constructor
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
 
-            super.onCreate(savedInstanceState);
-            // call an async call
-            profileUpdate();
+        super.onCreate(savedInstanceState);
+        // call an async call
+        profileUpdate();
     }
 
 
@@ -116,7 +120,7 @@ public class CreatedEventFragment extends Fragment {
 
         RequestParams requestParams = new RequestParams();
 
-        requestParams.setUri("http://localhost:3000/events/"+restoredusername);
+        requestParams.setUri("http://localhost:3000/events/");
         new CreateEventAsyncTask(getActivity()).execute(requestParams);
     }
 
@@ -153,7 +157,7 @@ public class CreatedEventFragment extends Fragment {
             GoogleMap thisMap = holder.mMap;
             //then move map to 'location'
             if(thisMap != null)
-                //move map to the 'location'
+            //move map to the 'location'
             {
                 int pos = position;
                 //get 'location' by 'pos' from data list
@@ -240,7 +244,7 @@ public class CreatedEventFragment extends Fragment {
     }
 
 
-    private class CreateEventAsyncTask extends AsyncTask<RequestParams, Void, HttpResponse>{
+    private class CreateEventAsyncTask extends AsyncTask<RequestParams, Void, HttpResponse> {
 
         ProgressDialog progressDialog;
         public CreateEventAsyncTask(Activity activity) {
@@ -262,13 +266,12 @@ public class CreatedEventFragment extends Fragment {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        return httpResponse;
+            return httpResponse;
         }
 
         @Override
         protected void onPostExecute(HttpResponse response) {
             Log.v(TAG, "Post execute");
-
             if(response == null){
                 Toast.makeText(getActivity(), "Error! Please try later", Toast.LENGTH_LONG).show();
             }
@@ -323,6 +326,11 @@ public class CreatedEventFragment extends Fragment {
                 e.printStackTrace();
             }
         }
+
         Log.v(TAG, "Event size is " + mdataset.size());
     }
+
+
+
+
 }

@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.util.Linkify;
 import android.view.View;
@@ -22,12 +23,18 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import sk.maverick.harsha.hopin.Http.HttpManager;
 import sk.maverick.harsha.hopin.Http.HttpResponse;
 import sk.maverick.harsha.hopin.Http.RequestParams;
 import sk.maverick.harsha.hopin.Util.ConnectionManager;
 
 public class Login extends AppCompatActivity {
+
+    @Bind(R.id.login_ipl_username)TextInputLayout username_layout;
+    @Bind(R.id.login_ipl_password)TextInputLayout password_layout;
+
 
     protected final static String TAG = "LoginActivity";
     public static final String MyPREFERENCES = "MyPrefs" ;
@@ -37,6 +44,8 @@ public class Login extends AppCompatActivity {
     private Button login;
     private ProgressBar pb;
 
+
+
     SharedPreferences sharedpreferences;
 
     @Override
@@ -44,6 +53,7 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         //Initialize the views and typeface
+        ButterKnife.bind(this);
         init();
     }
     // On press for login button
@@ -95,6 +105,8 @@ public class Login extends AppCompatActivity {
         Typeface roboto_light = Typeface.createFromAsset(getAssets(), "Roboto-Light.ttf");
         username.setTypeface(roboto_light);
         password.setTypeface(roboto_light);
+        username_layout.setTypeface(roboto_light);
+        password_layout.setTypeface(roboto_light);
 
         Typeface roboto_thin = Typeface.createFromAsset(getAssets(), "Roboto-Thin.ttf");
         login_textView.setTypeface(roboto_thin);

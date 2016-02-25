@@ -14,6 +14,7 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.util.Linkify;
 import android.util.Log;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 import java.io.IOException;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import sk.maverick.harsha.hopin.Http.HttpManager;
 import sk.maverick.harsha.hopin.Http.HttpResponse;
 import sk.maverick.harsha.hopin.Http.RequestParams;
@@ -37,14 +39,18 @@ public class SignUp extends AppCompatActivity {
     private EditText username, phone, password, repassword, firstname, lastname;
     private Button register;
     private TextView signup,oldUser;
-
-    @Bind(R.id.signup_ipl_fristname) EditText ipl_firstname;
-    @Bind(R.id.signup_ipl_lastname) EditText ipl_lastname;
+    @Bind(R.id.signup_ipl_username) TextInputLayout ipl_username;
+    @Bind(R.id.signup_ipl_fristname) TextInputLayout ipl_firstname;
+    @Bind(R.id.signup_ipl_lastname) TextInputLayout ipl_lastname;
+    @Bind(R.id.signup_ipl_phonenumber) TextInputLayout ipl_phone;
+    @Bind(R.id.signup_ipl_pass) TextInputLayout ipl_password;
+    @Bind(R.id.signup_ipl_repass) TextInputLayout ipl_repass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        ButterKnife.bind(this);
 
         init();
     }
@@ -71,6 +77,14 @@ public class SignUp extends AppCompatActivity {
         phone.setTypeface(roboto_light);
         password.setTypeface(roboto_light);
         repassword.setTypeface(roboto_light);
+
+        ipl_username.setTypeface(roboto_light);
+        ipl_firstname.setTypeface(roboto_light);
+        ipl_lastname.setTypeface(roboto_light);
+        ipl_phone.setTypeface(roboto_light);
+        ipl_password.setTypeface(roboto_light);
+        ipl_repass.setTypeface(roboto_light);
+
 
         Typeface roboto_thin = Typeface.createFromAsset(getAssets(), "Roboto-Thin.ttf");
         signup.setTypeface(roboto_thin);

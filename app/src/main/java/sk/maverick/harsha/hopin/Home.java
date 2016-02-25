@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -46,6 +47,8 @@ public class Home extends AppCompatActivity
 
     private final static String TAG  = "MainActivity";
     public static final String MyPREFERENCES = "MyPrefs" ;
+    SharedPreferences prefs;
+
 
     CircleImageView profile;
     TextView username;
@@ -115,8 +118,8 @@ public class Home extends AppCompatActivity
     }
 
     private void init() {
+         prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
-        SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         String restoredusername = prefs.getString("username", null);
         RequestParams requestParams = new RequestParams();
 
@@ -178,7 +181,13 @@ public class Home extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_signout) {
+            prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("isloggedin", false);
+            editor.commit();
+            finish();
             return true;
         }
 
@@ -194,7 +203,24 @@ public class Home extends AppCompatActivity
 
         if (id == R.id.nav_createdevents) {
 
+            CreatedEventFragment newFragment = new CreatedEventFragment();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+            transaction.replace(R.id.fragment_container, newFragment);
+            transaction.addToBackStack(null);
+            // this method adds the transaction to the back stack, which is used when the user presses back button
+
+            transaction.commit();
         } else if (id == R.id.nav_searchevent) {
+
+            SearchEventsFragment newFragment = new SearchEventsFragment();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+            transaction.replace(R.id.fragment_container, newFragment);
+            transaction.addToBackStack(null);
+            // this method adds the transaction to the back stack, which is used when the user presses back button
+
+            transaction.commit();
 
         } else if (id == R.id.nav_myevents) {
 
@@ -258,6 +284,16 @@ public class Home extends AppCompatActivity
                     sk.maverick.harsha.hopin.Models.Profile profile = jsonAdapter.fromJson(details.toString());
                     avatar_tx = profile.getAvatar();
 
+                     prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
+                    Log.v(TAG, profile.getEmergencycntname1());
+
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString("contact1", profile.getEmergencycntname1());
+                    editor.putString("contact2", profile.getEmergencycntname2());
+                    editor.putString("contactnum1", profile.getEmergencycntnumber1());
+                    editor.putString("contactnum2", profile.getEmergencycntnumber2());
+                    editor.commit();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {

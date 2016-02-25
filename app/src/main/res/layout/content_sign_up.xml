@@ -81,7 +81,8 @@
                     android:textColor="@color/wallet_hint_foreground_holo_light"
                     android:singleLine="true"
                     />
-            </android.support.design.widget.TextInputLayout><android.support.design.widget.TextInputLayout
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
             android:id="@+id/signup_ipl_lastname"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -102,6 +103,10 @@
 
         </LinearLayout>
 
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/signup_ipl_phonenumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <EditText
             android:id="@+id/sign_up_phone_et"
             android:layout_width="match_parent"
@@ -110,8 +115,14 @@
             android:maxLines="1"
             android:singleLine="true"
             android:theme="@style/MyEditTextTheme"
-            android:textColor="@color/wallet_hint_foreground_holo_light"            android:paddingBottom="15dp"
+            android:textColor="@color/wallet_hint_foreground_holo_light"
+            android:paddingBottom="15dp"
             android:inputType="phone" />
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/signup_ipl_pass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <EditText
             android:id="@+id/sign_up_password_et"
             android:layout_width="match_parent"
@@ -124,6 +135,11 @@
             android:paddingBottom="15dp"
 
             />
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/signup_ipl_repass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <EditText
             android:id="@+id/sign_up_repassword_et"
             android:layout_width="match_parent"
@@ -133,18 +149,17 @@
             android:singleLine="true"
             android:theme="@style/MyEditTextTheme"
             android:textColor="@color/wallet_hint_foreground_holo_light"
-            android:paddingBottom="15dp"
-
-            />
+            android:paddingBottom="15dp" />
+        </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="38dp"
         android:id="@+id/sign_up_register_btn"
         android:onClick="register"
         android:layout_marginTop="0dp"
-        android:textColor="@color/primaryText"
+        android:textColor="@color/white"
         android:background="@color/colorAccent"
         android:text="Register" />
 

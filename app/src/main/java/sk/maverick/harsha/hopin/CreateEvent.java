@@ -409,7 +409,7 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
             layout_seatsavailable.setError("Invalid input");
             return false;
         }
-
+        
         // To-Do validate eventDate, eventTime and pickUpTime
 
         return true;
@@ -479,9 +479,9 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
                             }
                         }).show();
             }else if(result.getStatusCode() !=200){
-                if(result == null){
+
                     Snackbar.make(findViewById(R.id.createevent_coordinator), "Error! Please try later", Snackbar.LENGTH_LONG).show();
-                }
+
             }
 
         }
