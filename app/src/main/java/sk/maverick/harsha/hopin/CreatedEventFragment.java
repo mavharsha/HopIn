@@ -12,11 +12,9 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,9 +28,12 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 
@@ -56,6 +57,8 @@ public class CreatedEventFragment extends Fragment {
     private final static String TAG  = "CREATEDEVENTFRAG";
     public static final String MyPREFERENCES = "MyPrefs" ;
     ContentAdapter contentAdapter;
+    Marker marker;
+
 
     private List <Event> mdataset = new ArrayList<>();
 
@@ -64,18 +67,14 @@ public class CreatedEventFragment extends Fragment {
     }
 
     @Override
-        public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
 
             super.onCreate(savedInstanceState);
             // call an async call
-            SharedPreferences prefs = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-            String restoredusername = prefs.getString("username", null);
+            profileUpdate();
+    }
 
-            RequestParams requestParams = new RequestParams();
 
-            requestParams.setUri("http://localhost:3000/events/"+restoredusername);
-            new CreateEventAsyncTask(getActivity()).execute(requestParams);
-        }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -95,23 +94,33 @@ public class CreatedEventFragment extends Fragment {
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+
         // Inflate the layout for this fragment
         return linearLayout;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
-        TextView title, subhead;
-        public ViewHolder(View itemView) {
-            super(itemView);
-            title = (TextView) itemView.findViewById(R.id.recyclerview_eventname);
-            subhead = (TextView) itemView.findViewById(R.id.recyclerview_eventtype);
-        }
-
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 
 
-    public class ContentAdapter extends RecyclerView.Adapter<ViewHolder>{
+    private void profileUpdate() {
+        SharedPreferences prefs = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String restoredusername = prefs.getString("username", null);
+
+        RequestParams requestParams = new RequestParams();
+
+        requestParams.setUri("http://localhost:3000/events/"+restoredusername);
+        new CreateEventAsyncTask(getActivity()).execute(requestParams);
+    }
+
+    public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHolder>{
         private List<Event> dataset;
 
         public ContentAdapter(List<Event> dataset) {
@@ -131,8 +140,31 @@ public class CreatedEventFragment extends Fragment {
         @Override
         public void onBindViewHolder(ViewHolder holder, final int position) {
 
-            holder.title.setText(dataset.get(position).getEventname());
-            holder.subhead.setText(dataset.get(position).getEventtype());
+            holder.eventname.setText(dataset.get(position).getEventname());
+            holder.eventtype.setText(dataset.get(position).getEventtype());
+            holder.username.setText("Created By "+ dataset.get(position).getUsername());
+            holder.seatsavailable.setText("Seats available "+dataset.get(position).getSeatsavailable());
+            String date_tx = "Event on " + dataset.get(position).getDatemonth()+"/"+ dataset.get(position).getDateday()+"/"+ dataset.get(position).getDateyear();
+            holder.date.setText(date_tx);
+            String time_tx = "Event at " + dataset.get(position).getEventtimehour() +":"+ dataset.get(position).getEventtimeminute();
+            holder.time.setText(time_tx);
+
+            Log.v(TAG, time_tx);
+            GoogleMap thisMap = holder.mMap;
+            //then move map to 'location'
+            if(thisMap != null)
+                //move map to the 'location'
+            {
+                int pos = position;
+                //get 'location' by 'pos' from data list
+                LatLng newPointer = new LatLng(dataset.get(pos).getEventlocationlat(), dataset.get(pos).getEventlocationlng());
+
+                MarkerOptions options = new MarkerOptions().position(newPointer).title(dataset.get(position).getEventname());
+
+                marker = thisMap.addMarker(options);
+
+                thisMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newPointer, 7));
+            }
 
             holder.itemView.setLongClickable(true);
 
@@ -144,9 +176,65 @@ public class CreatedEventFragment extends Fragment {
                 }
             });
         }
+
+        /*@Override
+        public void onViewRecycled(ViewHolder holder)
+        {
+            // Cleanup MapView here?
+            if (holder.mMap != null)
+            {
+                holder.mMap.clear();
+                holder.mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
+            }
+        }*/
+
         @Override
         public int getItemCount() {
             return dataset.size();
+        }
+
+
+        public class ViewHolder extends RecyclerView.ViewHolder implements OnMapReadyCallback {
+            TextView eventname, eventtype, username, seatsavailable, date, time;
+            GoogleMap mMap;
+            MapView mapview;
+            public ViewHolder(View itemView) {
+                super(itemView);
+                eventname = (TextView) itemView.findViewById(R.id.recyclerview_eventname);
+                eventtype = (TextView) itemView.findViewById(R.id.recyclerview_eventtype);
+                username = (TextView) itemView.findViewById(R.id.recyclerview_username);
+                seatsavailable = (TextView) itemView.findViewById(R.id.recyclerview_seatsremaining);
+                date = (TextView) itemView.findViewById(R.id.recyclerview_eventdate);
+                time = (TextView) itemView.findViewById(R.id.recyclerview_eventtime);
+
+                mapview = (MapView) itemView.findViewById(R.id.mapImageView);
+
+                if (mapview != null)
+                {
+                    mapview.onCreate(null);
+                    mapview.onResume();
+                    mapview.getMapAsync(this);
+                }
+
+            }
+
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                //initialize the Google Maps Android API if features need to be used before obtaining a map
+                MapsInitializer.initialize(getActivity());
+                mMap = googleMap;
+                //you can move map here to item specific 'location'
+                int pos = getAdapterPosition();
+                //get 'location' by 'pos' from data list
+                LatLng newPointer = new LatLng(dataset.get(pos).getEventlocationlat(), dataset.get(pos).getEventlocationlng());
+
+                Log.v(TAG, "latitude is "+ dataset.get(pos).getPickuplocationlat());
+                MarkerOptions options = new MarkerOptions().position(newPointer).title(dataset.get(getAdapterPosition()).getEventname());
+
+                marker = mMap.addMarker(options);
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newPointer, 7));
+
+            }
         }
 
     }
@@ -217,6 +305,7 @@ public class CreatedEventFragment extends Fragment {
             e.printStackTrace();
         }
 
+
         Moshi moshi = new Moshi.Builder().build();
         JsonAdapter<Event> jsonAdapter = moshi.adapter(Event.class);
 
@@ -233,6 +322,5 @@ public class CreatedEventFragment extends Fragment {
         }
 
         Log.v(TAG, "Event size is " + mdataset.size());
-        Log.v(TAG, "Event name is " + mdataset.get(0).getEventname());
     }
 }

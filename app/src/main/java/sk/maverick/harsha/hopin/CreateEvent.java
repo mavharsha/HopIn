@@ -8,15 +8,19 @@
 
 package sk.maverick.harsha.hopin;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -290,7 +294,7 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
                 Log.v(TAG, new JSONObject(request.getParams()).toString());
 
                 Log.v(TAG, "CreateEvent sending a request to the server");
-                new CreateEventAsync().execute(request);
+                new CreateEventAsync(CreateEvent.this).execute(request);
             }else
             {
                 Snackbar.make(findViewById(R.id.createevent_confirm), "No Internet", Snackbar.LENGTH_LONG).show();
@@ -436,9 +440,16 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
   */
     private class CreateEventAsync extends AsyncTask<RequestParams, Void, HttpResponse>{
 
+        ProgressDialog progressDialog;
+
+        public CreateEventAsync(Activity activity) {
+           progressDialog = new ProgressDialog(activity);
+        }
 
         @Override
         protected void onPreExecute() {
+            progressDialog.setMessage("Trying to create your event");
+            progressDialog.show();
         }
 
         @Override
@@ -456,8 +467,17 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
         @Override
         protected void onPostExecute(HttpResponse result) {
 
+            progressDialog.dismiss();
             if(result == null){
                 Snackbar.make(findViewById(R.id.createevent_coordinator), "Error! Please try later", Snackbar.LENGTH_LONG).show();
+            }else if(result.getStatusCode() == 200) {
+                new AlertDialog.Builder(CreateEvent.this)
+                        .setMessage("Successfully updated profile")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        }).show();
             }
 
         }

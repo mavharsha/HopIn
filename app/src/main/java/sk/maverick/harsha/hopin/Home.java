@@ -183,7 +183,6 @@ public class Home extends AppCompatActivity
     }
 
 
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -213,7 +212,6 @@ public class Home extends AppCompatActivity
 
     private class HomeProfileAsyc extends AsyncTask<RequestParams, Void, HttpResponse>{
 
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -234,8 +232,10 @@ public class Home extends AppCompatActivity
         protected void onPostExecute(HttpResponse response) {
 
             if(response == null){
-                Snackbar.make(findViewById(R.id.getprofile_coordinator),
-                        "Error! Please Check your Internet Connection", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(R.id.appbar_main_coordinator), "Error! Please check you internet connection", Snackbar.LENGTH_SHORT).show();
+            }
+            else if(response.getStatusCode() != 200){
+                Snackbar.make(findViewById(R.id.appbar_main_coordinator), "Error! Please try later", Snackbar.LENGTH_SHORT).show();
             }else if(response.getStatusCode() == 200){
 
                 // Populate the edit text fields with the response

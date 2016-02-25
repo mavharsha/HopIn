@@ -20,12 +20,12 @@ public class Event {
 
     String eventname;
     String eventtype;
-    String seatsavailabale;
+    String seatsavailable;
     String preferences;
 
-    int eventdateday;
-    int eventdatemonth;
-    int eventdateyear;
+    int dateday;
+    int datemonth;
+    int dateyear;
 
     int eventtimehour;
     int eventtimeminute;
@@ -42,30 +42,37 @@ public class Event {
     String eventlocation;
     String pickuplocation;
 
-    public int getEventdateday() {
-        return eventdateday;
+    public int getDateday() {
+        return dateday;
     }
 
-    public void setEventdateday(int eventdateday) {
-        this.eventdateday = eventdateday;
+    public void setDateday(int dateday) {
+        this.dateday = dateday;
     }
 
-    public int getEventdatemonth() {
-        return eventdatemonth;
+    public int getDatemonth() {
+        return datemonth;
     }
 
-    public void setEventdatemonth(int eventdatemonth) {
-        this.eventdatemonth = eventdatemonth;
+    public void setDatemonth(int datemonth) {
+        this.datemonth = datemonth;
     }
 
-    public int getEventdateyear() {
-        return eventdateyear;
+    public int getDateyear() {
+        return dateyear;
     }
 
-    public void setEventdateyear(int eventdateyear) {
-        this.eventdateyear = eventdateyear;
+    public void setDateyear(int dateyear) {
+        this.dateyear = dateyear;
     }
 
+    public String getSeatsavailable() {
+        return seatsavailable;
+    }
+
+    public void setSeatsavailable(String seatsavailable) {
+        this.seatsavailable = seatsavailable;
+    }
     public String getEventlocation() {
         return eventlocation;
     }
@@ -178,13 +185,6 @@ public class Event {
         this.preferences = preferences;
     }
 
-    public String getSeatsavailabale() {
-        return seatsavailabale;
-    }
-
-    public void setSeatsavailabale(String seatsavailabale) {
-        this.seatsavailabale = seatsavailabale;
-    }
 
     public String getUsername() {
         return username;

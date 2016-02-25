@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c)
   ~ Sree Harsha Mamilla
   ~ Pasyanthi
@@ -8,81 +7,113 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
-    android:orientation="vertical"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
     android:padding="@dimen/md_keylines">
 
-   <!-- <ImageView
-        android:id="@+id/list_avatar"
-        android:layout_width="@dimen/avator_size"
-        android:layout_height="@dimen/avator_size"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_menu_camera" />
-    -->
     <!--
    Event Name
    Event Description
    Event Created by
    Seats Remaining
     -->
-    <TextView
-        android:id="@+id/recyclerview_eventname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/md_keylines"
-        android:text="Event Title"
-        android:textAppearance="?attr/textAppearanceListItem"
-        android:textSize="@dimen/article_title" />
-
-    <TextView
-        android:id="@+id/recyclerview_eventtype"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/list_title"
-        android:layout_marginLeft="@dimen/md_keylines"
-        android:layout_marginTop="10dp"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:text="Event Type"
-        android:textAppearance="?attr/textAppearanceListItem"
-        android:textSize="@dimen/list_subheading" />
-    <com.google.android.gms.maps.MapView
+    <com.google.android.gms.maps.MapView xmlns:map="http://schemas.android.com/apk/res-auto"
         android:id="@+id/mapImageView"
-        xmlns:map="http://schemas.android.com/apk/res-auto"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="0dp"
+        android:layout_height="160dp"
+        android:layout_weight="1"
+        map:cameraZoom="15"
         map:liteMode="true"
-        map:mapType="normal"
-        map:cameraZoom="15"/>
+        map:mapType="normal" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/md_keylines"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal">
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/recyclerview_username"
-            android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:text="Username"
-            android:textSize="@dimen/list_subheading"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/recyclerview_seatsremaining"
-            android:layout_height="wrap_content"
-            android:layout_width="0dp"
+            <TextView
+                android:id="@+id/recyclerview_eventname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/md_keylines"
+                android:text="Event Title"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:textSize="@dimen/eventname" />
+
+            <TextView
+                android:id="@+id/recyclerview_eventtype"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/md_keylines"
+                android:layout_marginTop="10dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="Event Type"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:textSize="@dimen/eventtype" />
+
+
+            <TextView
+                android:id="@+id/recyclerview_eventdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/md_keylines"
+                android:layout_marginTop="5dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="Event Date"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/recyclerview_eventtime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/md_keylines"
+                android:layout_marginTop="5dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="Event Time"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="@dimen/md_keylines"
+            android:layout_marginTop="20dp"
             android:layout_weight="1"
-            android:gravity="right"
-            android:text="Seats Remaining"
-            android:textSize="@dimen/list_subheading"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true" />
+            android:baselineAligned="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/recyclerview_username"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.2"
+                android:text="Username"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/recyclerview_seatsremaining"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="Seats Remaining"
+                android:textSize="12sp" />
+        </LinearLayout>
 
     </LinearLayout>
 </LinearLayout>
