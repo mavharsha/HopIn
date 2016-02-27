@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -15,6 +16,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.SEND_SMS"/>
 
     <application
         android:name=".App"
@@ -96,6 +98,15 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="sk.maverick.harsha.hopin.Profile" />
+        </activity>
+        <activity
+            android:name=".Event"
+            android:label="@string/title_activity_event"
+            android:parentActivityName=".Home"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="sk.maverick.harsha.hopin.Home" />
         </activity>
     </application>
 

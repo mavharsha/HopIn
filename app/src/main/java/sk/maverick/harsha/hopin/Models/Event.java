@@ -15,7 +15,7 @@ import java.util.Map;
  * Created by Harsha on 2/21/2016.
  */
 public class Event {
-    String id;
+    String _id;
     String username;
 
     String eventname;
@@ -129,12 +129,12 @@ public class Event {
         this.eventtype = eventtype;
     }
 
-    public String getId() {
-        return id;
+    public String get_id() {
+        return _id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void set_id(String _id) {
+        this._id = _id;
     }
 
     public String getPickuplocation() {

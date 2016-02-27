@@ -222,15 +222,18 @@ public class Home extends AppCompatActivity
 
             transaction.commit();
 
-        } else if (id == R.id.nav_myevents) {
+        } else if (id == R.id.nav_notification) {
 
-        } else if (id == R.id.nav_savedevents) {
+        }
+
+        /*else if (id == R.id.nav_savedevents) {
 
         } else if (id == R.id.nav_share) {
             startActivity(new Intent(Home.this, LocationPicker.class));
 
 
-        } else if (id == R.id.nav_sos) {
+        } */
+        else if (id == R.id.nav_sos) {
             startActivity(new Intent(Home.this, Security.class));
         }
 

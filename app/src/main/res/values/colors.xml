@@ -12,6 +12,7 @@
 -->
 
     <color name="white">#FFFFFF</color>
+    <color name="red">#FF3700</color>
 
     <color name="colorAccent">#4699c9</color>
     <color name="primaryText">#212121</color>

@@ -10,14 +10,20 @@
             android:id="@+id/nav_searchevent"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Search Events" />
-        <item
+        <!--<item
             android:id="@+id/nav_myevents"
             android:icon="@drawable/ic_menu_gallery"
             android:title="My Events" />
         <item
             android:id="@+id/nav_savedevents"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Saved Events" />
+            android:title="Saved Events" />-->
+        <item
+            android:id="@+id/nav_notification"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Notifications" />
+
+
 
     </group>
 

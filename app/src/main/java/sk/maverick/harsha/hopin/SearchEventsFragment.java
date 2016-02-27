@@ -12,11 +12,11 @@ package sk.maverick.harsha.hopin;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -177,6 +177,10 @@ public class SearchEventsFragment extends Fragment {
                 public void onClick(View v) {
 
                     Toast.makeText(getActivity(), dataset.get(position).getEventname() + " shortPressed", Toast.LENGTH_SHORT).show();
+                    Intent newintent = new Intent(getActivity(), sk.maverick.harsha.hopin.Event.class);
+                    Log.v(TAG, "Event id is "+dataset.get(position).get_id());
+                    newintent.putExtra("eventid", dataset.get(position).get_id());
+                    startActivity(newintent);
                 }
             });
         }
@@ -329,8 +333,4 @@ public class SearchEventsFragment extends Fragment {
 
         Log.v(TAG, "Event size is " + mdataset.size());
     }
-
-
-
-
 }
