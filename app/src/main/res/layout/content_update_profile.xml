@@ -27,8 +27,7 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/updateprofile_image"
             android:clickable="true"
             android:layout_width="70dp"
@@ -47,16 +46,18 @@
 
 
     </LinearLayout>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Choose Avatar"
         android:layout_marginBottom="0dp" />
+
     <View
-    android:layout_width="match_parent"
-    android:layout_height="1dp"
-    android:background="@android:color/darker_gray"
-    android:layout_marginBottom="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp" />
 
     <LinearLayout
@@ -66,8 +67,8 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:layout_marginBottom="10dp">
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/updateprofile_avatar1"
             android:clickable="true"
             android:layout_width="0dp"
@@ -80,8 +81,7 @@
             app:border_color="#FF000000"
             android:src="@drawable/avatar_1" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/updateprofile_avatar2"
             android:clickable="true"
             android:layout_width="0dp"
@@ -94,8 +94,7 @@
             app:border_color="#FF000000"
             android:src="@drawable/avatar_4" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/updateprofile_avatar3"
             android:clickable="true"
             android:layout_width="0dp"
@@ -108,8 +107,7 @@
             app:border_color="#FF000000"
             android:src="@drawable/avatar_8" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/updateprofile_avatar4"
             android:clickable="true"
             android:layout_width="0dp"
@@ -121,8 +119,8 @@
             app:border_width="1dp"
             app:border_color="#FF000000"
             android:src="@drawable/avatar_9" />
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/updateprofile_avatar5"
             android:clickable="true"
             android:layout_width="0dp"
@@ -136,6 +134,7 @@
             android:src="@drawable/avatar_11" />
 
     </LinearLayout>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -148,6 +147,7 @@
         android:background="@android:color/darker_gray"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="5dp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -202,8 +202,7 @@
             android:id="@+id/updateprofile_ipl_phonenumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/wallet_secondary_text_holo_dark"
-            >
+            android:textColor="@color/wallet_secondary_text_holo_dark">
 
             <EditText
                 android:id="@+id/updateprofile_phonenumber"
@@ -222,14 +221,14 @@
             android:layout_height="wrap_content"
             android:text="Emergency Contacts"
             android:textSize="14sp"
-            android:layout_marginTop="15dp"/>
+            android:layout_marginTop="15dp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@android:color/darker_gray"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="10dp" />
 
         <LinearLayout
             android:layout_width="match_parent"

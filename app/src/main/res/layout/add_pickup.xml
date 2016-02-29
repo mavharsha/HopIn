@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c)
+  ~ Sree Harsha Mamilla
+  ~ Pasyanthi
+  ~ github/mavharsha
+  ~
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="7">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:ems="10"
+                android:clickable="false"
+                android:focusableInTouchMode="false"
+                android:hint="Pick up Time"
+                android:inputType="time"
+                android:maxLines="1"
+                android:tag="time"
+                android:theme="@style/MyEditTextTheme"
+                android:textColor="@color/wallet_secondary_text_holo_dark"
+                android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="3"
+            android:textSize="10sp"
+            android:tag="timedialog"
+            android:text="Time Dialog"
+            android:background="@color/colorAccent"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="7">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:ems="10"
+                android:hint="Pick up Location"
+                android:maxLines="1"
+                android:tag="location"
+                android:theme="@style/MyEditTextTheme"
+                android:textColor="@color/wallet_secondary_text_holo_dark"
+                android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="3"
+            android:textSize="10sp"
+            android:tag="locationbutton"
+            android:text="Location Picker"
+            android:textColor="@color/white"
+            android:background="@color/colorAccent" />
+
+    </LinearLayout>
+
+</LinearLayout>

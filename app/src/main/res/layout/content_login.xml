@@ -29,7 +29,7 @@
             android:text="Login"
             android:textColor="@color/colorAccent"
             android:textSize="40sp"
-            android:contentDescription="Login"/>
+            android:contentDescription="Login" />
         <!--<ImageView
             android:layout_width="125dp"
             android:layout_height="125dp"
@@ -37,47 +37,48 @@
             ></ImageView>-->
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-       android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/login_ipl_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/username_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="15dp"
-            android:hint="Username"
-            android:theme="@style/MyEditTextTheme"
-            android:textColor="@color/wallet_hint_foreground_holo_light"
-            android:maxLines="1"
-            android:singleLine="true"
-            />
+            <EditText
+                android:id="@+id/username_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="15dp"
+                android:hint="Username"
+                android:theme="@style/MyEditTextTheme"
+                android:textColor="@color/wallet_hint_foreground_holo_light"
+                android:maxLines="1"
+                android:singleLine="true" />
         </android.support.design.widget.TextInputLayout>
+
         <android.support.design.widget.TextInputLayout
             android:id="@+id/login_ipl_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-        <EditText
-            android:id="@+id/password_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Password"
-            android:maxLines="1"
-            android:inputType="textPassword"
-            android:singleLine="true"
-            android:theme="@style/MyEditTextTheme"
-            android:textColor="@color/wallet_hint_foreground_holo_light"
-            android:paddingBottom="15dp"
-            />
+
+            <EditText
+                android:id="@+id/password_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:maxLines="1"
+                android:inputType="textPassword"
+                android:singleLine="true"
+                android:theme="@style/MyEditTextTheme"
+                android:textColor="@color/wallet_hint_foreground_holo_light"
+                android:paddingBottom="15dp" />
         </android.support.design.widget.TextInputLayout>
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -89,17 +90,18 @@
             android:text="Login" />
 
     </LinearLayout>
+
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/login_progressBar"
-        android:layout_gravity="center_vertical|center_horizontal"/>
+        android:layout_gravity="center_vertical|center_horizontal" />
 
     <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="1"
-    android:gravity="bottom|center_horizontal">
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="bottom|center_horizontal">
 
         <TextView
             android:layout_width="wrap_content"
@@ -110,7 +112,7 @@
             android:padding="10dp"
             android:clickable="true"
             android:onClick="signUp"
-            android:contentDescription="SignUp"/>
+            android:contentDescription="SignUp" />
 
     </LinearLayout>
 </LinearLayout>

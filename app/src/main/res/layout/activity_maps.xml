@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c)
   ~ Sree Harsha Mamilla
   ~ Pasyanthi
@@ -31,11 +30,12 @@
             android:hint="Enter Address" />
 
     </android.support.design.widget.TextInputLayout>
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/button_geocode"
-        android:text="Locate"/>
+        android:text="Locate" />
 
     <fragment
         android:layout_width="match_parent"
@@ -48,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/button_final_location"
-        android:text="Confirm Location"/>
+        android:text="Confirm Location" />
 
 </LinearLayout>
 

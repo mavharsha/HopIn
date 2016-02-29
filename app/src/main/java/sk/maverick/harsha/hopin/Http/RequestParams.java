@@ -14,7 +14,7 @@ import java.util.Map;
 public class RequestParams {
 
     private String uri;
-    private Map<String, String> params = new HashMap<>();
+    private Map<String, Object> params = new HashMap<>();
 
     public String getUri() {
         return uri;
@@ -24,15 +24,15 @@ public class RequestParams {
         this.uri = uri;
     }
 
-    public Map<String, String> getParams() {
+    public Map<String, Object> getParams() {
         return params;
     }
 
-    public void setParams(Map<String, String> params) {
+    public void setParams(Map<String, Object> params) {
         this.params = params;
     }
 
-    public void setParam(String key, String value){
+    public void setParam(String key, Object value){
         params.put(key, value);
     }
 }

@@ -25,12 +25,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -46,7 +50,11 @@ import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -57,52 +65,81 @@ import sk.maverick.harsha.hopin.Http.RequestParams;
 import sk.maverick.harsha.hopin.Util.ConnectionManager;
 import sk.maverick.harsha.hopin.Util.RegexValidator;
 
-public class CreateEvent extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class CreateEvent extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    @Bind(R.id.createevent_progressbar) ProgressBar progressBar;
+    @Bind(R.id.createevent_progressbar)
+    ProgressBar progressBar;
 
-    @Bind(R.id.createevent_ipl_eventname) TextInputLayout layout_eventName;
-    @Bind(R.id.createevent_eventname) EditText eventName;
+    @Bind(R.id.createevent_ipl_eventname)
+    TextInputLayout layout_eventName;
+    @Bind(R.id.createevent_eventname)
+    EditText eventName;
 
-    @Bind(R.id.createevent_ipl_eventtype) TextInputLayout layout_eventType;
-    @Bind(R.id.createevent_eventtype) EditText eventType;
+    @Bind(R.id.createevent_ipl_eventtype)
+    TextInputLayout layout_eventType;
+    @Bind(R.id.createevent_eventtype)
+    EditText eventType;
 
-    @Bind(R.id.createevent_ipl_seatsavailable) TextInputLayout layout_seatsavailable;
-    @Bind(R.id.createevent_seatsavailable) EditText seatsavailable;
+    @Bind(R.id.createevent_ipl_seatsavailable)
+    TextInputLayout layout_seatsavailable;
+    @Bind(R.id.createevent_seatsavailable)
+    EditText seatsavailable;
 
-    @Bind(R.id.createevent_tv_passpreference)TextView tv_passpreference;
-    @Bind(R.id.createevent_passpreference) Spinner passpreference;
+    @Bind(R.id.createevent_tv_passpreference)
+    TextView tv_passpreference;
+    @Bind(R.id.createevent_passpreference)
+    Spinner passpreference;
 
-    @Bind(R.id.createevent_ipl_eventdate) TextInputLayout layout_eventDate;
-    @Bind(R.id.createevent_eventdate) EditText eventDate;
+    @Bind(R.id.createevent_ipl_eventdate)
+    TextInputLayout layout_eventDate;
+    @Bind(R.id.createevent_eventdate)
+    EditText eventDate;
 
-    @Bind(R.id.createevent_ipl_eventtime) TextInputLayout layout_eventTime;
-    @Bind(R.id.createevent_eventtime) EditText eventTime;
+    @Bind(R.id.createevent_ipl_eventtime)
+    TextInputLayout layout_eventTime;
+    @Bind(R.id.createevent_eventtime)
+    EditText eventTime;
 
-    @Bind(R.id.createevent_ipl_pickuptime) TextInputLayout layout_pickupTime;
-    @Bind(R.id.createevent_pickuptime) EditText pickupTime;
+    @Bind(R.id.createevent_ipl_pickuptime)
+    TextInputLayout layout_pickupTime;
+    @Bind(R.id.createevent_pickuptime)
+    EditText pickupTime;
 
-    @Bind(R.id.createevent_ipl_eventlocation) TextInputLayout layout_eventLocation;
-    @Bind(R.id.createevent_eventlocation) EditText eventLocation;
+    @Bind(R.id.createevent_ipl_eventlocation)
+    TextInputLayout layout_eventLocation;
+    @Bind(R.id.createevent_eventlocation)
+    EditText eventLocation;
 
-    @Bind(R.id.createevent_ipl_pickuplocation) TextInputLayout layout_pickupLocation;
-    @Bind(R.id.createevent_pickuplocation) EditText pickupLocation;
+    @Bind(R.id.createevent_ipl_pickuplocation)
+    TextInputLayout layout_pickupLocation;
+    @Bind(R.id.createevent_pickuplocation)
+    EditText pickupLocation;
 
 
     private static final String TAG = "CREATEEVENT";
-    public static final String MyPREFERENCES = "MyPrefs" ;
+    public static final String MyPREFERENCES = "MyPrefs";
 
     private Calendar calendar;
     private int REQUEST_EVENT_PLACE_PICKER = 1;
     private int REQUEST_PICKUP_PLACE_PICKER = 2;
-    private int day, month, year, eventTimeHour, eventTimeMinute,pickUpTimeHour,pickUpTimeMinute;
+    private int REQUEST_PICKUP_PLACE_PICKER1 = 3;
+
+    private int REQUEST_PICKUP_PLACE_PICKER2 = 4;
+
+    private int REQUEST_PICKUP_PLACE_PICKER3 = 5;
+
+    private int REQUEST_PICKUP_PLACE_PICKER4 = 6;
+    private int pickup_index = 3;
+    private int day, month, year, eventTimeHour, eventTimeMinute, pickUpTimeHour, pickUpTimeMinute;
     private String preference;
     LatLng locationltlng, pickupltlng;
-    private static final String[] preferences = new String[] {
+    private static final String[] preferences = new String[]{
             "Both",
             "Male",
             "Female"
     };
+
+    private List<HashMap<String, Object>> pickupid = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -237,6 +274,80 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
         }
     }
 
+    @OnClick(R.id.createevent_addview)
+    public void addPickUp(View v) {
+
+        Snackbar.make(findViewById(R.id.createevent_coordinator), "Adding a view", Snackbar.LENGTH_LONG).show();
+        LayoutInflater layoutInflater = getLayoutInflater();
+
+        View view = layoutInflater.inflate(R.layout.add_pickup, null);
+        ViewGroup viewGroup = (ViewGroup) findViewById(R.id.placeholder);
+        viewGroup.addView(view, viewGroup.getChildCount() - 1, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        Log.v(TAG, "The number of children are " + viewGroup.getChildCount());
+
+        afterAddingView(viewGroup, view);
+    }
+
+    private void afterAddingView(final ViewGroup viewGroup, final View view) {
+
+        EditText et = (EditText) view.findViewWithTag("time");
+        EditText et1 = (EditText) view.findViewWithTag("location");
+
+        Button btn = (Button) view.findViewWithTag("timedialog");
+        Button btn1 = (Button) view.findViewWithTag("locationbutton");
+
+        HashMap<String, Object> map = new HashMap<>(1);
+
+        int id = et.generateViewId();
+        et.setId(id);
+        map.put("Time" + viewGroup.getChildCount(), id);
+
+        id = et1.generateViewId();
+        et1.setId(id);
+        map.put("Location" + viewGroup.getChildCount(), id);
+
+        id = btn.generateViewId();
+        btn.setId(id);
+        map.put("Time Dialog" + viewGroup.getChildCount(), id);
+
+        id = btn1.generateViewId();
+        btn1.setId(id);
+        map.put("Location Dialog" + viewGroup.getChildCount(), id);
+
+        pickupid.add(map);
+
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(findViewById(R.id.createevent_coordinator), "time dialog pressed", Snackbar.LENGTH_LONG).show();
+
+
+            }
+        });
+
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(findViewById(R.id.createevent_coordinator), "location dialog pressed", Snackbar.LENGTH_LONG).show();
+
+                try {
+                    PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                    startActivityForResult(builder.build(CreateEvent.this), pickup_index);
+                    pickup_index++;
+
+                } catch (GooglePlayServicesRepairableException e) {
+                    // ...
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    // ...
+                }
+            }
+        });
+
+        Log.v(TAG, "ids are " + pickupid);
+
+    }
+
 
     @OnClick(R.id.createevent_confirm)
     public void onClickCreate(View view) {
@@ -248,10 +359,10 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
 
         boolean result = validateInputs();
 
-        if(result){
+        if (result) {
             // Call async task to send data to the server
 
-            if(ConnectionManager.isConnected(CreateEvent.this)){
+            if (ConnectionManager.isConnected(CreateEvent.this)) {
 
                 SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
@@ -271,44 +382,57 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
                 request.setParam("seatsAvailable", seatsavailable.getText().toString());
                 request.setParam("preferences", preference);
 
-                request.setParam("dateDay", ""+day);
-                request.setParam("dateMonth", ""+month);
-                request.setParam("dateYear", ""+year);
+                request.setParam("dateDay", "" + day);
+                request.setParam("dateMonth", "" + month);
+                request.setParam("dateYear", "" + year);
 
 
-                request.setParam("eventTimeHour", ""+ eventTimeHour);
-                request.setParam("eventTimeMinute", ""+ eventTimeMinute);
+                request.setParam("eventTimeHour", "" + eventTimeHour);
+                request.setParam("eventTimeMinute", "" + eventTimeMinute);
 
-                request.setParam("pickUpTimeHour", ""+ pickUpTimeHour);
-                request.setParam("pickUpTimeMinute", ""+ pickUpTimeMinute);
+                request.setParam("pickUpTimeHour", "" + pickUpTimeHour);
+                request.setParam("pickUpTimeMinute", "" + pickUpTimeMinute);
 
                 request.setParam("eventLocation", eventLocation.getText().toString());
                 request.setParam("pickUpLocation", pickupLocation.getText().toString());
 
-                request.setParam("eventLocationLat", ""+ locationltlng.latitude);
-                request.setParam("eventLocationLng", ""+ locationltlng.longitude);
+                request.setParam("eventLocationLat", "" + locationltlng.latitude);
+                request.setParam("eventLocationLng", "" + locationltlng.longitude);
 
-                request.setParam("pickUpLocationLat", ""+ pickupltlng.latitude);
-                request.setParam("pickUpLocationLng", ""+ pickupltlng.longitude);
+                request.setParam("pickUpLocationLat", "" + pickupltlng.latitude);
+                request.setParam("pickUpLocationLng", "" + pickupltlng.longitude);
+
+                List<HashMap<String, String>> listofmap = new ArrayList<>();
+
+
+                HashMap<String, String> map = new HashMap<>();
+                map.put("value", "value");
+                map.put("value1", "value1");
+                request.setParam("object", map);
+                HashMap<String, String> map1 = new HashMap<>();
+                map1.put("value", "value");
+                map1.put("value1", "value1");
+
+                listofmap.add(map);
+                listofmap.add(map1);
+                request.setParam("object", listofmap);
+
 
                 Log.v(TAG, new JSONObject(request.getParams()).toString());
 
                 Log.v(TAG, "CreateEvent sending a request to the server");
                 new CreateEventAsync(CreateEvent.this).execute(request);
-            }else
-            {
+            } else {
                 Snackbar.make(findViewById(R.id.createevent_confirm), "No Internet", Snackbar.LENGTH_LONG).show();
             }
 
 
-
-        }else{
-            Snackbar.make(findViewById(R.id.createevent_coordinator),"Enter Valid Inputs!", Snackbar.LENGTH_LONG).show();
+        } else {
+            Snackbar.make(findViewById(R.id.createevent_coordinator), "Enter Valid Inputs!", Snackbar.LENGTH_LONG).show();
         }
 
 
     }
-
 
 
     DatePickerDialog.OnDateSetListener dateDialogListener = new DatePickerDialog.OnDateSetListener() {
@@ -318,7 +442,7 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
             month = monthOfYear;
             day = dayOfMonth;
             year = Year;
-            eventDate.setText(monthOfYear + "/"+ dayOfMonth +"/"+ Year);
+            eventDate.setText(monthOfYear + "/" + dayOfMonth + "/" + Year);
         }
     };
 
@@ -349,15 +473,12 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(data, this);
 
-                if (place.getAddress()!= null){
+                if (place.getAddress() != null) {
                     String address = place.getAddress().toString();
-/*
-                    address = address.replace(',',' ');
-*/
+
                     locationltlng = place.getLatLng();
                     eventLocation.setText(address);
-                }
-                else{
+                } else {
                     Toast.makeText(this, "Couldn't find the address, Please choose another location", Toast.LENGTH_LONG).show();
                 }
             }
@@ -367,22 +488,63 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(data, this);
 
-                if (place.getAddress()!= null){
+                if (place.getAddress() != null) {
                     String address = place.getAddress().toString();
-/*
-                    address = address.replace(',',' ');
-*/
+
                     pickupltlng = place.getLatLng();
                     pickupLocation.setText(address);
-                }
-                else{
+                } else {
                     Toast.makeText(this, "Couldn't find the address, Please choose another location", Toast.LENGTH_LONG).show();
                 }
             }
         }
+        /* Second Pick up location*/
+        if (requestCode == REQUEST_PICKUP_PLACE_PICKER1) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(data, this);
+
+                if (place.getAddress() != null) {
+                    String address = place.getAddress().toString();
+
+                    pickupltlng = place.getLatLng();
+
+                    HashMap<String, Object> item = pickupid.get(0);
+                    Log.v(TAG, "Map is " + item);
+                    int index = (int) item.get("Location1");
+                    EditText et = (EditText) findViewById(index);
+                    et.setText(address);
+                } else {
+                    Toast.makeText(this, "Couldn't find the address, Please choose another location", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+        /* Third Pickup location*/
+        if (requestCode == REQUEST_PICKUP_PLACE_PICKER2) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(data, this);
+
+                if (place.getAddress() != null) {
+                    String address = place.getAddress().toString();
+
+                    pickupltlng = place.getLatLng();
+
+
+                    HashMap<String, Object> item = pickupid.get(1);
+                    Log.v(TAG, "Map is " + item);
+
+                    int index = (int) item.get("Location2");
+                    EditText et = (EditText) findViewById(index);
+                    et.setText(address);
+                } else {
+                    Toast.makeText(this, "Couldn't find the address, Please choose another location", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+
+
     }
 
-    public void hideSoftKeyboard(View v){
+    public void hideSoftKeyboard(View v) {
 
         InputMethodManager inm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         inm.hideSoftInputFromWindow(v.getWindowToken(), 0);
@@ -396,20 +558,20 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
     validate date
     validate time
 */
-        if(!RegexValidator.validateName(eventName.getText().toString()) || TextUtils.isEmpty(eventName.getText().toString())){
+        if (!RegexValidator.validateName(eventName.getText().toString()) || TextUtils.isEmpty(eventName.getText().toString())) {
             layout_eventName.setError("Invalid name");
             return false;
         }
 
-        if(!RegexValidator.validateName(eventType.getText().toString()) || TextUtils.isEmpty(eventType.getText().toString())){
+        if (!RegexValidator.validateName(eventType.getText().toString()) || TextUtils.isEmpty(eventType.getText().toString())) {
             layout_eventType.setError("Invalid input");
             return false;
         }
-        if(!RegexValidator.validateNumber(seatsavailable.getText().toString()) || TextUtils.isEmpty(seatsavailable.getText().toString())){
+        if (!RegexValidator.validateNumber(seatsavailable.getText().toString()) || TextUtils.isEmpty(seatsavailable.getText().toString())) {
             layout_seatsavailable.setError("Invalid input");
             return false;
         }
-        
+
         // To-Do validate eventDate, eventTime and pickUpTime
 
         return true;
@@ -420,7 +582,7 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
 
         int index = passpreference.getSelectedItemPosition();
         preference = preferences[index];
-        Toast.makeText(getApplicationContext(), "Clicked " + preference , Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Clicked " + preference, Toast.LENGTH_SHORT).show();
 
     }
 
@@ -438,12 +600,12 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
       }
 
   */
-    private class CreateEventAsync extends AsyncTask<RequestParams, Void, HttpResponse>{
+    private class CreateEventAsync extends AsyncTask<RequestParams, Void, HttpResponse> {
 
         ProgressDialog progressDialog;
 
         public CreateEventAsync(Activity activity) {
-           progressDialog = new ProgressDialog(activity);
+            progressDialog = new ProgressDialog(activity);
         }
 
         @Override
@@ -468,9 +630,9 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
         protected void onPostExecute(HttpResponse result) {
 
             progressDialog.dismiss();
-            if(result == null){
+            if (result == null) {
                 Snackbar.make(findViewById(R.id.createevent_coordinator), "Error! Please try later", Snackbar.LENGTH_LONG).show();
-            }else if(result.getStatusCode() == 200) {
+            } else if (result.getStatusCode() == 200) {
                 new AlertDialog.Builder(CreateEvent.this)
                         .setMessage("Successfully updated profile")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -478,9 +640,9 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
 
                             }
                         }).show();
-            }else if(result.getStatusCode() !=200){
+            } else if (result.getStatusCode() != 200) {
 
-                    Snackbar.make(findViewById(R.id.createevent_coordinator), "Error! Please try later", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(findViewById(R.id.createevent_coordinator), "Error! Please try later", Snackbar.LENGTH_LONG).show();
 
             }
 
