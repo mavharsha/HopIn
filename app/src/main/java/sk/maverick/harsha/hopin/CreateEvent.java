@@ -34,7 +34,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -54,7 +53,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -123,11 +121,8 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
     private int REQUEST_EVENT_PLACE_PICKER = 1;
     private int REQUEST_PICKUP_PLACE_PICKER = 2;
     private int REQUEST_PICKUP_PLACE_PICKER1 = 3;
-
     private int REQUEST_PICKUP_PLACE_PICKER2 = 4;
-
     private int REQUEST_PICKUP_PLACE_PICKER3 = 5;
-
     private int REQUEST_PICKUP_PLACE_PICKER4 = 6;
     private int pickup_index = 3;
     private int day, month, year, eventTimeHour, eventTimeMinute, pickUpTimeHour, pickUpTimeMinute;
@@ -249,9 +244,9 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
             startActivityForResult(builder.build(CreateEvent.this), REQUEST_EVENT_PLACE_PICKER);
 
         } catch (GooglePlayServicesRepairableException e) {
-            // ...
+            e.printStackTrace();
         } catch (GooglePlayServicesNotAvailableException e) {
-            // ...
+            e.printStackTrace();
         }
     }
 
@@ -261,16 +256,15 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
         Log.v(TAG, "Yes Butterknife works");
         hideSoftKeyboard(view);
 
-
         try {
             PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
 
             startActivityForResult(builder.build(CreateEvent.this), REQUEST_PICKUP_PLACE_PICKER);
 
         } catch (GooglePlayServicesRepairableException e) {
-            // ...
+            e.printStackTrace();
         } catch (GooglePlayServicesNotAvailableException e) {
-            // ...
+            e.printStackTrace();
         }
     }
 
@@ -290,11 +284,11 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
 
     private void afterAddingView(final ViewGroup viewGroup, final View view) {
 
-        EditText et = (EditText) view.findViewWithTag("time");
-        EditText et1 = (EditText) view.findViewWithTag("location");
+        final EditText et = (EditText) view.findViewWithTag("time");
+        final EditText et1 = (EditText) view.findViewWithTag("location");
 
         Button btn = (Button) view.findViewWithTag("timedialog");
-        Button btn1 = (Button) view.findViewWithTag("locationbutton");
+        final Button btn1 = (Button) view.findViewWithTag("locationbutton");
 
         HashMap<String, Object> map = new HashMap<>(1);
 
@@ -321,7 +315,13 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
             @Override
             public void onClick(View v) {
                 Snackbar.make(findViewById(R.id.createevent_coordinator), "time dialog pressed", Snackbar.LENGTH_LONG).show();
-
+                calendar = Calendar.getInstance();
+                new TimePickerDialog(CreateEvent.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        et.setText(hourOfDay+":"+minute);
+                    }
+                }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show();
 
             }
         });
@@ -333,19 +333,18 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
 
                 try {
                     PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-                    startActivityForResult(builder.build(CreateEvent.this), pickup_index);
-                    pickup_index++;
+                    Log.v(TAG, "The et id is "+et1.getId());
+                    startActivityForResult(builder.build(CreateEvent.this), et1.getId());
 
                 } catch (GooglePlayServicesRepairableException e) {
-                    // ...
+                    e.printStackTrace();
                 } catch (GooglePlayServicesNotAvailableException e) {
-                    // ...
+                    e.printStackTrace();
                 }
             }
         });
 
         Log.v(TAG, "ids are " + pickupid);
-
     }
 
 
@@ -425,13 +424,9 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
             } else {
                 Snackbar.make(findViewById(R.id.createevent_confirm), "No Internet", Snackbar.LENGTH_LONG).show();
             }
-
-
         } else {
             Snackbar.make(findViewById(R.id.createevent_coordinator), "Enter Valid Inputs!", Snackbar.LENGTH_LONG).show();
         }
-
-
     }
 
 
@@ -469,6 +464,8 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
     };
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        Log.v(TAG, "The request code in onActivityResut is "+ requestCode);
         if (requestCode == REQUEST_EVENT_PLACE_PICKER) {
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(data, this);
@@ -484,7 +481,7 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
             }
         }
 
-        if (requestCode == REQUEST_PICKUP_PLACE_PICKER) {
+        else if (requestCode == REQUEST_PICKUP_PLACE_PICKER) {
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(data, this);
 
@@ -498,8 +495,9 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
                 }
             }
         }
-        /* Second Pick up location*/
-        if (requestCode == REQUEST_PICKUP_PLACE_PICKER1) {
+
+        else{
+
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(data, this);
 
@@ -507,41 +505,14 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
                     String address = place.getAddress().toString();
 
                     pickupltlng = place.getLatLng();
-
-                    HashMap<String, Object> item = pickupid.get(0);
-                    Log.v(TAG, "Map is " + item);
-                    int index = (int) item.get("Location1");
-                    EditText et = (EditText) findViewById(index);
+                    EditText et = (EditText) findViewById(requestCode);
                     et.setText(address);
                 } else {
                     Toast.makeText(this, "Couldn't find the address, Please choose another location", Toast.LENGTH_LONG).show();
                 }
             }
+
         }
-        /* Third Pickup location*/
-        if (requestCode == REQUEST_PICKUP_PLACE_PICKER2) {
-            if (resultCode == RESULT_OK) {
-                Place place = PlacePicker.getPlace(data, this);
-
-                if (place.getAddress() != null) {
-                    String address = place.getAddress().toString();
-
-                    pickupltlng = place.getLatLng();
-
-
-                    HashMap<String, Object> item = pickupid.get(1);
-                    Log.v(TAG, "Map is " + item);
-
-                    int index = (int) item.get("Location2");
-                    EditText et = (EditText) findViewById(index);
-                    et.setText(address);
-                } else {
-                    Toast.makeText(this, "Couldn't find the address, Please choose another location", Toast.LENGTH_LONG).show();
-                }
-            }
-        }
-
-
     }
 
     public void hideSoftKeyboard(View v) {
