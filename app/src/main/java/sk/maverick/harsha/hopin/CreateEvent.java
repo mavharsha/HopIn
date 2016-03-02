@@ -118,12 +118,8 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
     public static final String MyPREFERENCES = "MyPrefs";
 
     private Calendar calendar;
-    private int REQUEST_EVENT_PLACE_PICKER = 1;
-    private int REQUEST_PICKUP_PLACE_PICKER = 2;
-    private int REQUEST_PICKUP_PLACE_PICKER1 = 3;
-    private int REQUEST_PICKUP_PLACE_PICKER2 = 4;
-    private int REQUEST_PICKUP_PLACE_PICKER3 = 5;
-    private int REQUEST_PICKUP_PLACE_PICKER4 = 6;
+    private int REQUEST_EVENT_PLACE_PICKER =98;
+    private int REQUEST_PICKUP_PLACE_PICKER = 99;
     private int pickup_index = 3;
     private int day, month, year, eventTimeHour, eventTimeMinute, pickUpTimeHour, pickUpTimeMinute;
     private String preference;
@@ -404,17 +400,36 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
                 List<HashMap<String, String>> listofmap = new ArrayList<>();
 
 
-                HashMap<String, String> map = new HashMap<>();
-                map.put("value", "value");
-                map.put("value1", "value1");
-                request.setParam("object", map);
-                HashMap<String, String> map1 = new HashMap<>();
-                map1.put("value", "value");
-                map1.put("value1", "value1");
 
-                listofmap.add(map);
-                listofmap.add(map1);
-                request.setParam("object", listofmap);
+               for (int i = 0; i< pickupid.size(); i++){
+
+                   String timestr, locationstr;
+                   // Get the ids of the elements
+                   HashMap<String, Object> idsmap = pickupid.get(i);
+                   Log.v(TAG, "The ids of row "+i+ " is "+idsmap);
+
+                   /*int time = (int) idsmap.get("Time"+i);
+
+                   String tempstr = "Location"+i;
+                   int location = (int) idsmap.get(tempstr);*/
+                   Log.v(TAG, "key set is  "+idsmap.keySet());
+/*
+                   EditText et_time = (EditText) findViewById(time);
+                   EditText et_location = (EditText) findViewById(location);
+
+                   timestr = et_time.getText().toString();
+                   locationstr = et_location.getText().toString();
+
+                   //Create a hashmap of pickup location addresses
+                   HashMap<String, String> pickup = new HashMap<>();
+
+                   pickup.put("pickuptime", timestr);
+                   pickup.put("pickuplocation", locationstr);
+                   listofmap.add(pickup);*/
+               }
+
+
+                request.setParam("pickup", listofmap);
 
 
                 Log.v(TAG, new JSONObject(request.getParams()).toString());
