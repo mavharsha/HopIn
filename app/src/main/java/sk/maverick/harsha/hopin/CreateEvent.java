@@ -52,7 +52,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -290,19 +292,17 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
 
         int id = et.generateViewId();
         et.setId(id);
-        map.put("Time" + viewGroup.getChildCount(), id);
+        map.put("Time", et);
 
         id = et1.generateViewId();
         et1.setId(id);
-        map.put("Location" + viewGroup.getChildCount(), id);
+        map.put("Location", et1);
 
         id = btn.generateViewId();
         btn.setId(id);
-        map.put("Time Dialog" + viewGroup.getChildCount(), id);
 
         id = btn1.generateViewId();
         btn1.setId(id);
-        map.put("Location Dialog" + viewGroup.getChildCount(), id);
 
         pickupid.add(map);
 
@@ -385,47 +385,44 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
                 request.setParam("eventTimeHour", "" + eventTimeHour);
                 request.setParam("eventTimeMinute", "" + eventTimeMinute);
 
-                request.setParam("pickUpTimeHour", "" + pickUpTimeHour);
-                request.setParam("pickUpTimeMinute", "" + pickUpTimeMinute);
-
                 request.setParam("eventLocation", eventLocation.getText().toString());
-                request.setParam("pickUpLocation", pickupLocation.getText().toString());
 
                 request.setParam("eventLocationLat", "" + locationltlng.latitude);
                 request.setParam("eventLocationLng", "" + locationltlng.longitude);
 
-                request.setParam("pickUpLocationLat", "" + pickupltlng.latitude);
-                request.setParam("pickUpLocationLng", "" + pickupltlng.longitude);
 
                 List<HashMap<String, String>> listofmap = new ArrayList<>();
 
+                HashMap<String, String> pick_up = new HashMap<>();
+                pick_up.put("pickuptime", pickUpTimeHour+":"+pickUpTimeMinute);
+                pick_up.put("pickuplocation", pickupLocation.getText().toString());
+
+                listofmap.add(pick_up);
 
 
                for (int i = 0; i< pickupid.size(); i++){
 
                    String timestr, locationstr;
                    // Get the ids of the elements
-                   HashMap<String, Object> idsmap = pickupid.get(i);
-                   Log.v(TAG, "The ids of row "+i+ " is "+idsmap);
+                   Map<String, Object> idsmap = pickupid.get(i);
+                   Log.v(TAG, "The ids of row "+i+ " is "+idsmap.keySet());
 
-                   /*int time = (int) idsmap.get("Time"+i);
+                   EditText time = (EditText) idsmap.get("Time");
+                   EditText location = (EditText) idsmap.get("Location");
 
-                   String tempstr = "Location"+i;
-                   int location = (int) idsmap.get(tempstr);*/
-                   Log.v(TAG, "key set is  "+idsmap.keySet());
-/*
-                   EditText et_time = (EditText) findViewById(time);
-                   EditText et_location = (EditText) findViewById(location);
+                   Log.v(TAG, "Time is "+ time.getText().toString());
+                   Log.v(TAG, "Time is "+ location.getText().toString());
 
-                   timestr = et_time.getText().toString();
-                   locationstr = et_location.getText().toString();
+
+                   timestr = time.getText().toString();
+                   locationstr = location.getText().toString();
 
                    //Create a hashmap of pickup location addresses
                    HashMap<String, String> pickup = new HashMap<>();
 
                    pickup.put("pickuptime", timestr);
                    pickup.put("pickuplocation", locationstr);
-                   listofmap.add(pickup);*/
+                   listofmap.add(pickup);
                }
 
 
@@ -519,7 +516,6 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
                 if (place.getAddress() != null) {
                     String address = place.getAddress().toString();
 
-                    pickupltlng = place.getLatLng();
                     EditText et = (EditText) findViewById(requestCode);
                     et.setText(address);
                 } else {
