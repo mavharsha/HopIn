@@ -8,9 +8,7 @@
 
 package sk.maverick.harsha.hopin.Models;
 
-/**
- * Created by Harsha on 2/24/2016.
- */
+
 public class Profile {
 
     String username;

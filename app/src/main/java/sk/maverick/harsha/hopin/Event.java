@@ -11,16 +11,13 @@ package sk.maverick.harsha.hopin;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -44,6 +41,7 @@ import butterknife.ButterKnife;
 import sk.maverick.harsha.hopin.Http.HttpManager;
 import sk.maverick.harsha.hopin.Http.HttpResponse;
 import sk.maverick.harsha.hopin.Http.RequestParams;
+import sk.maverick.harsha.hopin.Models.Pickup;
 
 public class Event extends AppCompatActivity implements OnMapReadyCallback{
 
@@ -56,7 +54,6 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback{
     @Bind(R.id.event_eventdate) TextView eventdate;
     @Bind(R.id.event_eventtime) TextView eventtime;
     @Bind(R.id.event_seatsavailable) TextView seats;
-    @Bind(R.id.event_pickuptime) TextView pickuptime;
     @Bind(R.id.event_location) TextView location;
     @Bind(R.id.event_Pickuplocation) TextView pickuplocation;
 
@@ -84,9 +81,22 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback{
 
     public void init(){
 
+        Typeface roboto_light = Typeface.createFromAsset(getAssets(), "Roboto-Light.ttf");
+        eventname.setTypeface(roboto_light);
+        eventtype.setTypeface(roboto_light);
+        eventdate.setTypeface(roboto_light);
+        seats.setTypeface(roboto_light);
+        location.setTypeface(roboto_light);
+        eventtime.setTypeface(roboto_light);
+        pickuplocation.setTypeface(roboto_light);
+
+        /*Typeface roboto_regular = Typeface.createFromAsset(getAssets(), "Roboto-Regular.ttf");
+        eventname.setTypeface(roboto_regular);
+*/
+
         RequestParams requestParams = new RequestParams();
 
-        requestParams.setUri("http://localhost:3000/event/"+eventId);
+        requestParams.setUri(App.getIp()+"event/"+eventId);
         new EventAsyncTask(Event.this).execute(requestParams);
     }
 
@@ -135,14 +145,21 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback{
     private void updateUI(sk.maverick.harsha.hopin.Models.Event myevent) {
 
         eventname.setText(myevent.getEventname());
-        eventtype.setText(myevent.getEventtype());
+        eventtype.setText("Event Type: "+myevent.getEventtype());
         eventdate.setText("Event on "+myevent.getDatemonth() +"/" + myevent.getDateday()+"/" +myevent.getDateyear());
-        eventtime.setText("At time" + myevent.getEventtimehour()+"/" +myevent.getEventtimeminute());
-        seats.setText("Seats : " +myevent.getSeatsavailable());
-        pickuptime.setText("Pick at"+ myevent.getPickuptimehour()+"/" +myevent.getPickuptimeminute());
+        eventtime.setText("At time " + myevent.getEventtimehour()+":" +myevent.getEventtimeminute());
+        seats.setText("Seats Available : " +myevent.getSeatsavailable());
 
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for(int i= 0; i < myevent.getPickup().size(); i++){
+            Pickup pickup = myevent.getPickup().get(i);
+            stringBuilder.append("Pickup Location at "+ pickup.getPickuplocation() + "\n");
+            stringBuilder.append("Pickup Time at "+ pickup.getPickuptime() + "\n \n");
+        }
+
+        pickuplocation.setText(stringBuilder);
         location.setText("Event Location at " +myevent.getEventlocation());
-        pickuplocation.setText("Pickup Location at "+ myevent.getPickuplocation());
 
         goToLocation(myevent.getEventlocationlat(), myevent.getEventlocationlng(), myevent.getEventname());
 

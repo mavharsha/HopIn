@@ -131,11 +131,11 @@ public class SignUp extends AppCompatActivity {
         }
 
         if(!validFirstName){
-            ipl_firstname.setError("Invalid Name");
+            firstname.setError("Invalid Name");
         }
 
         if(!validFirstName){
-            ipl_lastname.setError("Invalid Name");
+            lastname.setError("Invalid Name");
         }
 
 
@@ -143,7 +143,7 @@ public class SignUp extends AppCompatActivity {
             // TODO
             //call async task to register the user
             RequestParams request = new RequestParams();
-            request.setUri("http://localhost:3000/register");
+            request.setUri(App.getIp()+"register");
             request.setParam("username", username_text);
             request.setParam("password", pass_text);
             request.setParam("phonenumber", phone_text);
@@ -189,7 +189,11 @@ public class SignUp extends AppCompatActivity {
         protected void onPostExecute(HttpResponse result) {
 
             progressDialog.dismiss();
-            if(result.getStatusCode() == 200){
+            if(result == null)
+            {
+                Snackbar.make(findViewById(R.id.sign_up_coordinator), "Error! Couldn't register", Snackbar.LENGTH_SHORT).show();
+            }
+            else if(result.getStatusCode() == 200){
                 Snackbar.make(findViewById(R.id.sign_up_coordinator), "Successfully registered", Snackbar.LENGTH_LONG).show();
                 Log.v(TAG, "Result is "+ result.getBody());
                 finish();

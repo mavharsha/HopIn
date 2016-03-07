@@ -8,8 +8,6 @@
 
 package sk.maverick.harsha.hopin.Util;
 
-import org.joda.time.DateTime;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.regex.Matcher;

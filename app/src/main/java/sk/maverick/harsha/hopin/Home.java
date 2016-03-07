@@ -123,7 +123,7 @@ public class Home extends AppCompatActivity
         String restoredusername = prefs.getString("username", null);
         RequestParams requestParams = new RequestParams();
 
-        requestParams.setUri("http://localhost:3000/profile/"+restoredusername);
+        requestParams.setUri(App.getIp()+"profile/"+restoredusername);
         new HomeProfileAsyc().execute(requestParams);
     }
 

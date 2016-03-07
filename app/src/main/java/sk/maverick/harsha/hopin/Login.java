@@ -68,7 +68,7 @@ public class Login extends AppCompatActivity {
              if(ConnectionManager.isConnected(Login.this)){
 
                  RequestParams request = new RequestParams();
-                 request.setUri("http://localhost:3000/login");
+                 request.setUri(App.getIp()+"login");
                  request.setParam("username", username.getText().toString());
                  request.setParam("password", password.getText().toString());
 

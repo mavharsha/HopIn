@@ -83,7 +83,7 @@ public class SearchEventsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        getActivity().setTitle("Created Events");
+        getActivity().setTitle("Search Events");
 
         LinearLayout linearLayout = (LinearLayout) inflater.inflate(
                 R.layout.fragment_created_event, container, false);
@@ -120,7 +120,7 @@ public class SearchEventsFragment extends Fragment {
 
         RequestParams requestParams = new RequestParams();
 
-        requestParams.setUri("http://localhost:3000/events/");
+        requestParams.setUri(App.getIp()+"events/");
         new CreateEventAsyncTask(getActivity()).execute(requestParams);
     }
 
@@ -236,7 +236,6 @@ public class SearchEventsFragment extends Fragment {
                 //get 'location' by 'pos' from data list
                 LatLng newPointer = new LatLng(dataset.get(pos).getEventlocationlat(), dataset.get(pos).getEventlocationlng());
 
-                Log.v(TAG, "latitude is "+ dataset.get(pos).getPickuplocationlat());
                 MarkerOptions options = new MarkerOptions().position(newPointer).title(dataset.get(getAdapterPosition()).getEventname());
 
                 marker = mMap.addMarker(options);

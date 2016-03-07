@@ -8,12 +8,9 @@
 
 package sk.maverick.harsha.hopin.Models;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
-/**
- * Created by Harsha on 2/21/2016.
- */
+
 public class Event {
     String _id;
     String username;
@@ -30,17 +27,19 @@ public class Event {
     int eventtimehour;
     int eventtimeminute;
 
-    int pickuptimehour;
-    int pickuptimeminute;
-
     double eventlocationlng;
     double eventlocationlat;
-
-    double pickuplocationlng;
-    double pickuplocationlat;
-
     String eventlocation;
-    String pickuplocation;
+
+    List<Pickup> pickup;
+
+    public List<Pickup> getPickup() {
+        return pickup;
+    }
+
+    public void setPickup(List<Pickup> pickup) {
+        this.pickup = pickup;
+    }
 
     public int getDateday() {
         return dateday;
@@ -137,46 +136,6 @@ public class Event {
         this._id = _id;
     }
 
-    public String getPickuplocation() {
-        return pickuplocation;
-    }
-
-    public void setPickuplocation(String pickuplocation) {
-        this.pickuplocation = pickuplocation;
-    }
-
-    public double getPickuplocationlat() {
-        return pickuplocationlat;
-    }
-
-    public void setPickuplocationlat(double pickuplocationlat) {
-        this.pickuplocationlat = pickuplocationlat;
-    }
-
-    public double getPickuplocationlng() {
-        return pickuplocationlng;
-    }
-
-    public void setPickuplocationlng(double pickuplocationlng) {
-        this.pickuplocationlng = pickuplocationlng;
-    }
-
-    public int getPickuptimehour() {
-        return pickuptimehour;
-    }
-
-    public void setPickuptimehour(int pickuptimehour) {
-        this.pickuptimehour = pickuptimehour;
-    }
-
-    public int getPickuptimeminute() {
-        return pickuptimeminute;
-    }
-
-    public void setPickuptimeminute(int pickuptimeminute) {
-        this.pickuptimeminute = pickuptimeminute;
-    }
-
     public String getPreferences() {
         return preferences;
     }
@@ -193,4 +152,5 @@ public class Event {
     public void setUsername(String username) {
         this.username = username;
     }
+
 }

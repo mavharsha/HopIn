@@ -33,4 +33,9 @@ public class App extends Application{
                 .build();
 
     }
+
+    public static String getIp(){
+
+        return "http://localhost:3000/";
+    }
 }

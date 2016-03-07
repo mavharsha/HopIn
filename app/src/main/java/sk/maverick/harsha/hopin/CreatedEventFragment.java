@@ -60,7 +60,6 @@ public class CreatedEventFragment extends Fragment {
     ContentAdapter contentAdapter;
     Marker marker;
 
-
     private List <Event> mdataset = new ArrayList<>();
 
     public CreatedEventFragment() {
@@ -117,7 +116,7 @@ public class CreatedEventFragment extends Fragment {
 
         RequestParams requestParams = new RequestParams();
 
-        requestParams.setUri("http://localhost:3000/events/"+restoredusername);
+        requestParams.setUri(App.getIp()+"events/"+restoredusername);
         new CreateEventAsyncTask(getActivity()).execute(requestParams);
     }
 
@@ -161,7 +160,6 @@ public class CreatedEventFragment extends Fragment {
                 LatLng newPointer = new LatLng(dataset.get(pos).getEventlocationlat(), dataset.get(pos).getEventlocationlng());
 
                 MarkerOptions options = new MarkerOptions().position(newPointer).title(dataset.get(position).getEventname());
-
                 marker = thisMap.addMarker(options);
 
                 thisMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newPointer, 7));
@@ -234,7 +232,6 @@ public class CreatedEventFragment extends Fragment {
                 //get 'location' by 'pos' from data list
                 LatLng newPointer = new LatLng(dataset.get(pos).getEventlocationlat(), dataset.get(pos).getEventlocationlng());
 
-                Log.v(TAG, "latitude is "+ dataset.get(pos).getPickuplocationlat());
                 MarkerOptions options = new MarkerOptions().position(newPointer).title(dataset.get(getAdapterPosition()).getEventname());
 
                 marker = mMap.addMarker(options);
@@ -283,8 +280,8 @@ public class CreatedEventFragment extends Fragment {
             }
             else if (response.getStatusCode() == 200){
                 parseResopnse(response.getBody());
+                contentAdapter.notifyDataSetChanged();
             }
-            contentAdapter.notifyDataSetChanged();
             progressDialog.dismiss();
 
         }

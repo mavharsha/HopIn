@@ -139,7 +139,7 @@ public class UpdateProfile extends AppCompatActivity {
         if (id == R.id.update_profile) {
 
             RequestParams requestParams = new RequestParams();
-            requestParams.setUri("http://localhost:3000/profile/"+username_tx);
+            requestParams.setUri(App.getIp()+"profile/"+username_tx);
             requestParams.setParam("firstname", firstname.getText().toString());
             requestParams.setParam("lastname", lastname.getText().toString());
             requestParams.setParam("phonenumber", phonenumber.getText().toString());

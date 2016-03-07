@@ -35,6 +35,8 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -52,7 +54,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -65,7 +66,7 @@ import sk.maverick.harsha.hopin.Http.RequestParams;
 import sk.maverick.harsha.hopin.Util.ConnectionManager;
 import sk.maverick.harsha.hopin.Util.RegexValidator;
 
-public class CreateEvent extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class CreateEvent extends AppCompatActivity implements AdapterView.OnItemSelectedListener, RadioGroup.OnCheckedChangeListener {
 
     @Bind(R.id.createevent_progressbar)
     ProgressBar progressBar;
@@ -115,12 +116,15 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
     @Bind(R.id.createevent_pickuplocation)
     EditText pickupLocation;
 
+    @Bind(R.id.radioGroup)
+    RadioGroup privacy;
+
 
     private static final String TAG = "CREATEEVENT";
     public static final String MyPREFERENCES = "MyPrefs";
 
     private Calendar calendar;
-    private int REQUEST_EVENT_PLACE_PICKER =98;
+    private int REQUEST_EVENT_PLACE_PICKER = 98;
     private int REQUEST_PICKUP_PLACE_PICKER = 99;
     private int pickup_index = 3;
     private int day, month, year, eventTimeHour, eventTimeMinute, pickUpTimeHour, pickUpTimeMinute;
@@ -175,6 +179,8 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         passpreference.setOnItemSelectedListener(this);
         passpreference.setAdapter(adapter);
+
+        privacy.setOnCheckedChangeListener(this);
 
         /*Typeface roboto_thin = Typeface.createFromAsset(getAssets(), "Roboto-Thin.ttf");
         eventName.setTypeface(roboto_thin);
@@ -234,7 +240,6 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
 
         Log.v(TAG, "Yes Butter knife works");
         hideSoftKeyboard(view);
-
 
         try {
             PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
@@ -315,7 +320,7 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
                 new TimePickerDialog(CreateEvent.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        et.setText(hourOfDay+":"+minute);
+                        et.setText(hourOfDay + ":" + minute);
                     }
                 }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show();
 
@@ -329,7 +334,7 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
 
                 try {
                     PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-                    Log.v(TAG, "The et id is "+et1.getId());
+                    Log.v(TAG, "The et id is " + et1.getId());
                     startActivityForResult(builder.build(CreateEvent.this), et1.getId());
 
                 } catch (GooglePlayServicesRepairableException e) {
@@ -356,14 +361,12 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
 
         if (result) {
             // Call async task to send data to the server
-
             if (ConnectionManager.isConnected(CreateEvent.this)) {
 
                 SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
                 String restoredusername = prefs.getString("username", null);
                 String restoredToken = prefs.getString("token", null);
-
 
                 RequestParams request = new RequestParams();
                 request.setUri("http://localhost:3000/createevent");
@@ -394,43 +397,40 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
                 List<HashMap<String, String>> listofmap = new ArrayList<>();
 
                 HashMap<String, String> pick_up = new HashMap<>();
-                pick_up.put("pickuptime", pickUpTimeHour+":"+pickUpTimeMinute);
+                pick_up.put("pickuptime", pickUpTimeHour + ":" + pickUpTimeMinute);
                 pick_up.put("pickuplocation", pickupLocation.getText().toString());
 
                 listofmap.add(pick_up);
 
 
-               for (int i = 0; i< pickupid.size(); i++){
+                for (int i = 0; i < pickupid.size(); i++) {
 
-                   String timestr, locationstr;
-                   // Get the ids of the elements
-                   Map<String, Object> idsmap = pickupid.get(i);
-                   Log.v(TAG, "The ids of row "+i+ " is "+idsmap.keySet());
+                    String timestr, locationstr;
+                    // Get the edit texts from the array list of hash map
+                    Map<String, Object> idsmap = pickupid.get(i);
+                    Log.v(TAG, "The ids of row " + i + " is " + idsmap.keySet());
 
-                   EditText time = (EditText) idsmap.get("Time");
-                   EditText location = (EditText) idsmap.get("Location");
+                    EditText time = (EditText) idsmap.get("Time");
+                    EditText location = (EditText) idsmap.get("Location");
 
-                   Log.v(TAG, "Time is "+ time.getText().toString());
-                   Log.v(TAG, "Time is "+ location.getText().toString());
+                    Log.v(TAG, "Time is " + time.getText().toString());
+                    Log.v(TAG, "Time is " + location.getText().toString());
 
 
-                   timestr = time.getText().toString();
-                   locationstr = location.getText().toString();
+                    timestr = time.getText().toString();
+                    locationstr = location.getText().toString();
 
-                   //Create a hashmap of pickup location addresses
-                   HashMap<String, String> pickup = new HashMap<>();
+                    //Create a hashmap of pickup location addresses
+                    HashMap<String, String> pickup = new HashMap<>();
 
-                   pickup.put("pickuptime", timestr);
-                   pickup.put("pickuplocation", locationstr);
-                   listofmap.add(pickup);
-               }
-
+                    pickup.put("pickuptime", timestr);
+                    pickup.put("pickuplocation", locationstr);
+                    listofmap.add(pickup);
+                }
 
                 request.setParam("pickup", listofmap);
 
-
                 Log.v(TAG, new JSONObject(request.getParams()).toString());
-
                 Log.v(TAG, "CreateEvent sending a request to the server");
                 new CreateEventAsync(CreateEvent.this).execute(request);
             } else {
@@ -477,7 +477,7 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        Log.v(TAG, "The request code in onActivityResut is "+ requestCode);
+        Log.v(TAG, "The request code in onActivityResut is " + requestCode);
         if (requestCode == REQUEST_EVENT_PLACE_PICKER) {
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(data, this);
@@ -486,14 +486,17 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
                     String address = place.getAddress().toString();
 
                     locationltlng = place.getLatLng();
+
+                    if (locationltlng == null)
+                        Toast.makeText(this, "latlong is null", Toast.LENGTH_LONG).show();
+
+
                     eventLocation.setText(address);
                 } else {
                     Toast.makeText(this, "Couldn't find the address, Please choose another location", Toast.LENGTH_LONG).show();
                 }
             }
-        }
-
-        else if (requestCode == REQUEST_PICKUP_PLACE_PICKER) {
+        } else if (requestCode == REQUEST_PICKUP_PLACE_PICKER) {
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(data, this);
 
@@ -506,9 +509,7 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
                     Toast.makeText(this, "Couldn't find the address, Please choose another location", Toast.LENGTH_LONG).show();
                 }
             }
-        }
-
-        else{
+        } else {
 
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(data, this);
@@ -573,15 +574,17 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
 
     }
 
-    /*  @Override
-      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-          int index = passpreference.getSelectedItemPosition();
-          preference = preferences[index];
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
 
-          Toast.makeText(getApplicationContext(), "Clicked " + preference , Toast.LENGTH_SHORT).show();
-      }
+        RadioButton radioButton = (RadioButton) findViewById(checkedId);
+        if(null!=radioButton && checkedId > -1){
+            Toast.makeText(CreateEvent.this, radioButton.getText(), Toast.LENGTH_SHORT).show();
+        }
 
-  */
+
+    }
+
     private class CreateEventAsync extends AsyncTask<RequestParams, Void, HttpResponse> {
 
         ProgressDialog progressDialog;
@@ -625,7 +628,6 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
             } else if (result.getStatusCode() != 200) {
 
                 Snackbar.make(findViewById(R.id.createevent_coordinator), "Error! Please try later", Snackbar.LENGTH_LONG).show();
-
             }
 
         }
