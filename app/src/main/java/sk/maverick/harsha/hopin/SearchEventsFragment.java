@@ -59,11 +59,11 @@ import sk.maverick.harsha.hopin.Util.DividerItemDecorator;
  */
 public class SearchEventsFragment extends Fragment {
 
-    private final static String TAG  = "CREATEDEVENTFRAG";
-    public static final String MyPREFERENCES = "MyPrefs" ;
+    private final static String TAG = "CREATEDEVENTFRAG";
+    public static final String MyPREFERENCES = "MyPrefs";
     ContentAdapter contentAdapter;
     Marker marker;
-    private List <Event> mdataset = new ArrayList<>();
+    private List<Event> mdataset = new ArrayList<>();
 
 
     public SearchEventsFragment() {
@@ -120,11 +120,11 @@ public class SearchEventsFragment extends Fragment {
 
         RequestParams requestParams = new RequestParams();
 
-        requestParams.setUri(App.getIp()+"events/");
+        requestParams.setUri(App.getIp() + "events/");
         new CreateEventAsyncTask(getActivity()).execute(requestParams);
     }
 
-    public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHolder>{
+    public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHolder> {
         private List<Event> dataset;
 
         public ContentAdapter(List<Event> dataset) {
@@ -146,17 +146,17 @@ public class SearchEventsFragment extends Fragment {
 
             holder.eventname.setText(dataset.get(position).getEventname());
             holder.eventtype.setText(dataset.get(position).getEventtype());
-            holder.username.setText("Created By "+ dataset.get(position).getUsername());
-            holder.seatsavailable.setText("Seats available "+dataset.get(position).getSeatsavailable());
-            String date_tx = "Event on " + dataset.get(position).getDatemonth()+"/"+ dataset.get(position).getDateday()+"/"+ dataset.get(position).getDateyear();
+            holder.username.setText("Created By " + dataset.get(position).getUsername());
+            holder.seatsavailable.setText("Seats available " + dataset.get(position).getSeatsavailable());
+            String date_tx = "Event on " + dataset.get(position).getDatemonth() + "/" + dataset.get(position).getDateday() + "/" + dataset.get(position).getDateyear();
             holder.date.setText(date_tx);
-            String time_tx = "Event at " + dataset.get(position).getEventtimehour() +":"+ dataset.get(position).getEventtimeminute();
+            String time_tx = "Event at " + dataset.get(position).getEventtimehour() + ":" + dataset.get(position).getEventtimeminute();
             holder.time.setText(time_tx);
 
             Log.v(TAG, time_tx);
             GoogleMap thisMap = holder.mMap;
             //then move map to 'location'
-            if(thisMap != null)
+            if (thisMap != null)
             //move map to the 'location'
             {
                 int pos = position;
@@ -164,7 +164,6 @@ public class SearchEventsFragment extends Fragment {
                 LatLng newPointer = new LatLng(dataset.get(pos).getEventlocationlat(), dataset.get(pos).getEventlocationlng());
 
                 MarkerOptions options = new MarkerOptions().position(newPointer).title(dataset.get(position).getEventname());
-
                 marker = thisMap.addMarker(options);
 
                 thisMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newPointer, 7));
@@ -178,7 +177,7 @@ public class SearchEventsFragment extends Fragment {
 
                     Toast.makeText(getActivity(), dataset.get(position).getEventname() + " shortPressed", Toast.LENGTH_SHORT).show();
                     Intent newintent = new Intent(getActivity(), sk.maverick.harsha.hopin.Event.class);
-                    Log.v(TAG, "Event id is "+dataset.get(position).get_id());
+                    Log.v(TAG, "Event id is " + dataset.get(position).get_id());
                     newintent.putExtra("eventid", dataset.get(position).get_id());
                     startActivity(newintent);
                 }
@@ -206,6 +205,7 @@ public class SearchEventsFragment extends Fragment {
             TextView eventname, eventtype, username, seatsavailable, date, time;
             GoogleMap mMap;
             MapView mapview;
+
             public ViewHolder(View itemView) {
                 super(itemView);
                 eventname = (TextView) itemView.findViewById(R.id.recyclerview_eventname);
@@ -217,8 +217,7 @@ public class SearchEventsFragment extends Fragment {
 
                 mapview = (MapView) itemView.findViewById(R.id.mapImageView);
 
-                if (mapview != null)
-                {
+                if (mapview != null) {
                     mapview.onCreate(null);
                     mapview.onResume();
                     mapview.getMapAsync(this);
@@ -250,6 +249,7 @@ public class SearchEventsFragment extends Fragment {
     private class CreateEventAsyncTask extends AsyncTask<RequestParams, Void, HttpResponse> {
 
         ProgressDialog progressDialog;
+
         public CreateEventAsyncTask(Activity activity) {
             this.progressDialog = new ProgressDialog(activity);
         }
@@ -265,7 +265,7 @@ public class SearchEventsFragment extends Fragment {
         protected HttpResponse doInBackground(RequestParams... params) {
             HttpResponse httpResponse = null;
             try {
-                httpResponse =  HttpManager.getData(params[0]);
+                httpResponse = HttpManager.getData(params[0]);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -275,13 +275,11 @@ public class SearchEventsFragment extends Fragment {
         @Override
         protected void onPostExecute(HttpResponse response) {
             Log.v(TAG, "Post execute");
-            if(response == null){
+            if (response == null) {
                 Toast.makeText(getActivity(), "Error! Please try later", Toast.LENGTH_LONG).show();
-            }
-            else if(response.getStatusCode()!= 200){
+            } else if (response.getStatusCode() != 200) {
                 Toast.makeText(getActivity(), "Error! Please try later", Toast.LENGTH_LONG).show();
-            }
-            else if (response.getStatusCode() == 200){
+            } else if (response.getStatusCode() == 200) {
                 parseResopnse(response.getBody());
             }
             contentAdapter.notifyDataSetChanged();
@@ -301,14 +299,12 @@ public class SearchEventsFragment extends Fragment {
         try {
             newJson = new JSONObject(body);
             details = newJson.getJSONArray("details");
-            if(details== null){
+            if (details == null) {
                 Log.v(TAG, "Null hai sir");
-            }
-            else
-            {
+            } else {
                 Log.v(TAG, "Null nahi hai sir");
             }
-            Log.v(TAG, "Array is "+ details);
+            Log.v(TAG, "Array is " + details);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -318,7 +314,7 @@ public class SearchEventsFragment extends Fragment {
         Moshi moshi = new Moshi.Builder().build();
         JsonAdapter<Event> jsonAdapter = moshi.adapter(Event.class);
 
-        for (int i=0; i< details.length(); i++){
+        for (int i = 0; i < details.length(); i++) {
 
             try {
                 myevent = jsonAdapter.fromJson(details.getJSONObject(i).toString());

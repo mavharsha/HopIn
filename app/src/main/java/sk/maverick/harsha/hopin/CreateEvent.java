@@ -129,6 +129,7 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
     private int pickup_index = 3;
     private int day, month, year, eventTimeHour, eventTimeMinute, pickUpTimeHour, pickUpTimeMinute;
     private String preference;
+    private int privacytype = 0; // Privacytype: Public = 0 Private = 1
     LatLng locationltlng, pickupltlng;
     private static final String[] preferences = new String[]{
             "Both",
@@ -376,6 +377,8 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
 
                 request.setParam("eventName", eventName.getText().toString());
                 request.setParam("eventType", eventType.getText().toString());
+                request.setParam("privacyType", ""+privacytype);
+
 
                 request.setParam("seatsAvailable", seatsavailable.getText().toString());
                 request.setParam("preferences", preference);
@@ -578,11 +581,17 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
     public void onCheckedChanged(RadioGroup group, int checkedId) {
 
         RadioButton radioButton = (RadioButton) findViewById(checkedId);
-        if(null!=radioButton && checkedId > -1){
-            Toast.makeText(CreateEvent.this, radioButton.getText(), Toast.LENGTH_SHORT).show();
+        if (null != radioButton && checkedId > -1) {
+
+            String privacytype_str = (String) radioButton.getText();
+
+            if (privacytype_str.equalsIgnoreCase("Public")) {
+                privacytype = 0;
+            } else {
+                privacytype = 1;
+            }
+            Toast.makeText(CreateEvent.this, "Privacy type is " + privacytype, Toast.LENGTH_SHORT).show();
         }
-
-
     }
 
     private class CreateEventAsync extends AsyncTask<RequestParams, Void, HttpResponse> {
@@ -619,7 +628,7 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
                 Snackbar.make(findViewById(R.id.createevent_coordinator), "Error! Please try later", Snackbar.LENGTH_LONG).show();
             } else if (result.getStatusCode() == 200) {
                 new AlertDialog.Builder(CreateEvent.this)
-                        .setMessage("Successfully updated profile")
+                        .setMessage("Successfully created your event")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
 
@@ -665,6 +674,23 @@ Sample Event JSON POST
 
 "eventLocation":"1100 Howe Ave, Sacramento, CA 95825, United States",
 "pickUpLocation":"1111 Howe Ave #300, Sacramento, CA 95825, United States"
+}
+
+{"eventType":"test",
+"eventLocationLng":"-121.415764",
+"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiaGFyc2hhIn0.lRpqmlmMcJOOvIT79eFaDtzVkEDIoN6LTolkwIVQGLc",
+"preferences":"Both",
+"seatsAvailable":"4",
+"eventLocationLat":"38.58563499999999",
+"eventTimeHour":"5","dateMonth":"2",
+"pickup":[{"pickuplocation":"1945 Bell St, Sacramento, CA 95825, United States","pickuptime":"5:24"}],
+"dateDay":"17",
+"eventTimeMinute":"24",
+"username":"harsha",
+"privacyType":"0",
+"eventLocation":"1111 Howe Ave #300, Sacramento, CA 95825, United States",
+"dateYear":"2016",
+"eventName":"testtt test"
 }
 
 */
