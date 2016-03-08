@@ -1,5 +1,6 @@
 package sk.maverick.harsha.hopin;
 
+import android.app.AlarmManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -45,7 +46,6 @@ public class Login extends AppCompatActivity {
     private TextView login_textView, signup_textView;
     private Button login;
     private ProgressBar pb;
-
 
     SharedPreferences sharedpreferences;
 
@@ -154,7 +154,7 @@ public class Login extends AppCompatActivity {
                 }
 
                 editor.commit();
-                // get the token an save it in shared preferences
+
                 startActivity(new Intent(Login.this, Home.class));
                 finish();
             } else if (result.getStatusCode() != 200) {
