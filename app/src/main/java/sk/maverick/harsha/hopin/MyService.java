@@ -24,6 +24,7 @@ import sk.maverick.harsha.hopin.Http.HttpManager;
 import sk.maverick.harsha.hopin.Http.HttpResponse;
 import sk.maverick.harsha.hopin.Http.RequestParams;
 import sk.maverick.harsha.hopin.Util.ConnectionManager;
+import sk.maverick.harsha.hopin.Util.SharedPrefs;
 
 public class MyService extends Service {
     private final static String TAG = "MyService";
@@ -46,7 +47,7 @@ public class MyService extends Service {
 
             RequestParams requestParams = new RequestParams();
 
-            requestParams.setUri(App.getIp() + "events/harsha");
+            requestParams.setUri(App.getIp() + "notification/"+ SharedPrefs.getStringValue(getApplicationContext(), "username"));
             new TestAsync().execute(requestParams);
         }
         return START_NOT_STICKY;

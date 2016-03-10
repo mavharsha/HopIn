@@ -12,8 +12,11 @@
     -->
 
     <color name="white">#FFFFFF</color>
-    <color name="red">#FF3700</color>
 
+    <color name="green">#3ADF48</color>
+    <color name="red">#FF4300</color>
+
+    <color name="grey">#b3bebe</color>
     <color name="colorAccent">#4699c9</color>
     <color name="primaryText">#212121</color>
     <color name="secondaryText">#727272</color>

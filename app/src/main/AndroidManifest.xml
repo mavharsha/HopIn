@@ -111,7 +111,15 @@
 
         <service android:name=".MyService" />
 
-        <activity android:name=".Request"></activity>
+        <activity
+            android:name=".EventRequest"
+            android:label="@string/title_activity_event_request"
+            android:parentActivityName=".Home"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="sk.maverick.harsha.hopin.Home" />
+        </activity>
     </application>
 
 </manifest>

@@ -174,9 +174,6 @@ public class Login extends AppCompatActivity {
         alarmIntent = PendingIntent.getService(getApplicationContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         Log.v(TAG, "Calling service");
 
-/*
-        getApplicationContext().startService(intent);
-*/
         alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), 1000 * 60, alarmIntent);
         Log.v(TAG, "Called service");
     }

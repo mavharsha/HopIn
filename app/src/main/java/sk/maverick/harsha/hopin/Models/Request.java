@@ -11,13 +11,32 @@ package sk.maverick.harsha.hopin.Models;
 
 public class Request {
 
+    String _id;
     String eventid;
     String eventname;
     int seatsrequested;
+    String requesteduseravatar;
     String createduser;
     String requesteduser;
     Boolean seen;
     Boolean status;
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
+
+
+    public String getRequesteduseravatar() {
+        return requesteduseravatar;
+    }
+
+    public void setRequesteduseravatar(String requesteduseravatar) {
+        this.requesteduseravatar = requesteduseravatar;
+    }
 
     public String getCreateduser() {
         return createduser;

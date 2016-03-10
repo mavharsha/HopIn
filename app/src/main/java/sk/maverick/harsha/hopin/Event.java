@@ -51,6 +51,7 @@ import sk.maverick.harsha.hopin.Http.HttpManager;
 import sk.maverick.harsha.hopin.Http.HttpResponse;
 import sk.maverick.harsha.hopin.Http.RequestParams;
 import sk.maverick.harsha.hopin.Models.Pickup;
+import sk.maverick.harsha.hopin.Util.SharedPrefs;
 
 public class Event extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -100,7 +101,6 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback {
         init();
     }
 
-
     @OnClick(R.id.event_requestride)
     public void RideRequest(View view) {
 
@@ -122,6 +122,7 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback {
                 requestParams.setParam("createdUser", myevent.getUsername());
                 requestParams.setParam("seatsRequested", seatsreq);
                 requestParams.setParam("requestedUser", restoredusername);
+                requestParams.setParam("requestedUserAvatar", SharedPrefs.getStringValue(getApplicationContext(), "avatar"));
 
                 Log.v(TAG, "The request params before async task are " + requestParams.getParams());
 
@@ -135,8 +136,6 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback {
             Snackbar.make(findViewById(R.id.event_coordinator),
                     "Error!", Snackbar.LENGTH_LONG).show();
         }
-
-
     }
 
     public void init() {

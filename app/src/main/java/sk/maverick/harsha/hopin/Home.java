@@ -300,6 +300,7 @@ public class Home extends AppCompatActivity
                     Log.v(TAG, profile.getEmergencycntname1());
 
                     SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString("avatar", profile.getAvatar());
                     editor.putString("contact1", profile.getEmergencycntname1());
                     editor.putString("contact2", profile.getEmergencycntname2());
                     editor.putString("contactnum1", profile.getEmergencycntnumber1());
