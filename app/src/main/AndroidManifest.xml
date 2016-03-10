@@ -7,8 +7,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
 
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -111,13 +109,9 @@
                 android:value="sk.maverick.harsha.hopin.Home" />
         </activity>
 
+        <service android:name=".MyService" />
 
-        <receiver android:name=".BootUpReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" >
-                </action>
-            </intent-filter>
-        </receiver>
+        <activity android:name=".Request"></activity>
     </application>
 
 </manifest>

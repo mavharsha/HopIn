@@ -43,8 +43,6 @@
             android:layout_height="wrap_content"
             android:text="Porfile Name"
             android:layout_marginTop="15dp" />
-
-
     </LinearLayout>
 
     <View

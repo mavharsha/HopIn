@@ -1,6 +1,7 @@
 package sk.maverick.harsha.hopin;
 
 import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -154,7 +155,7 @@ public class Login extends AppCompatActivity {
                 }
 
                 editor.commit();
-
+                setUpAlarm();
                 startActivity(new Intent(Login.this, Home.class));
                 finish();
             } else if (result.getStatusCode() != 200) {
@@ -162,5 +163,21 @@ public class Login extends AppCompatActivity {
             }
             pb.setVisibility(View.INVISIBLE);
         }
+    }
+
+    private void setUpAlarm() {
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        PendingIntent alarmIntent;
+
+        Intent intent = new Intent(Login.this, MyService.class);
+        alarmIntent = PendingIntent.getService(getApplicationContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        Log.v(TAG, "Calling service");
+
+/*
+        getApplicationContext().startService(intent);
+*/
+        alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), 1000 * 60, alarmIntent);
+        Log.v(TAG, "Called service");
     }
 }

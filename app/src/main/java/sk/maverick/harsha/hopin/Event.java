@@ -211,7 +211,7 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback {
         for (int i = 0; i < myevent.getPickup().size(); i++) {
             Pickup pickup = myevent.getPickup().get(i);
             stringBuilder.append("Pickup Location at " + pickup.getPickuplocation() + "\n");
-            stringBuilder.append("Pickup Time at " + pickup.getPickuptime() + "\n \n");
+            stringBuilder.append("Pickup Time at " + pickup.getPickuptime()+"\n \n");
         }
 
         pickuplocation.setText(stringBuilder);
@@ -223,8 +223,8 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback {
         Log.v(TAG, "Pref name is " + restoredusername);
         Log.v(TAG, "Create event username is " + myevent.getUsername());
         if (restoredusername.equals(myevent.getUsername())) {
-            seatsrequested.setVisibility(View.INVISIBLE);
-            requestride.setVisibility(View.INVISIBLE);
+            seatsrequested.setVisibility(View.GONE);
+            requestride.setVisibility(View.GONE);
         }
         goToLocation(myevent.getEventlocationlat(), myevent.getEventlocationlng(), myevent.getEventname());
     }

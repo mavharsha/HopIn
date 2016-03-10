@@ -120,7 +120,7 @@ public class SearchEventsFragment extends Fragment {
 
         RequestParams requestParams = new RequestParams();
 
-        requestParams.setUri(App.getIp() + "events/");
+        requestParams.setUri(App.getIp() + "events");
         new CreateEventAsyncTask(getActivity()).execute(requestParams);
     }
 
@@ -164,12 +164,12 @@ public class SearchEventsFragment extends Fragment {
                 LatLng newPointer = new LatLng(dataset.get(pos).getEventlocationlat(), dataset.get(pos).getEventlocationlng());
 
                 MarkerOptions options = new MarkerOptions().position(newPointer).title(dataset.get(position).getEventname());
+                marker.remove();
                 marker = thisMap.addMarker(options);
 
                 thisMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newPointer, 7));
             }
 
-            holder.itemView.setLongClickable(true);
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

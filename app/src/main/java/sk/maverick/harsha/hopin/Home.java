@@ -222,7 +222,15 @@ public class Home extends AppCompatActivity
 
             transaction.commit();
 
-        } else if (id == R.id.nav_notification) {
+        } else if (id == R.id.nav_requests) {
+
+            RequestsFragment requestsFragment = new RequestsFragment();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, requestsFragment);
+            transaction.addToBackStack(null);
+            // this method adds the transaction to the back stack, which is used when the user presses back button
+
+            transaction.commit();
 
         }
 

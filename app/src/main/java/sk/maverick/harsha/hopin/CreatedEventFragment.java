@@ -86,7 +86,6 @@ public class CreatedEventFragment extends Fragment {
 
         RecyclerView recyclerView = (RecyclerView) linearLayout.findViewById(R.id.createdevent_recycler);
 
-
         contentAdapter = new ContentAdapter(mdataset);
         recyclerView.setAdapter(contentAdapter);
         RecyclerView.ItemDecoration decoration = new DividerItemDecorator(getActivity(), LinearLayoutManager.VERTICAL);
@@ -120,7 +119,7 @@ public class CreatedEventFragment extends Fragment {
         new CreateEventAsyncTask(getActivity()).execute(requestParams);
     }
 
-    public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHolder>{
+    private class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHolder>{
         private List<Event> dataset;
 
         public ContentAdapter(List<Event> dataset) {
@@ -160,12 +159,12 @@ public class CreatedEventFragment extends Fragment {
                 LatLng newPointer = new LatLng(dataset.get(pos).getEventlocationlat(), dataset.get(pos).getEventlocationlng());
 
                 MarkerOptions options = new MarkerOptions().position(newPointer).title(dataset.get(position).getEventname());
+                marker.remove();
                 marker = thisMap.addMarker(options);
 
                 thisMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newPointer, 7));
             }
 
-            holder.itemView.setLongClickable(true);
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
