@@ -8,6 +8,7 @@
 
 package sk.maverick.harsha.hopin;
 
+
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -37,32 +38,34 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import sk.maverick.harsha.hopin.Http.HttpManager;
 import sk.maverick.harsha.hopin.Http.HttpResponse;
 import sk.maverick.harsha.hopin.Http.RequestParams;
+import sk.maverick.harsha.hopin.Models.Request;
 import sk.maverick.harsha.hopin.Util.DividerItemDecorator;
 import sk.maverick.harsha.hopin.Util.ProfilePic;
 import sk.maverick.harsha.hopin.Util.SharedPrefs;
 
-public class RequestsFragment extends Fragment {
 
-    List<sk.maverick.harsha.hopin.Models.Request> mdataset = new ArrayList<>();
-    RequestsContentAdapter requestscontentAdapter;
-    private final static String TAG = "REQUESTSFRAG";
+public class RequestedEventFragment extends Fragment {
 
-    public RequestsFragment() {
+
+    List<Request> mdataset = new ArrayList<>();
+    private final static String TAG = "RIDESREQUESTEDFRAG";
+    RidesRequestedContentAdapter ridesRequestedContentAdapter;
+    public RequestedEventFragment() {
     }
 
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         getActivity().setTitle("Requests");
 
         CoordinatorLayout layout = (CoordinatorLayout) inflater.inflate(
-                R.layout.fragment_requests, container, false);
+                R.layout.fragment_requested_event, container, false);
 
-        RecyclerView recyclerView = (RecyclerView) layout.findViewById(R.id.requests_recycler);
+        RecyclerView recyclerView = (RecyclerView) layout.findViewById(R.id.requestedevents_recycler);
 
-        requestscontentAdapter = new RequestsContentAdapter(mdataset);
-        recyclerView.setAdapter(requestscontentAdapter);
+        ridesRequestedContentAdapter = new RidesRequestedContentAdapter(mdataset);
+        recyclerView.setAdapter(ridesRequestedContentAdapter);
         RecyclerView.ItemDecoration decoration = new DividerItemDecorator(getActivity(), LinearLayoutManager.VERTICAL);
         recyclerView.addItemDecoration(decoration);
 
@@ -76,11 +79,11 @@ public class RequestsFragment extends Fragment {
         return layout;
     }
 
-    private class RequestsContentAdapter extends RecyclerView.Adapter<RequestsContentAdapter.ViewHolder> {
+    private class RidesRequestedContentAdapter extends RecyclerView.Adapter<RidesRequestedContentAdapter.ViewHolder> {
 
         List<sk.maverick.harsha.hopin.Models.Request> dataset;
 
-        public RequestsContentAdapter(List<sk.maverick.harsha.hopin.Models.Request> dataset) {
+        public RidesRequestedContentAdapter(List<sk.maverick.harsha.hopin.Models.Request> dataset) {
             this.dataset = dataset;
         }
 
@@ -96,25 +99,9 @@ public class RequestsFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.requester.setText(dataset.get(position).getRequesteduser());
-            holder.requesttext.setText("Requested "
-                    + dataset.get(position).getSeatsrequested() + " seats for "
-                    + dataset.get(position).getEventname() + " event");
-            holder.picture.setImageResource(ProfilePic.getAvatar(dataset.get(position).getRequesteduseravatar()));
-
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), EventRequest.class);
-                    intent.putExtra("requester", dataset.get(holder.getAdapterPosition()).getRequesteduser());
-                    intent.putExtra("seatsrequested", ""+dataset.get(holder.getAdapterPosition()).getSeatsrequested());
-                    intent.putExtra("eventname", dataset.get(holder.getAdapterPosition()).getEventname());
-                    intent.putExtra("id", dataset.get(holder.getAdapterPosition()).get_id());
-                    intent.putExtra("requesteravatar", dataset.get(holder.getAdapterPosition()).getRequesteduseravatar());
-
-                    startActivity(intent);
-                }
-            });
+            holder.content.setText("You requested "+ mdataset.get(position).getCreateduser() + " for ride to "+ mdataset.get(position).getEventname());
+            holder.status.setText("");
+            holder.picture.setImageResource(ProfilePic.getAvatar(SharedPrefs.getStringValue(getActivity(), "avatar")));
 
         }
 
@@ -126,18 +113,19 @@ public class RequestsFragment extends Fragment {
 
         public class ViewHolder extends RecyclerView.ViewHolder {
 
-            TextView requester, requesttext;
+            TextView content, status;
             CircleImageView picture;
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                requester = (TextView) itemView.findViewById(R.id.recyclerview_request_requester);
-                requesttext = (TextView) itemView.findViewById(R.id.recyclerview_request_content);
-                picture = (CircleImageView) itemView.findViewById(R.id.requests_profile_image);
+                content = (TextView) itemView.findViewById(R.id.recyclerview_requestedevents_content);
+                status = (TextView) itemView.findViewById(R.id.recyclerview_requestedevents_status);
+                picture = (CircleImageView) itemView.findViewById(R.id.requestedevents_profile_image);
 
             }
         }
     }
+
 
     private class RequestAsync extends AsyncTask<RequestParams, Void, HttpResponse> {
 
@@ -186,7 +174,7 @@ public class RequestsFragment extends Fragment {
 
 
         Moshi moshi = new Moshi.Builder().build();
-        JsonAdapter<sk.maverick.harsha.hopin.Models.Request> jsonAdapter = moshi.adapter(sk.maverick.harsha.hopin.Models.Request.class);
+        JsonAdapter<Request> jsonAdapter = moshi.adapter(sk.maverick.harsha.hopin.Models.Request.class);
 
         for (int i = 0; i < details.length(); i++) {
 
@@ -202,10 +190,12 @@ public class RequestsFragment extends Fragment {
         Log.v(TAG, "Event size is " + mdataset.size());
 
         if (mdataset.size() == 0) {
-            Snackbar.make(getActivity().findViewById(R.id.requests_coordinator),
+            Snackbar.make(getActivity().findViewById(R.id.requestedevents_coordinator),
                     "You have no requests", Snackbar.LENGTH_LONG).show();
+        }else{
+            ridesRequestedContentAdapter.notifyDataSetChanged();
         }
-        requestscontentAdapter.notifyDataSetChanged();
     }
+
 
 }

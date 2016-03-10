@@ -17,6 +17,8 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -85,10 +87,10 @@ public class SearchEventsFragment extends Fragment {
 
         getActivity().setTitle("Search Events");
 
-        LinearLayout linearLayout = (LinearLayout) inflater.inflate(
+        CoordinatorLayout layout = (CoordinatorLayout) inflater.inflate(
                 R.layout.fragment_created_event, container, false);
 
-        RecyclerView recyclerView = (RecyclerView) linearLayout.findViewById(R.id.createdevent_recycler);
+        RecyclerView recyclerView = (RecyclerView) layout.findViewById(R.id.createdevent_recycler);
 
 
         contentAdapter = new ContentAdapter(mdataset);
@@ -100,7 +102,7 @@ public class SearchEventsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
         // Inflate the layout for this fragment
-        return linearLayout;
+        return layout;
     }
 
     @Override
@@ -327,5 +329,10 @@ public class SearchEventsFragment extends Fragment {
         }
 
         Log.v(TAG, "Event size is " + mdataset.size());
+        if(mdataset.size() == 0){
+            Snackbar.make(getActivity().findViewById(R.id.createdevent_coordinator),
+                    "You have no events", Snackbar.LENGTH_LONG).show();
+        }
+        contentAdapter.notifyDataSetChanged();
     }
 }

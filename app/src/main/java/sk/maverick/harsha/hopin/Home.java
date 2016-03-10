@@ -234,9 +234,17 @@ public class Home extends AppCompatActivity
 
         }
 
-        /*else if (id == R.id.nav_savedevents) {
+        else if (id == R.id.nav_requestedevents) {
 
-        } else if (id == R.id.nav_share) {
+            RequestedEventFragment ridesrequestFragment = new RequestedEventFragment();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, ridesrequestFragment);
+            transaction.addToBackStack(null);
+            // this method adds the transaction to the back stack, which is used when the user presses back button
+
+            transaction.commit();
+
+        } /*else if (id == R.id.nav_share) {
             startActivity(new Intent(Home.this, LocationPicker.class));
 
 

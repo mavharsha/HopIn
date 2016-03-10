@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <uses-feature
-        android:glEsVersion="0x00020000"
+          android:glEsVersion="0x00020000"
         android:required="true" />
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
@@ -81,7 +81,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="sk.maverick.harsha.hopin.Home" />
         </activity>
-        <activity
+         <activity
             android:name=".LocationPicker"
             android:label="@string/title_activity_location_picker"
             android:parentActivityName=".CreateEvent"
