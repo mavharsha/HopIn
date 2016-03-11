@@ -107,6 +107,13 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="sk.maverick.harsha.hopin.Home" />
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" />
+                <data android:host="www.mavharsha.github.io" />
+            </intent-filter>
         </activity>
 
         <service android:name=".MyService" />

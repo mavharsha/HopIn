@@ -23,6 +23,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -91,8 +93,28 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback {
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
 
+       toolbar.setTitle("Event");
+
         Intent intent = getIntent();
-        eventId = intent.getStringExtra("eventid");
+
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        Log.v(TAG, "Action intent is "+ action);
+        Log.v(TAG, "Type intent is "+ type);
+
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if ("text/plain".equals(type)) {
+                String sharedText = intent.getStringExtra("eventid");
+                if (sharedText != null) {
+                    eventId = sharedText;
+                }
+            }
+        }
+        else
+        {
+            eventId = intent.getStringExtra("eventid");
+        }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.event_map);
@@ -101,12 +123,51 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback {
         init();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_event, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_share) {
+
+            String eventid = "http://www.mavharsha.github.io/"+ myevent.get_id();
+            String eventname = myevent.getEventname();
+            String sender = SharedPrefs.getStringValue(Event.this, "username");
+            share(eventid, eventname, sender);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void share(String eventId, String eventName, String sender) {
+        Intent sharingIntent = new Intent();
+        sharingIntent.setAction(Intent.ACTION_SEND);
+        /*
+            sharingIntent.putExtra("eventid", eventId);
+    */
+        String message = sender + " requested you to checkout "+ eventName + " at "+ eventId;
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, message);
+        sharingIntent.setType("text/plain");
+        startActivity(Intent.createChooser(sharingIntent, "Sharing "+ eventName));
+    }
+
+
     @OnClick(R.id.event_requestride)
     public void RideRequest(View view) {
 
         SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         String restoredusername = prefs.getString("username", null);
-
 
         if (myevent != null && !TextUtils.isEmpty(seatsrequested.getText().toString())) {
 

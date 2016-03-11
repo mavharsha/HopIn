@@ -19,7 +19,7 @@ public class Request {
     String createduser;
     String requesteduser;
     Boolean seen;
-    Boolean status;
+    String status;
 
     public String get_id() {
         return _id;
@@ -86,11 +86,11 @@ public class Request {
         this.seen = seen;
     }
 
-    public Boolean getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 }

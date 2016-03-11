@@ -9,7 +9,6 @@
 package sk.maverick.harsha.hopin;
 
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -57,7 +56,7 @@ public class RequestedEventFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getActivity().setTitle("Requests");
+        getActivity().setTitle("Requested Events");
 
         CoordinatorLayout layout = (CoordinatorLayout) inflater.inflate(
                 R.layout.fragment_requested_event, container, false);
@@ -73,7 +72,7 @@ public class RequestedEventFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
         RequestParams request = new RequestParams();
-        request.setUri(App.getIp() + "riderequests/" + SharedPrefs.getStringValue(getActivity(), "username"));
+        request.setUri(App.getIp() + "requests/" + SharedPrefs.getStringValue(getActivity(), "username"));
 
         new RequestAsync().execute(request);
         return layout;
@@ -91,7 +90,7 @@ public class RequestedEventFragment extends Fragment {
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.single_row_request, parent, false);
+                    .inflate(R.layout.single_row_requestedevents, parent, false);
 
             ViewHolder viewHolder = new ViewHolder(view);
             return viewHolder;
@@ -100,7 +99,7 @@ public class RequestedEventFragment extends Fragment {
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.content.setText("You requested "+ mdataset.get(position).getCreateduser() + " for ride to "+ mdataset.get(position).getEventname());
-            holder.status.setText("");
+            holder.status.setText("Status: "+mdataset.get(position).getStatus());
             holder.picture.setImageResource(ProfilePic.getAvatar(SharedPrefs.getStringValue(getActivity(), "avatar")));
 
         }
@@ -121,7 +120,6 @@ public class RequestedEventFragment extends Fragment {
                 content = (TextView) itemView.findViewById(R.id.recyclerview_requestedevents_content);
                 status = (TextView) itemView.findViewById(R.id.recyclerview_requestedevents_status);
                 picture = (CircleImageView) itemView.findViewById(R.id.requestedevents_profile_image);
-
             }
         }
     }
