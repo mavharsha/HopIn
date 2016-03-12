@@ -155,7 +155,7 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback {
         sharingIntent.setAction(Intent.ACTION_SEND);
         /*
             sharingIntent.putExtra("eventid", eventId);
-    */
+         */
         String message = sender + " requested you to checkout "+ eventName + " at "+ eventId;
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, message);
         sharingIntent.setType("text/plain");
@@ -166,9 +166,6 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback {
     @OnClick(R.id.event_requestride)
     public void RideRequest(View view) {
 
-        SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        String restoredusername = prefs.getString("username", null);
-
         if (myevent != null && !TextUtils.isEmpty(seatsrequested.getText().toString())) {
 
             int seatsreq = Integer.parseInt(seatsrequested.getText().toString());
@@ -178,11 +175,11 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback {
 
                 RequestParams requestParams = new RequestParams();
                 requestParams.setUri(App.getIp() + "request");
-                requestParams.setParam("eventId", eventId);
+                requestParams.setParam("eventId", myevent.get_id());
                 requestParams.setParam("eventName", myevent.getEventname());
                 requestParams.setParam("createdUser", myevent.getUsername());
                 requestParams.setParam("seatsRequested", seatsreq);
-                requestParams.setParam("requestedUser", restoredusername);
+                requestParams.setParam("requestedUser", SharedPrefs.getStringValue(getApplicationContext(), "username"));
                 requestParams.setParam("requestedUserAvatar", SharedPrefs.getStringValue(getApplicationContext(), "avatar"));
 
                 Log.v(TAG, "The request params before async task are " + requestParams.getParams());
@@ -351,7 +348,6 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback {
 
 
     private class RequestRideAsync extends AsyncTask<RequestParams, Void, HttpResponse> {
-
 
         private ProgressDialog progressDialog;
 

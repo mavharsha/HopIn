@@ -109,7 +109,7 @@ public class RequestsFragment extends Fragment {
                     intent.putExtra("requester", dataset.get(holder.getAdapterPosition()).getRequesteduser());
                     intent.putExtra("seatsrequested", ""+dataset.get(holder.getAdapterPosition()).getSeatsrequested());
                     intent.putExtra("eventname", dataset.get(holder.getAdapterPosition()).getEventname());
-                    intent.putExtra("id", dataset.get(holder.getAdapterPosition()).get_id());
+                    intent.putExtra("id", dataset.get(holder.getAdapterPosition()).getEventid());
                     intent.putExtra("requesteravatar", dataset.get(holder.getAdapterPosition()).getRequesteduseravatar());
 
                     startActivity(intent);

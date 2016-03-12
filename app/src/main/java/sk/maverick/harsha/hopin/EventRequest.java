@@ -83,7 +83,7 @@ public class EventRequest extends AppCompatActivity {
         RequestParams requestParams = new RequestParams();
 
         requestParams.setUri(App.getIp()+"request");
-        requestParams.setParam("eventId", eventid);
+        requestParams.setParam("eventid", eventid);
         requestParams.setParam("requesteduser", requester);
         requestParams.setParam("seatsrequested", seatsrequested);
         requestParams.setParam("status", "Accepted");
@@ -99,8 +99,8 @@ public class EventRequest extends AppCompatActivity {
 
         RequestParams requestParams = new RequestParams();
 
-        requestParams.setUri(App.getIp()+"/request");
-        requestParams.setParam("eventId", eventid);
+        requestParams.setUri(App.getIp()+"request");
+        requestParams.setParam("eventid", eventid);
         requestParams.setParam("seatsrequested", seatsrequested);
         requestParams.setParam("status", "Rejected");
 
