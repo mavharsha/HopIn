@@ -209,7 +209,7 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback {
 
         /*Typeface roboto_regular = Typeface.createFromAsset(getAssets(), "Roboto-Regular.ttf");
         eventname.setTypeface(roboto_regular);
-*/
+        */
         RequestParams requestParams = new RequestParams();
 
         requestParams.setUri(App.getIp() + "event/" + eventId);

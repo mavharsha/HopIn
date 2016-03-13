@@ -18,11 +18,18 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.io.IOException;
 
 import sk.maverick.harsha.hopin.Http.HttpManager;
 import sk.maverick.harsha.hopin.Http.HttpResponse;
 import sk.maverick.harsha.hopin.Http.RequestParams;
+import sk.maverick.harsha.hopin.Models.Request;
 import sk.maverick.harsha.hopin.Util.ConnectionManager;
 import sk.maverick.harsha.hopin.Util.SharedPrefs;
 
@@ -48,7 +55,7 @@ public class MyService extends Service {
             RequestParams requestParams = new RequestParams();
 
             requestParams.setUri(App.getIp() + "notification/"+ SharedPrefs.getStringValue(getApplicationContext(), "username"));
-            new TestAsync().execute(requestParams);
+            new NotifyUserAsync().execute(requestParams);
         }
         return START_NOT_STICKY;
     }
@@ -61,21 +68,28 @@ public class MyService extends Service {
 
     }
 
-    private class TestAsync extends AsyncTask<RequestParams, Void, HttpResponse> {
+    private void NotifyUser() {
+        NotificationManager notificationManager;
 
-        @Override
-        protected void onPostExecute(HttpResponse response) {
-            Log.v(TAG, "Post Poll " + var);
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.cancel(Unique);
 
-            if (response == null) {
-            } else if (response.getStatusCode() != 200) {
-            } else if (response.getStatusCode() == 200) {
+        Intent intent = new Intent(getApplicationContext(), Home.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
 
-                // get the fragment_requests and create a notification
-                String result = response.getBody();
-                NotifyUser();
-            }
-        }
+        Notification notificationBuiler = new Notification.Builder(getApplicationContext())
+                .setContentTitle("Request Notification")
+                .setContentText("Someone requesed")
+                .setSmallIcon(R.drawable.idea)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .build();
+
+        notificationManager.notify(Unique, notificationBuiler);
+    }
+
+    private class NotifyUserAsync extends AsyncTask<RequestParams, Void, HttpResponse> {
 
         @Override
         protected void onPreExecute() {
@@ -94,26 +108,86 @@ public class MyService extends Service {
             }
             return httpResponse;
         }
+
+        @Override
+        protected void onPostExecute(HttpResponse response) {
+            Log.v(TAG, "Post Poll " + var);
+
+            if (response == null) {
+            } else if (response.getStatusCode() != 200) {
+            } else if (response.getStatusCode() == 200) {
+
+                // get the fragment_requests and create a notification
+                String result = response.getBody();
+
+                //parseRespone(result);
+                NotifyUser();
+               /* RequestParams requestParams = new RequestParams();
+                requestParams.setUri(App.getIp()+"notification");
+*/
+
+
+
+            }
+        }
     }
 
-    private void NotifyUser() {
-        NotificationManager notificationManager;
+    private void parseRespone(String result) {
 
-        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.cancel(Unique);
+        JSONArray details = null;
+        sk.maverick.harsha.hopin.Models.Request request = null;
 
-        Intent intent = new Intent(getApplicationContext(), Security.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
+        try {
+            details = new JSONArray(result);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-        Notification notificationBuiler = new Notification.Builder(getApplicationContext())
-                .setContentTitle("Request Notification")
-                .setContentText("Someone requesed")
-                .setSmallIcon(R.mipmap.icon)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true)
-                .setDefaults(Notification.DEFAULT_ALL)
-                .build();
 
-        notificationManager.notify(Unique, notificationBuiler);
+        Moshi moshi = new Moshi.Builder().build();
+        JsonAdapter<Request> jsonAdapter = moshi.adapter(sk.maverick.harsha.hopin.Models.Request.class);
+
+        for (int i = 0; i < details.length(); i++) {
+
+            try {
+                request = jsonAdapter.fromJson(details.getJSONObject(i).toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        Log.v(TAG, "Request is " + request.getEventname() +" by"+ request.getRequesteduser());
+
     }
+
+    private class AfterNotifyAsync extends AsyncTask<RequestParams, Void, HttpResponse>{
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected HttpResponse doInBackground(RequestParams... params) {
+            HttpResponse httpResponse = null;
+            try {
+                httpResponse = HttpManager.getData(params[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return httpResponse;
+        }
+
+        @Override
+        protected void onPostExecute(HttpResponse response) {
+
+            if (response == null) {
+            } else if (response.getStatusCode() != 200) {
+            } else if (response.getStatusCode() == 200) {
+                Log.v(TAG, "Notified about notification, changing seen to true");
+            }
+        }
+    }
+
 }

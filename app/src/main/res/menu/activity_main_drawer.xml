@@ -4,24 +4,24 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_createdevents"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/createdevent"
             android:title="Created Events" />
         <item
             android:id="@+id/nav_searchevent"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/search"
             android:title="Search Events" />
         <item
             android:id="@+id/nav_requests"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Requests" />
+            android:icon="@drawable/pickup"
+            android:title="Ride Requests" />
         <item
               android:id="@+id/nav_requestedevents"
               android:icon="@drawable/ic_menu_gallery"
               android:title="Requested Events" />
-        <item
+       <!-- <item
             android:id="@+id/nav_notification"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Notifications" />
+            android:title="Notifications" />-->
 
 
     </group>
