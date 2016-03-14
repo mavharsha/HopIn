@@ -12,8 +12,8 @@ github.com/mavharsha
 <img src="https://github.com/mavharsha/HopIn/blob/master/Screenshots/Navbar.png "Navigation Drawer"" width="30%"></img> 
 
 
-<img src="https://github.com/mavharsha/HopIn/blob/master/Screenshots/UserProfile.png "Profile"" width="30%"></img> 
-<img src="https://github.com/mavharsha/HopIn/blob/master/Screenshots/UpdateProfile.png "Update Profile"" width="30%"></img> 
+<img src="https://github.com/mavharsha/HopIn/blob/master/Screenshots/Profile.png "Profile"" width="30%"></img> 
+<img src="https://github.com/mavharsha/HopIn/blob/master/Screenshots/EditProfile.png "Edit Profile"" width="30%"></img> 
 <img src="https://github.com/mavharsha/HopIn/blob/master/Screenshots/CreateEvent.png "CreateEvent"" width="30%"></img> 
 
 
