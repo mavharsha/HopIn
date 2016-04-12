@@ -32,7 +32,7 @@ import sk.maverick.harsha.hopin.Util.ProfilePic;
 
 public class EventRequest extends AppCompatActivity {
 
-    String eventid, requester, seatsrequested;
+    String eventid, requester, seatsrequested, pickuplocation;
     @Bind(R.id.eventrequest_text)
     TextView eventrequesttext;
     @Bind(R.id.eventrequest_profile_image)
@@ -61,6 +61,7 @@ public class EventRequest extends AppCompatActivity {
         eventname = intent.getStringExtra("eventname");
         avatar = intent.getStringExtra("requesteravatar");
         eventid = intent.getStringExtra("id");
+        pickuplocation = intent.getStringExtra("pickuplocation");
 
         StringBuilder sb = new StringBuilder();
         sb.append(requester);
@@ -68,7 +69,10 @@ public class EventRequest extends AppCompatActivity {
         sb.append(seatsrequested);
         sb.append(" seats to ");
         sb.append(eventname);
-        sb.append(" event.");
+        sb.append(" event ");
+        sb.append("at ");
+        sb.append(pickuplocation);
+
         eventrequesttext.setText(sb);
 
         profilepic.setImageResource(ProfilePic.getAvatar(avatar));

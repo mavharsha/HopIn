@@ -36,6 +36,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import sk.maverick.harsha.hopin.Http.HttpManager;
 import sk.maverick.harsha.hopin.Http.HttpResponse;
 import sk.maverick.harsha.hopin.Http.RequestParams;
+import sk.maverick.harsha.hopin.Util.ConnectionManager;
 
 public class Profile extends AppCompatActivity {
 
@@ -115,22 +116,27 @@ public class Profile extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.edit_profile) {
-            Toast.makeText(getApplicationContext(),
-                    "Here I'll intent to another activity, where you can edit", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(Profile.this, UpdateProfile.class);
-            intent.putExtra("username", username_tx);
-            intent.putExtra("avatar", avatar_tx);
-            intent.putExtra("firstname", firstname_tx);
-            intent.putExtra("lastname", lastname_tx);
-            intent.putExtra("phonenumber", phone_tx);
 
-            intent.putExtra("emergencycnt1", emergencycnt1_tx);
-            intent.putExtra("emergencycnt2", emergencycnt2_tx);
-            intent.putExtra("emergencycntnum1", emergencycntnum1_tx);
-            intent.putExtra("emergencycntnum2", emergencycntnum2_tx);
-            startActivity(intent);
+            if(ConnectionManager.isConnected(Profile.this))
+            {
+                Intent intent = new Intent(Profile.this, UpdateProfile.class);
+                intent.putExtra("username", username_tx);
+                intent.putExtra("avatar", avatar_tx);
+                intent.putExtra("firstname", firstname_tx);
+                intent.putExtra("lastname", lastname_tx);
+                intent.putExtra("phonenumber", phone_tx);
 
+                intent.putExtra("emergencycnt1", emergencycnt1_tx);
+                intent.putExtra("emergencycnt2", emergencycnt2_tx);
+                intent.putExtra("emergencycntnum1", emergencycntnum1_tx);
+                intent.putExtra("emergencycntnum2", emergencycntnum2_tx);
+                startActivity(intent);
 
+            }else
+            {
+                Snackbar.make(findViewById(R.id.getprofile_coordinator),
+                        "Error! Please Check your Internet Connection", Snackbar.LENGTH_SHORT).show();
+            }
             return true;
         }
 

@@ -32,6 +32,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -92,6 +93,10 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback, Radi
     Button requestride;
     @Bind(R.id.event_radiogroup)
     RadioGroup radioGroup;
+    @Bind(R.id.event_radiogroupcontainer)
+    LinearLayout _RadioButtonContainer;
+    @Bind(R.id.event_pickupradiotextview)
+    TextView _RadioButtonTextview;
 
     GoogleMap mMap;
     Marker marker;
@@ -198,7 +203,6 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback, Radi
 
                 Log.v(TAG, "The request params before async task are " + requestParams.getParams());
                 new RequestRideAsync(this).execute(requestParams);
-
             } else {
                 Snackbar.make(findViewById(R.id.event_coordinator),
                         "Requested # of seats more than available", Snackbar.LENGTH_LONG).show();
@@ -219,6 +223,7 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback, Radi
         location.setTypeface(roboto_light);
         eventtime.setTypeface(roboto_light);
         pickuplocation.setTypeface(roboto_light);
+        _RadioButtonTextview.setTypeface(roboto_light);
 
         radioGroup.setOnCheckedChangeListener(this);
 
@@ -305,13 +310,12 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback, Radi
         if (restoredusername.equals(myevent.getUsername())) {
             seatsrequested.setVisibility(View.GONE);
             requestride.setVisibility(View.GONE);
-            radioGroup.setVisibility(View.GONE);
+            _RadioButtonContainer.setVisibility(View.GONE);
         } else {
             pickuplocation.setVisibility(View.GONE);
         }
         goToLocation(myevent.getEventlocationlat(), myevent.getEventlocationlng(), myevent.getEventname());
     }
-
 
     public void goToLocation(double lat, double lng, String locality) {
 

@@ -53,7 +53,6 @@ public class RequestsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-
         getActivity().setTitle("Requests");
 
         CoordinatorLayout layout = (CoordinatorLayout) inflater.inflate(
@@ -65,7 +64,6 @@ public class RequestsFragment extends Fragment {
         recyclerView.setAdapter(requestscontentAdapter);
         RecyclerView.ItemDecoration decoration = new DividerItemDecorator(getActivity(), LinearLayoutManager.VERTICAL);
         recyclerView.addItemDecoration(decoration);
-
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
@@ -110,6 +108,7 @@ public class RequestsFragment extends Fragment {
                     intent.putExtra("seatsrequested", ""+dataset.get(holder.getAdapterPosition()).getSeatsrequested());
                     intent.putExtra("eventname", dataset.get(holder.getAdapterPosition()).getEventname());
                     intent.putExtra("id", dataset.get(holder.getAdapterPosition()).getEventid());
+                        intent.putExtra("pickuplocation", dataset.get(holder.getAdapterPosition()).getPickupLocation());
                     intent.putExtra("requesteravatar", dataset.get(holder.getAdapterPosition()).getRequesteduseravatar());
 
                     startActivity(intent);

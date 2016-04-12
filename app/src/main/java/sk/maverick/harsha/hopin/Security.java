@@ -12,6 +12,9 @@ import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -25,6 +28,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -43,16 +51,16 @@ public class Security extends AppCompatActivity {
     Button sosbutton;
 
     public static final String MyPREFERENCES = "MyPrefs";
+    final int REQUESTCODE_FINE_LOCATION = 1;
     SharedPreferences prefs;
     int count = 5;
     String restoredcontact1, restoredcontact2, restoredcontactnum1, restoredcontactnum2;
-
-
-/*
-    LocationListener locationListener = new LocationListener() {
+    double latitude, longitude;
+    LocationManager locationManager;
+    protected final LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
-
+            updateLocation(location);
         }
 
         @Override
@@ -70,7 +78,6 @@ public class Security extends AppCompatActivity {
 
         }
     };
-*/
 
 
     @Override
@@ -101,41 +108,56 @@ public class Security extends AppCompatActivity {
     private void broadcastMessage() {
         // getLocation();
 
-        SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage("+19259674678", null, restoredcontact1 + ", Im in trouble ", null, null);
-        Toast.makeText(getApplicationContext(), "Sent", Toast.LENGTH_SHORT);
+       if(latitude!=0 & longitude!=0){
+           Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+           List<Address> addresses = new ArrayList<>();
+           try {
+               addresses = geocoder.getFromLocation(latitude, longitude, 1);
+           } catch (IOException e) {
+               e.printStackTrace();
+           }
+
+           SmsManager smsManager = SmsManager.getDefault();
+           smsManager.sendTextMessage(restoredcontactnum1, null, restoredcontact1 + ", Im in trouble. " +
+                   "My last known location is "+addresses.get(0).getAddressLine(0) +" "+addresses.get(0).getLocality(), null, null);
+           smsManager.sendTextMessage(restoredcontactnum2, null, restoredcontact2 + ", Im in trouble. " +
+                   "My last known location is "+addresses.get(0).getAddressLine(0) +" "+addresses.get(0).getLocality(), null, null);
+           Toast.makeText(getApplicationContext(), "Sending, Im in trouble. " +
+                   "My last know location is "+addresses.get(0).getAddressLine(0) +" "+addresses.get(0).getLocality(), Toast.LENGTH_SHORT).show();
+
+       }else
+       {
+           Toast.makeText(getApplicationContext(), "No Location found yet.", Toast.LENGTH_SHORT).show();
+       }
     }
 
-   /* private void getLocation() {
+    private void getLocation() {
 
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-
-        if (!isGPSEnabled) {
-            Snackbar.make(findViewById(R.id.sos_coordinator), "GPS not enabled", Snackbar.LENGTH_LONG).show();
-        } else if (!isNetworkEnabled) {
-            Snackbar.make(findViewById(R.id.sos_coordinator), "Network not enabled", Snackbar.LENGTH_LONG).show();
-        } else {
-            if (ActivityCompat.checkSelfPermission(Security.this,
+        if (ActivityCompat.checkSelfPermission(Security.this,
                     Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                     ActivityCompat.checkSelfPermission(Security.this,
                             Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
+
+                requestPermissions(new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, REQUESTCODE_FINE_LOCATION);
                 return;
-            }
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         }
+            enableLocationUpdates();
+    }
 
+    private void enableLocationUpdates() {
 
-    }*/
+        final int minTime = 10;
+        final int minDistance = 1;
+
+        final Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+
+        String provider = locationManager.getBestProvider(criteria,true);
+        locationManager.requestLocationUpdates(provider, 1000, 0, locationListener);
+        Toast.makeText(Security.this, "Enabling location", Toast.LENGTH_SHORT).show();
+    }
 
     private void init() {
 
@@ -149,13 +171,20 @@ public class Security extends AppCompatActivity {
         econtact2.setText(restoredcontact2);
         econtactnum1.setText(restoredcontactnum1);
         econtactnum2.setText(restoredcontactnum2);
-    }
-
-
-
-  /*  public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
+        getLocation();
 
     }
-*/
+
+    private void updateLocation(Location location) {
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
+    }
+
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
+
+        if ((requestCode == REQUESTCODE_FINE_LOCATION) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+            enableLocationUpdates();
+        }
+    }
 
 }

@@ -11,142 +11,157 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
     android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:focusableInTouchMode="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="sk.maverick.harsha.hopin.Event"
     tools:showIn="@layout/activity_event">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
-
-        <TextView
-            android:id="@+id/event_eventname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Event Name"
-            android:textAppearance="?attr/textAppearanceListItem"
-            android:textSize="26dp" />
-
-        <TextView
-            android:id="@+id/event_eventtype"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Event Type"
-            android:textAppearance="?attr/textAppearanceListItem"
-            android:textSize="16dp"
-            android:layout_marginTop="10dp" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/event_eventdate"
-                android:layout_width="0dp"
+                android:id="@+id/event_eventname"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Event Date"
+                android:text="Event Name"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:textSize="26dp" />
+
+            <TextView
+                android:id="@+id/event_eventtype"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Event Type"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:textSize="16dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/event_eventdate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Event Date"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/event_eventtime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Event Time"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/event_seatsavailable"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Seats Available"
+                    android:textSize="18sp" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/event_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Event Location"
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/event_eventtime"
-                android:layout_width="0dp"
+                android:id="@+id/event_Pickuplocation"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Event Time"
-                android:textSize="18sp" />
+                android:layout_marginTop="10dp"
+                android:text="Pickup"
+                android:textSize="18sp"
+                android:visibility="visible" />
+
+            <LinearLayout
+                android:id="@+id/event_radiogroupcontainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/event_pickupradiotextview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Choose Pickup Location"
+                    android:textSize="18sp"
+                    android:layout_marginBottom="10dp"/>
+
+                <RadioGroup
+                    android:id="@+id/event_radiogroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:orientation="vertical"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/event_seatsrequested"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:focusableInTouchMode="true"
+                    android:hint="# of Seats"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/wallet_secondary_text_holo_dark" />
+
+                <Button
+                    android:id="@+id/event_requestride"
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_weight="3"
+                    android:background="@color/colorAccent"
+                    android:text="Request Ride"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+            <fragment
+                android:id="@+id/event_map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="233dp"
+                tools:context=".Event" />
 
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
-
-            <TextView
-                android:id="@+id/event_seatsavailable"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Seats Available"
-                android:textSize="18sp" />
-
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/event_location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Event Location"
-            android:textSize="18sp"
-            android:layout_marginTop="10dp" />
-
-        <TextView
-            android:id="@+id/event_Pickuplocation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Pickup"
-            android:textSize="18sp"
-            android:visibility="visible"
-            android:layout_marginTop="10dp" />
-
-        <RadioGroup
-            android:id="@+id/event_radiogroup"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:visibility="visible" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="10dp">
-            <EditText
-                android:id="@+id/event_seatsrequested"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:focusableInTouchMode="true"
-                android:hint="# of Seats"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:inputType="number"
-                android:textColor="@color/wallet_secondary_text_holo_dark"
-                android:layout_weight="1"/>
-
-            <Button
-                android:id="@+id/event_requestride"
-                android:layout_width="0dp"
-                android:layout_height="35dp"
-                android:text="Request Ride"
-                android:layout_weight="3"
-                android:textColor="@color/white"
-                android:background="@color/colorAccent"/>
-        </LinearLayout>
-
-        <fragment
-            android:layout_width="match_parent"
-            android:layout_height="233dp"
-            android:id="@+id/event_map"
-            tools:context=".Event"
-            android:name="com.google.android.gms.maps.SupportMapFragment" />
-
-    </LinearLayout>
     </ScrollView>
 </LinearLayout>

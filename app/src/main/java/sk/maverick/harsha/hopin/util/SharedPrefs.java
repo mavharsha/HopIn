@@ -20,7 +20,7 @@ public class SharedPrefs {
 
     public static String getStringValue(Context context, String key){
         SharedPreferences prefs = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        String restoredvalue = prefs.getString(key, null);
+        String restoredvalue = prefs.getString(key, "");
         return restoredvalue;
     }
 }

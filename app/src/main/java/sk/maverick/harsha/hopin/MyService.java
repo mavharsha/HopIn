@@ -118,14 +118,7 @@ public class MyService extends Service {
                 // get the fragment_requests and create a notification
                 String result = response.getBody();
 
-                //parseRespone(result);
                 NotifyUser();
-               /* RequestParams requestParams = new RequestParams();
-                requestParams.setUri(App.getIp()+"notification");
-*/
-
-
-
             }
         }
     }

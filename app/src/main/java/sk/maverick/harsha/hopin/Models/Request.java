@@ -18,6 +18,7 @@ public class Request {
     String requesteduseravatar;
     String createduser;
     String requesteduser;
+    String pickupLocation;
     Boolean seen;
     String status;
 
@@ -76,6 +77,14 @@ public class Request {
 
     public void setSeatsrequested(int seatsrequested) {
         this.seatsrequested = seatsrequested;
+    }
+
+    public String getPickupLocation() {
+        return pickupLocation;
+    }
+
+    public void setPickupLocation(String pickupLocation) {
+        this.pickupLocation = pickupLocation;
     }
 
     public Boolean getSeen() {
