@@ -14,7 +14,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -23,12 +25,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -55,13 +62,15 @@ import sk.maverick.harsha.hopin.Http.RequestParams;
 import sk.maverick.harsha.hopin.Models.Pickup;
 import sk.maverick.harsha.hopin.Util.SharedPrefs;
 
-public class Event extends AppCompatActivity implements OnMapReadyCallback {
+public class Event extends AppCompatActivity implements OnMapReadyCallback, RadioGroup.OnCheckedChangeListener {
 
     String eventId = "";
     private final static String TAG = "EVENT ACTIVITY";
-    public static final String MyPREFERENCES = "MyPrefs";
+    private static final String MyPREFERENCES = "MyPrefs";
+    private static final String BASE_URI = "http://www.mavharsha.github.io/";
 
     sk.maverick.harsha.hopin.Models.Event myevent = null;
+    private String pickup;
 
     @Bind(R.id.event_eventname)
     TextView eventname;
@@ -81,6 +90,8 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback {
     EditText seatsrequested;
     @Bind(R.id.event_requestride)
     Button requestride;
+    @Bind(R.id.event_radiogroup)
+    RadioGroup radioGroup;
 
     GoogleMap mMap;
     Marker marker;
@@ -93,29 +104,29 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback {
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
 
-       toolbar.setTitle("Event");
+        toolbar.setTitle("Event");
 
         Intent intent = getIntent();
-
         String action = intent.getAction();
-        String type = intent.getType();
+        Log.v(TAG, "Action intent is " + action);
 
-        Log.v(TAG, "Action intent is "+ action);
-        Log.v(TAG, "Type intent is "+ type);
+        if (intent != null && intent.getAction() != null && intent.getAction().equals("android.intent.action.VIEW")) {
 
-        if (Intent.ACTION_SEND.equals(action) && type != null) {
-            if ("text/plain".equals(type)) {
-                String sharedText = intent.getStringExtra("eventid");
-                if (sharedText != null) {
-                    eventId = sharedText;
-                }
+            Uri uri = intent.getData();
+            Log.v(TAG, "URI data" + uri.toString());
+            String sharedText = uri.getQueryParameter("eventid");
+            Log.v(TAG, "Eventid is " + sharedText);
+            if (sharedText != null) {
+                eventId = sharedText;
             }
-        }
-        else
-        {
+        } else {
             eventId = intent.getStringExtra("eventid");
         }
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        if(getSupportActionBar()!=null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.event_map);
         mapFragment.getMapAsync(this);
@@ -140,10 +151,15 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_share) {
 
-            String eventid = "http://www.mavharsha.github.io/"+ myevent.get_id();
+            String eventid = "http://www.mavharsha.github.io/" + myevent.get_id();
+            Uri uri = Uri.parse(BASE_URI)
+                    .buildUpon()
+                    .appendQueryParameter("eventid", myevent.get_id())
+                    .build();
+
             String eventname = myevent.getEventname();
             String sender = SharedPrefs.getStringValue(Event.this, "username");
-            share(eventid, eventname, sender);
+            share(uri.toString(), eventname, sender);
             return true;
         }
 
@@ -153,13 +169,10 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback {
     private void share(String eventId, String eventName, String sender) {
         Intent sharingIntent = new Intent();
         sharingIntent.setAction(Intent.ACTION_SEND);
-        /*
-            sharingIntent.putExtra("eventid", eventId);
-         */
-        String message = sender + " requested you to checkout "+ eventName + " at "+ eventId;
+        String message = sender + " requested you to checkout " + eventName + " at " + eventId;
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, message);
         sharingIntent.setType("text/plain");
-        startActivity(Intent.createChooser(sharingIntent, "Sharing "+ eventName));
+        startActivity(Intent.createChooser(sharingIntent, "Sharing " + eventName));
     }
 
 
@@ -179,11 +192,11 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback {
                 requestParams.setParam("eventName", myevent.getEventname());
                 requestParams.setParam("createdUser", myevent.getUsername());
                 requestParams.setParam("seatsRequested", seatsreq);
+                requestParams.setParam("pickupLocation", pickup);
                 requestParams.setParam("requestedUser", SharedPrefs.getStringValue(getApplicationContext(), "username"));
                 requestParams.setParam("requestedUserAvatar", SharedPrefs.getStringValue(getApplicationContext(), "avatar"));
 
                 Log.v(TAG, "The request params before async task are " + requestParams.getParams());
-
                 new RequestRideAsync(this).execute(requestParams);
 
             } else {
@@ -207,9 +220,8 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback {
         eventtime.setTypeface(roboto_light);
         pickuplocation.setTypeface(roboto_light);
 
-        /*Typeface roboto_regular = Typeface.createFromAsset(getAssets(), "Roboto-Regular.ttf");
-        eventname.setTypeface(roboto_regular);
-        */
+        radioGroup.setOnCheckedChangeListener(this);
+
         RequestParams requestParams = new RequestParams();
 
         requestParams.setUri(App.getIp() + "event/" + eventId);
@@ -219,7 +231,6 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback {
     private void parseResopnse(String body) {
 
         Log.v(TAG, "parseRespone" + body);
-
         JSONObject newJson;
         JSONArray details = null;
 
@@ -257,18 +268,30 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback {
 
     private void updateUI(sk.maverick.harsha.hopin.Models.Event myevent) {
 
+        Typeface roboto_light = Typeface.createFromAsset(getAssets(), "Roboto-Light.ttf");
+
         eventname.setText(myevent.getEventname());
         eventtype.setText("Event Type: " + myevent.getEventtype());
         eventdate.setText("Event on " + myevent.getDatemonth() + "/" + myevent.getDateday() + "/" + myevent.getDateyear());
         eventtime.setText("At time " + myevent.getEventtimehour() + ":" + myevent.getEventtimeminute());
         seats.setText("Seats Available : " + myevent.getSeatsavailable());
 
+        RadioGroup.LayoutParams radioGLayoutParm;
+
         StringBuilder stringBuilder = new StringBuilder();
 
         for (int i = 0; i < myevent.getPickup().size(); i++) {
             Pickup pickup = myevent.getPickup().get(i);
+            RadioButton radioButton = new RadioButton(this);
+            radioButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            radioButton.setText(pickup.getPickuplocation() + " at " + pickup.getPickuptime());
+            radioButton.setTypeface(roboto_light);
+            radioButton.setTextColor(Color.GRAY);
+            radioGLayoutParm = new RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            radioGroup.addView(radioButton, radioGLayoutParm);
+
             stringBuilder.append("Pickup Location at " + pickup.getPickuplocation() + "\n");
-            stringBuilder.append("Pickup Time at " + pickup.getPickuptime()+"\n \n");
+            stringBuilder.append("Pickup Time at " + pickup.getPickuptime() + "\n \n");
         }
 
         pickuplocation.setText(stringBuilder);
@@ -282,6 +305,9 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback {
         if (restoredusername.equals(myevent.getUsername())) {
             seatsrequested.setVisibility(View.GONE);
             requestride.setVisibility(View.GONE);
+            radioGroup.setVisibility(View.GONE);
+        } else {
+            pickuplocation.setVisibility(View.GONE);
         }
         goToLocation(myevent.getEventlocationlat(), myevent.getEventlocationlng(), myevent.getEventname());
     }
@@ -304,12 +330,20 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback {
         mMap = googleMap;
     }
 
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+        RadioButton _PickRadio = (RadioButton) group.findViewById(checkedId);
+        if (null != _PickRadio && checkedId > -1) {
+            pickup = _PickRadio.getText().toString();
+        }
+    }
+
     private class EventAsyncTask extends AsyncTask<RequestParams, Void, HttpResponse> {
 
         ProgressDialog progressDialog;
 
         public EventAsyncTask(Activity activity) {
-
             progressDialog = new ProgressDialog(activity);
         }
 

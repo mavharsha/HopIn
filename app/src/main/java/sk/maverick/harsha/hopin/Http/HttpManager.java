@@ -1,6 +1,7 @@
 package sk.maverick.harsha.hopin.Http;
 
 
+import android.content.Context;
 import android.util.Log;
 
 import org.json.JSONObject;
@@ -13,6 +14,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import sk.maverick.harsha.hopin.App;
+import sk.maverick.harsha.hopin.Util.SharedPrefs;
 
 public class HttpManager {
 
@@ -29,6 +32,7 @@ public class HttpManager {
 
         Request request = new Request.Builder()
                 .url(uri)
+                .addHeader("Token", SharedPrefs.getStringValue(App.getAppContext(),"token"))
                 .build();
         Response response = okHttpClient.newCall(request).execute();
 
@@ -47,7 +51,6 @@ public class HttpManager {
         HashMap map = (HashMap) requestParams.getParams();
         Log.v(TAG, "MAP to string is  "+ map.toString());
 
-
         JSONObject data = null;
         data = new JSONObject(map);
 
@@ -56,6 +59,7 @@ public class HttpManager {
         Request request = new Request.Builder()
                 .url(uri)
                 .put(requestBody)
+                .addHeader("Token", SharedPrefs.getStringValue(App.getAppContext(),"token"))
                 .build();
         Response response = okHttpClient.newCall(request).execute();
 
@@ -84,6 +88,7 @@ public class HttpManager {
         Log.v(TAG, "Json data is "+ data.toString());
         Request request = new Request.Builder()
                 .url(uri)
+                .addHeader("Token", SharedPrefs.getStringValue(App.getAppContext(),"token"))
                 .post(requestBody)
                 .build();
         Response response = okHttpClient.newCall(request).execute();

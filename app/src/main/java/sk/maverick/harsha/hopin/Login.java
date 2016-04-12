@@ -68,12 +68,10 @@ public class Login extends AppCompatActivity {
             Log.v(TAG, "login clicked. username is ");
         } else {
             if (ConnectionManager.isConnected(Login.this)) {
-
                 RequestParams request = new RequestParams();
                 request.setUri(App.getIp() + "login");
                 request.setParam("username", username.getText().toString());
                 request.setParam("password", password.getText().toString());
-
                 new LoginAsync().execute(request);
             } else {
                 Snackbar.make(findViewById(R.id.login_coordinator), "No Internet", Snackbar.LENGTH_LONG).show();
@@ -83,7 +81,6 @@ public class Login extends AppCompatActivity {
 
 
     public void signUp(View view) {
-
         startActivity(new Intent(Login.this, SignUp.class));
     }
 

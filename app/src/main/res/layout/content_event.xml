@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Event Date"
-                android:textSize="16dp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/event_eventtime"
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Event Time"
-                android:textSize="16dp" />
+                android:textSize="18sp" />
 
         </LinearLayout>
 
@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Seats Available"
-                android:textSize="16dp" />
+                android:textSize="18sp" />
 
 
         </LinearLayout>
@@ -92,7 +92,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Event Location"
-            android:textSize="16dp"
+            android:textSize="18sp"
             android:layout_marginTop="10dp" />
 
         <TextView
@@ -100,8 +100,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Pickup"
-            android:textSize="16dp"
+            android:textSize="18sp"
+            android:visibility="visible"
             android:layout_marginTop="10dp" />
+
+        <RadioGroup
+            android:id="@+id/event_radiogroup"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:visibility="visible" />
 
         <LinearLayout
             android:layout_width="match_parent"

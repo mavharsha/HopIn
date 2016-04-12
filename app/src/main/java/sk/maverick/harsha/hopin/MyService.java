@@ -53,7 +53,6 @@ public class MyService extends Service {
         if (ConnectionManager.isConnected(this)) {
 
             RequestParams requestParams = new RequestParams();
-
             requestParams.setUri(App.getIp() + "notification/"+ SharedPrefs.getStringValue(getApplicationContext(), "username"));
             new NotifyUserAsync().execute(requestParams);
         }
@@ -93,7 +92,6 @@ public class MyService extends Service {
 
         @Override
         protected void onPreExecute() {
-
             Log.v(TAG, "Pre Poll " + var);
         }
 

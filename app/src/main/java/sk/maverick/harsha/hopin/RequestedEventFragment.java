@@ -101,7 +101,6 @@ public class RequestedEventFragment extends Fragment {
             holder.content.setText("You requested "+ mdataset.get(position).getCreateduser() + " for ride to "+ mdataset.get(position).getEventname());
             holder.status.setText("Status: "+mdataset.get(position).getStatus());
             holder.picture.setImageResource(ProfilePic.getAvatar(SharedPrefs.getStringValue(getActivity(), "avatar")));
-
         }
 
         @Override

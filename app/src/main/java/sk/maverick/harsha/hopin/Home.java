@@ -117,84 +117,6 @@ public class Home extends AppCompatActivity
         init();
     }
 
-    private void init() {
-         prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-
-        String restoredusername = prefs.getString("username", null);
-        RequestParams requestParams = new RequestParams();
-
-        requestParams.setUri(App.getIp()+"profile/"+restoredusername);
-        new HomeProfileAsyc().execute(requestParams);
-    }
-
-    private void updateNavUi(){
-        username.setText(username_tx);
-        changeProfilePic(avatar_tx);
-    }
-
-    private void changeProfilePic(String avatar) {
-        switch (avatar){
-            case "1" : profile.setImageResource(R.drawable.avatar_1);
-                avatar_tx = "1";
-                break;
-            case "2" : profile.setImageResource(R.drawable.avatar_4);
-                avatar_tx = "2";
-                break;
-            case "3" : profile.setImageResource(R.drawable.avatar_8);
-                avatar_tx = "3";
-                break;
-            case "4" : profile.setImageResource(R.drawable.avatar_9);
-                avatar_tx = "4";
-                break;
-            case "5" : profile.setImageResource(R.drawable.avatar_11);
-                avatar_tx = "5";
-                break;
-            default: break;
-
-        }
-    }
-
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_login, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_signout) {
-            prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean("isloggedin", false);
-            editor.commit();
-            finish();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -256,6 +178,84 @@ public class Home extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void init() {
+         prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
+        String restoredusername = prefs.getString("username", null);
+        RequestParams requestParams = new RequestParams();
+
+        requestParams.setUri(App.getIp()+"profile/"+restoredusername);
+        new HomeProfileAsyc().execute(requestParams);
+    }
+
+    private void updateNavUi(){
+        username.setText(username_tx);
+        changeProfilePic(avatar_tx);
+    }
+
+
+    private void changeProfilePic(String avatar) {
+        switch (avatar){
+            case "1" : profile.setImageResource(R.drawable.avatar_1);
+                avatar_tx = "1";
+                break;
+            case "2" : profile.setImageResource(R.drawable.avatar_4);
+                avatar_tx = "2";
+                break;
+            case "3" : profile.setImageResource(R.drawable.avatar_8);
+                avatar_tx = "3";
+                break;
+            case "4" : profile.setImageResource(R.drawable.avatar_9);
+                avatar_tx = "4";
+                break;
+            case "5" : profile.setImageResource(R.drawable.avatar_11);
+                avatar_tx = "5";
+                break;
+            default: break;
+
+        }
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_login, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_signout) {
+            prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("isloggedin", false);
+            editor.commit();
+            finish();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private class HomeProfileAsyc extends AsyncTask<RequestParams, Void, HttpResponse>{
