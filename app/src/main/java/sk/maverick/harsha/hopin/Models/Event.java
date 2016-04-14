@@ -17,6 +17,7 @@ public class Event {
 
     String eventname;
     String eventtype;
+    int privacytype;
     String seatsavailable;
     String preferences;
 
@@ -153,4 +154,11 @@ public class Event {
         this.username = username;
     }
 
+    public int getPrivacytype() {
+        return privacytype;
+    }
+
+    public void setPrivacytype(int privacytype) {
+        this.privacytype = privacytype;
+    }
 }

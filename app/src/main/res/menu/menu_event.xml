@@ -16,4 +16,9 @@
         android:title="Share"
         android:icon="@drawable/ic_menu_share"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/action_edit"
+        android:orderInCategory="100"
+        android:title="Edit"
+        app:showAsAction="never" />
 </menu>

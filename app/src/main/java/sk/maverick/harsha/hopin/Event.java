@@ -163,9 +163,29 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback, Radi
                     .build();
 
             String eventname = myevent.getEventname();
-            String sender = SharedPrefs.getStringValue(Event.this, "username");
+            String sender = (String) SharedPrefs.getStringValue(Event.this, "username");
             share(uri.toString(), eventname, sender);
             return true;
+        }
+        else if(id == R.id.action_edit){
+
+            SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+            String restoredusername = prefs.getString("username", null);
+
+            if (restoredusername.equals(myevent.getUsername())) {
+
+                Moshi moshi = new Moshi.Builder().build();
+                JsonAdapter<sk.maverick.harsha.hopin.Models.Event> jsonAdapter =
+                            moshi.adapter(sk.maverick.harsha.hopin.Models.Event.class);
+                String json = jsonAdapter.toJson(myevent);
+
+                Intent intent = new Intent(Event.this, EditEvent.class);
+                intent.putExtra("EventObject", json);
+
+                startActivity(intent);
+            } else {
+                Toast.makeText(Event.this, "You don't have the Previledge to edit", Toast.LENGTH_SHORT).show();
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -275,6 +295,7 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback, Radi
 
         Typeface roboto_light = Typeface.createFromAsset(getAssets(), "Roboto-Light.ttf");
 
+        Log.v(TAG, "the event privacy is "+ myevent.getPrivacytype());
         eventname.setText(myevent.getEventname());
         eventtype.setText("Event Type: " + myevent.getEventtype());
         eventdate.setText("Event on " + myevent.getDatemonth() + "/" + myevent.getDateday() + "/" + myevent.getDateyear());

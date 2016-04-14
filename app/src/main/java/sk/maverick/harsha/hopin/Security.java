@@ -96,7 +96,9 @@ public class Security extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (count == 0) {
+                    count = 5;
                     broadcastMessage();
+                    sosbutton.setText("" + count);
                 } else {
                     count = count - 1;
                     sosbutton.setText("" + count);
@@ -119,11 +121,16 @@ public class Security extends AppCompatActivity {
 
            SmsManager smsManager = SmsManager.getDefault();
            smsManager.sendTextMessage(restoredcontactnum1, null, restoredcontact1 + ", Im in trouble. " +
-                   "My last known location is "+addresses.get(0).getAddressLine(0) +" "+addresses.get(0).getLocality(), null, null);
+                   "My last known location is "+addresses.get(0).getAddressLine(0)
+                   +" "+addresses.get(0).getLocality(), null, null);
+
            smsManager.sendTextMessage(restoredcontactnum2, null, restoredcontact2 + ", Im in trouble. " +
-                   "My last known location is "+addresses.get(0).getAddressLine(0) +" "+addresses.get(0).getLocality(), null, null);
+                   "My last known location is "+addresses.get(0).getAddressLine(0)
+                   +" "+addresses.get(0).getLocality(), null, null);
+
            Toast.makeText(getApplicationContext(), "Sending, Im in trouble. " +
-                   "My last know location is "+addresses.get(0).getAddressLine(0) +" "+addresses.get(0).getLocality(), Toast.LENGTH_SHORT).show();
+                   "My last know location is "+addresses.get(0).getAddressLine(0)
+                   +" "+addresses.get(0).getLocality(), Toast.LENGTH_SHORT).show();
 
        }else
        {
@@ -172,7 +179,6 @@ public class Security extends AppCompatActivity {
         econtactnum1.setText(restoredcontactnum1);
         econtactnum2.setText(restoredcontactnum2);
         getLocation();
-
     }
 
     private void updateLocation(Location location) {

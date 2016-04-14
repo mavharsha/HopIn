@@ -32,7 +32,7 @@ public class HttpManager {
 
         Request request = new Request.Builder()
                 .url(uri)
-                .addHeader("Token", SharedPrefs.getStringValue(App.getAppContext(),"token"))
+                .addHeader("Token", (String) SharedPrefs.getStringValue(App.getAppContext(),"token"))
                 .build();
         Response response = okHttpClient.newCall(request).execute();
 
@@ -59,7 +59,7 @@ public class HttpManager {
         Request request = new Request.Builder()
                 .url(uri)
                 .put(requestBody)
-                .addHeader("Token", SharedPrefs.getStringValue(App.getAppContext(),"token"))
+                .addHeader("Token", (String) SharedPrefs.getStringValue(App.getAppContext(),"token"))
                 .build();
         Response response = okHttpClient.newCall(request).execute();
 
@@ -88,7 +88,7 @@ public class HttpManager {
         Log.v(TAG, "Json data is "+ data.toString());
         Request request = new Request.Builder()
                 .url(uri)
-                .addHeader("Token", SharedPrefs.getStringValue(App.getAppContext(),"token"))
+                .addHeader("Token", (String) SharedPrefs.getStringValue(App.getAppContext(),"token"))
                 .post(requestBody)
                 .build();
         Response response = okHttpClient.newCall(request).execute();

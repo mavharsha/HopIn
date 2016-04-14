@@ -100,7 +100,7 @@ public class RequestedEventFragment extends Fragment {
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.content.setText("You requested "+ mdataset.get(position).getCreateduser() + " for ride to "+ mdataset.get(position).getEventname());
             holder.status.setText("Status: "+mdataset.get(position).getStatus());
-            holder.picture.setImageResource(ProfilePic.getAvatar(SharedPrefs.getStringValue(getActivity(), "avatar")));
+            holder.picture.setImageResource(ProfilePic.getAvatar((String) SharedPrefs.getStringValue(getActivity(), "avatar")));
         }
 
         @Override

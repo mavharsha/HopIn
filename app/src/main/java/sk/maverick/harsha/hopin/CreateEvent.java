@@ -257,7 +257,6 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
     @OnClick(R.id.createevent_pickuplocationpicker)
     public void onClickPickUpLocation(View view) {
 
-        Log.v(TAG, "Yes Butterknife works");
         hideSoftKeyboard(view);
 
         try {

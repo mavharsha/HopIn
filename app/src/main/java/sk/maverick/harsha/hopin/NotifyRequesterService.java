@@ -1,11 +1,3 @@
-/*
- * Copyright (c)
- * Sree Harsha Mamilla
- * Pasyanthi
- * github/mavharsha
- *
- */
-
 package sk.maverick.harsha.hopin;
 
 import android.app.Notification;
@@ -35,12 +27,14 @@ import sk.maverick.harsha.hopin.Models.Request;
 import sk.maverick.harsha.hopin.Util.ConnectionManager;
 import sk.maverick.harsha.hopin.Util.SharedPrefs;
 
-public class MyService extends Service {
-    private final static String TAG = "MyService";
-    static int var = 1;
-    int Unique = 8798;
+/**
+ * Created by Harsha on 4/12/2016.
+ */
+public class NotifyRequesterService extends Service{
+    private final static String TAG = "NOTIFYREQUESTERSERVICE";
     public static final String MyPREFERENCES = "MyPrefs" ;
-
+    static int var = 1;
+    int Unique = 78798;
 
     @Nullable
     @Override
@@ -55,12 +49,11 @@ public class MyService extends Service {
         Log.v(TAG, "Polling " + var);
         var++;
         SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-
         Boolean isLogged = prefs.getBoolean("isloggedin", false);
 
         if (ConnectionManager.isConnected(this) && isLogged) {
             RequestParams requestParams = new RequestParams();
-            requestParams.setUri(App.getIp() + "notification/"+ SharedPrefs.getStringValue(getApplicationContext(), "username"));
+            requestParams.setUri(App.getIp() + "notifyrequester/"+ SharedPrefs.getStringValue(getApplicationContext(), "username"));
             new NotifyUserAsync().execute(requestParams);
         }
         return START_NOT_STICKY;
@@ -84,8 +77,8 @@ public class MyService extends Service {
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
 
         Notification notificationBuiler = new Notification.Builder(getApplicationContext())
-                .setContentTitle("Request Notification")
-                .setContentText("Someone requesed")
+                .setContentTitle("Notification")
+                .setContentText("Request Respondedpp")
                 .setSmallIcon(R.drawable.idea)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
@@ -159,33 +152,5 @@ public class MyService extends Service {
 
     }
 
-    private class AfterNotifyAsync extends AsyncTask<RequestParams, Void, HttpResponse>{
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected HttpResponse doInBackground(RequestParams... params) {
-            HttpResponse httpResponse = null;
-            try {
-                httpResponse = HttpManager.getData(params[0]);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return httpResponse;
-        }
-
-        @Override
-        protected void onPostExecute(HttpResponse response) {
-
-            if (response == null) {
-            } else if (response.getStatusCode() != 200) {
-            } else if (response.getStatusCode() == 200) {
-                Log.v(TAG, "Notified about notification, changing seen to true");
-            }
-        }
-    }
 
 }
