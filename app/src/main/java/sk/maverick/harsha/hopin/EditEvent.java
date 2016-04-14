@@ -1,12 +1,18 @@
 package sk.maverick.harsha.hopin;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -19,6 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -33,22 +40,31 @@ import com.google.android.gms.maps.model.LatLng;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import sk.maverick.harsha.hopin.Http.HttpManager;
+import sk.maverick.harsha.hopin.Http.HttpResponse;
+import sk.maverick.harsha.hopin.Http.RequestParams;
 import sk.maverick.harsha.hopin.Models.Event;
 import sk.maverick.harsha.hopin.Models.Pickup;
+import sk.maverick.harsha.hopin.Util.ConnectionManager;
 
-public class EditEvent extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class EditEvent extends AppCompatActivity implements AdapterView.OnItemSelectedListener, RadioGroup.OnCheckedChangeListener {
 
     Event myevent = null;
     final static String TAG = "EditEvent";
+    public static final String MyPREFERENCES = "MyPrefs";
+
     private Calendar calendar;
     private static final String[] preferences = new String[]{
             "Both",
@@ -58,7 +74,9 @@ public class EditEvent extends AppCompatActivity implements AdapterView.OnItemSe
     private int REQUEST_EVENT_PLACE_PICKER = 98;
     private int REQUEST_PICKUP_PLACE_PICKER = 99;
     private List<HashMap<String, Object>> pickupid = new ArrayList<>();
-    private int day, month, year, eventTimeHour, eventTimeMinute, pickUpTimeHour, pickUpTimeMinute;
+    private int day, month, year, eventTimeHour, eventTimeMinute, privacytype;
+    String passengerpref, eventid;
+    double locationlat, locationlng;
     LatLng locationltlng, pickupltlng;
 
 
@@ -118,11 +136,16 @@ public class EditEvent extends AppCompatActivity implements AdapterView.OnItemSe
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
 
-        if(getSupportActionBar()!=null) {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         init();
+
+
+    }
+
+    private void init() {
 
         Intent intent = getIntent();
         String jsonSent = intent.getStringExtra("EventObject");
@@ -131,52 +154,62 @@ public class EditEvent extends AppCompatActivity implements AdapterView.OnItemSe
         JsonAdapter<Event> jsonAdapter = moshi.adapter(Event.class);
 
         try {
-             myevent = jsonAdapter.fromJson(jsonSent);
+            myevent = jsonAdapter.fromJson(jsonSent);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        if(myevent != null) {
+        if (myevent != null) {
+            eventid = myevent.get_id();
+            day = myevent.getDateday();
+            month = myevent.getDatemonth();
+            year = myevent.getDateyear();
+
+            eventTimeHour = myevent.getEventtimehour();
+            eventTimeMinute = myevent.getEventtimeminute();
+
+            locationlat = myevent.getEventlocationlat();
+            locationlng = myevent.getEventlocationlng();
+            passengerpref = myevent.getPreferences();
 
             eventName.setText(myevent.getEventname());
             eventType.setText(myevent.getEventtype());
 
-            if(myevent.getPrivacytype() == 0){
+            if (myevent.getPrivacytype() == 0) {
                 findViewById(R.id.editevent_radioButton1).setSelected(true);
-            }else{
+                privacytype = 0;
+            } else {
                 findViewById(R.id.editevent_radioButton2).setSelected(true);
+                privacytype = 1;
             }
 
             seatsavailable.setText(myevent.getSeatsavailable());
-            eventDate.setText(myevent.getDatemonth()+"/"+myevent.getDateday()+"/"+myevent.getDateyear());
-            eventTime.setText(myevent.getEventtimehour()+":"+myevent.getEventtimeminute());
+            eventDate.setText(myevent.getDatemonth() + "/" + myevent.getDateday() + "/" + myevent.getDateyear());
+            eventTime.setText(myevent.getEventtimehour() + ":" + myevent.getEventtimeminute());
             eventLocation.setText(myevent.getEventlocation());
 
             Pickup pickuppoint = myevent.getPickup().get(0);
+
             pickupTime.setText(pickuppoint.getPickuptime());
             pickupLocation.setText(pickuppoint.getPickuplocation());
 
-            for(int i =1; i<myevent.getPickup().size(); i++){
-                 pickuppoint = myevent.getPickup().get(i);
+            for (int i = 1; i < myevent.getPickup().size(); i++) {
+                pickuppoint = myevent.getPickup().get(i);
                 addPickUp();
 
-                HashMap<String, Object> ids = pickupid.get(i-1);
+                HashMap<String, Object> ids = pickupid.get(i - 1);
 
                 EditText timeet = (EditText) ids.get("Time");
                 EditText locationet = (EditText) ids.get("Location");
 
                 timeet.setText(pickuppoint.getPickuptime());
                 locationet.setText(pickuppoint.getPickuplocation());
-             }
+            }
 
-        }else{
-            Snackbar.make(findViewById(R.id.editevent_coordinator), "Error! Please try later",Snackbar.LENGTH_SHORT).show();
+        } else {
+            Snackbar.make(findViewById(R.id.editevent_coordinator), "Error! Please try later", Snackbar.LENGTH_SHORT).show();
         }
 
-
-    }
-
-    private void init() {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item,
@@ -184,6 +217,7 @@ public class EditEvent extends AppCompatActivity implements AdapterView.OnItemSe
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         passpreference.setOnItemSelectedListener(this);
         passpreference.setAdapter(adapter);
+        privacy.setOnCheckedChangeListener(this);
 
     }
 
@@ -251,6 +285,86 @@ public class EditEvent extends AppCompatActivity implements AdapterView.OnItemSe
     }
 
 
+    @OnClick(R.id.editevent_confirm)
+    public void onClickSaveEvent(View view) {
+
+        hideSoftKeyboard(view);
+
+        // Call async task to send data to the server
+        if (ConnectionManager.isConnected(EditEvent.this)) {
+
+
+            RequestParams request = new RequestParams();
+            request.setUri(App.getIp()+"event");
+
+            request.setParam("eventid", eventid);
+            request.setParam("eventName", eventName.getText().toString());
+            request.setParam("eventType", eventType.getText().toString());
+            request.setParam("privacyType", "" + privacytype);
+
+
+            request.setParam("seatsAvailable", seatsavailable.getText().toString());
+            request.setParam("preferences", passengerpref);
+
+            request.setParam("dateDay", "" + day);
+            request.setParam("dateMonth", "" + month);
+            request.setParam("dateYear", "" + year);
+
+
+            request.setParam("eventTimeHour", "" + eventTimeHour);
+            request.setParam("eventTimeMinute", "" + eventTimeMinute);
+            request.setParam("eventLocation", eventLocation.getText().toString());
+
+            request.setParam("eventLocationLat", "" + locationlat);
+            request.setParam("eventLocationLng", "" + locationlng);
+
+
+            List<HashMap<String, String>> listofmap = new ArrayList<>();
+
+            HashMap<String, String> pick_up = new HashMap<>();
+            pick_up.put("pickuptime", pickupTime.getText().toString());
+            pick_up.put("pickuplocation", pickupLocation.getText().toString());
+
+            listofmap.add(pick_up);
+
+
+            for (int i = 0; i < pickupid.size(); i++) {
+
+                String timestr, locationstr;
+                // Get the edit texts from the array list of hash map
+                Map<String, Object> idsmap = pickupid.get(i);
+                Log.v(TAG, "The ids of row " + i + " is " + idsmap.keySet());
+
+                EditText time = (EditText) idsmap.get("Time");
+                EditText location = (EditText) idsmap.get("Location");
+
+                Log.v(TAG, "Time is " + time.getText().toString());
+                Log.v(TAG, "Location is " + location.getText().toString());
+
+
+                timestr = time.getText().toString();
+                locationstr = location.getText().toString();
+
+                //Create a hashmap of pickup location addresses
+                HashMap<String, String> pickup = new HashMap<>();
+
+                pickup.put("pickuptime", timestr);
+                pickup.put("pickuplocation", locationstr);
+                listofmap.add(pickup);
+            }
+
+            request.setParam("pickup", listofmap);
+
+            Log.v(TAG, new JSONObject(request.getParams()).toString());
+            Log.v(TAG, "EditEvent sending a request to the server");
+            new EditEventAsync(EditEvent.this).execute(request);
+        } else {
+            Snackbar.make(findViewById(R.id.createevent_confirm), "No Internet", Snackbar.LENGTH_LONG).show();
+        }
+    }
+
+
+
     DatePickerDialog.OnDateSetListener dateDialogListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int Year, int monthOfYear, int dayOfMonth) {
@@ -276,9 +390,6 @@ public class EditEvent extends AppCompatActivity implements AdapterView.OnItemSe
     TimePickerDialog.OnTimeSetListener pickupTimeDialogListener = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
-            pickUpTimeHour = hourOfDay;
-            pickUpTimeMinute = minute;
 
             pickupTime.setText(hourOfDay + ":" + minute);
         }
@@ -366,6 +477,8 @@ public class EditEvent extends AppCompatActivity implements AdapterView.OnItemSe
                 if (place.getAddress() != null) {
                     String address = place.getAddress().toString();
                     locationltlng = place.getLatLng();
+                    locationlat = locationltlng.latitude;
+                    locationlng = locationltlng.longitude;
 
                     if (locationltlng == null)
                         Toast.makeText(this, "latlong is null", Toast.LENGTH_LONG).show();
@@ -405,6 +518,8 @@ public class EditEvent extends AppCompatActivity implements AdapterView.OnItemSe
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
+        int index = passpreference.getSelectedItemPosition();
+        passengerpref = preferences[index];
     }
 
     @Override
@@ -413,8 +528,73 @@ public class EditEvent extends AppCompatActivity implements AdapterView.OnItemSe
     }
 
     public void hideSoftKeyboard(View v) {
-
         InputMethodManager inm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         inm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+        RadioButton radioButton = (RadioButton) findViewById(checkedId);
+        if (null != radioButton && checkedId > -1) {
+
+            String privacytype_str = (String) radioButton.getText();
+
+            if (privacytype_str.equalsIgnoreCase("Public")) {
+                privacytype = 0;
+            } else {
+                privacytype = 1;
+            }
+            Toast.makeText(EditEvent.this, "Privacy type is " + privacytype, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private class EditEventAsync extends AsyncTask<RequestParams, Void, HttpResponse> {
+
+        ProgressDialog progressDialog;
+
+        public EditEventAsync(Activity activity) {
+            progressDialog = new ProgressDialog(activity);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog.setMessage("Trying to create your event");
+            progressDialog.show();
+        }
+
+        @Override
+        protected HttpResponse doInBackground(RequestParams... params) {
+            HttpResponse httpResponse = null;
+
+            try {
+                httpResponse = HttpManager.putData(params[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return httpResponse;
+        }
+
+        @Override
+        protected void onPostExecute(HttpResponse result) {
+
+            progressDialog.dismiss();
+            if (result == null) {
+                Snackbar.make(findViewById(R.id.editevent_coordinator), "Error! Please try later", Snackbar.LENGTH_LONG).show();
+            } else if (result.getStatusCode() == 200) {
+                new AlertDialog.Builder(EditEvent.this)
+                        .setMessage("Successfully edited your event")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        }).show();
+            } else if (result.getStatusCode() != 200) {
+
+                Snackbar.make(findViewById(R.id.editevent_coordinator), "Error! Please try later", Snackbar.LENGTH_LONG).show();
+            }
+
+        }
+
     }
 }

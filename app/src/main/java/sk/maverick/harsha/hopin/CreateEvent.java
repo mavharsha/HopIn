@@ -366,13 +366,11 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
                 SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
                 String restoredusername = prefs.getString("username", null);
-                String restoredToken = prefs.getString("token", null);
 
                 RequestParams request = new RequestParams();
                 request.setUri("http://localhost:3000/createevent");
 
                 request.setParam("username", restoredusername);
-                request.setParam("token", restoredToken);
 
                 request.setParam("eventName", eventName.getText().toString());
                 request.setParam("eventType", eventType.getText().toString());
