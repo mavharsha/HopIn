@@ -141,8 +141,6 @@ public class EditEvent extends AppCompatActivity implements AdapterView.OnItemSe
         }
 
         init();
-
-
     }
 
     private void init() {
@@ -586,7 +584,7 @@ public class EditEvent extends AppCompatActivity implements AdapterView.OnItemSe
                         .setMessage("Successfully edited your event")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-
+                                   finish();
                             }
                         }).show();
             } else if (result.getStatusCode() != 200) {

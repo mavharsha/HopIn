@@ -165,18 +165,25 @@ public class Login extends AppCompatActivity {
     private void setUpAlarm() {
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        PendingIntent alarmIntent, alarmIntent1;
+        PendingIntent alarmIntent, alarmIntent1, alarmIntent2, alarmIntent3;
 
-       Intent intent = new Intent(Login.this, MyService.class);
+        Intent intent = new Intent(Login.this, MyService.class);
         Intent intent1 = new Intent(Login.this, NotifyRequesterService.class);
+        Intent intent2 = new Intent(Login.this, CheckForEditEventService.class);
+        Intent intent3 = new Intent(Login.this, CheckForEventService.class);
+
 
         alarmIntent = PendingIntent.getService(getApplicationContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         alarmIntent1 = PendingIntent.getService(getApplicationContext(), 0, intent1, PendingIntent.FLAG_CANCEL_CURRENT);
+        alarmIntent2 = PendingIntent.getService(getApplicationContext(), 0, intent2, PendingIntent.FLAG_CANCEL_CURRENT);
+        alarmIntent3 = PendingIntent.getService(getApplicationContext(), 0, intent3, PendingIntent.FLAG_CANCEL_CURRENT);
 
         Log.v(TAG, "Calling service");
 
         alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), 1000 * 60, alarmIntent);
         alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), 1000 * 60, alarmIntent1);
+        alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), 1000 * 60, alarmIntent2);
+        alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), 1000 * 60 * 2 , alarmIntent3);
 
         Log.v(TAG, "Called service");
     }

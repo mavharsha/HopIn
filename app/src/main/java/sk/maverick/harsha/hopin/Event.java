@@ -126,6 +126,7 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback, Radi
             }
         } else {
             eventId = intent.getStringExtra("eventid");
+            Log.v(TAG, "Eventid is " +eventId);
         }
 
         if(getSupportActionBar()!=null){
@@ -183,6 +184,7 @@ public class Event extends AppCompatActivity implements OnMapReadyCallback, Radi
                 intent.putExtra("EventObject", json);
 
                 startActivity(intent);
+                finish();
             } else {
                 Toast.makeText(Event.this, "You don't have the Previledge to edit", Toast.LENGTH_SHORT).show();
             }

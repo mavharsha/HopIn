@@ -12,18 +12,11 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.squareup.moshi.JsonAdapter;
-import com.squareup.moshi.Moshi;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import java.io.IOException;
 
 import sk.maverick.harsha.hopin.Http.HttpManager;
 import sk.maverick.harsha.hopin.Http.HttpResponse;
 import sk.maverick.harsha.hopin.Http.RequestParams;
-import sk.maverick.harsha.hopin.Models.Request;
 import sk.maverick.harsha.hopin.Util.ConnectionManager;
 import sk.maverick.harsha.hopin.Util.SharedPrefs;
 
@@ -77,8 +70,8 @@ public class NotifyRequesterService extends Service{
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
 
         Notification notificationBuiler = new Notification.Builder(getApplicationContext())
-                .setContentTitle("Notification")
-                .setContentText("Request Respondedpp")
+                .setContentTitle("HOP IN Notification")
+                .setContentText("Your ride request has been responded")
                 .setSmallIcon(R.drawable.idea)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
@@ -122,35 +115,4 @@ public class NotifyRequesterService extends Service{
             }
         }
     }
-
-    private void parseRespone(String result) {
-
-        JSONArray details = null;
-        sk.maverick.harsha.hopin.Models.Request request = null;
-
-        try {
-            details = new JSONArray(result);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-        Moshi moshi = new Moshi.Builder().build();
-        JsonAdapter<Request> jsonAdapter = moshi.adapter(sk.maverick.harsha.hopin.Models.Request.class);
-
-        for (int i = 0; i < details.length(); i++) {
-
-            try {
-                request = jsonAdapter.fromJson(details.getJSONObject(i).toString());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        Log.v(TAG, "Request is " + request.getEventname() +" by"+ request.getRequesteduser());
-
-    }
-
-
 }

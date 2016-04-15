@@ -149,7 +149,6 @@ public class EventRequest extends AppCompatActivity {
             } else if (response.getStatusCode() != 200) {
                 Snackbar.make(findViewById(R.id.eventrequest_coordinator), "Error! Please try later",  Snackbar.LENGTH_LONG).show();
             } else if (response.getStatusCode() == 200) {
-
                 Snackbar.make(findViewById(R.id.eventrequest_coordinator), "Done!",  Snackbar.LENGTH_LONG).show();
             }
 

@@ -1,11 +1,3 @@
-/*
- * Copyright (c)
- * Sree Harsha Mamilla
- * Pasyanthi
- * github/mavharsha
- *
- */
-
 package sk.maverick.harsha.hopin;
 
 import android.app.Notification;
@@ -20,16 +12,24 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.io.IOException;
 
 import sk.maverick.harsha.hopin.Http.HttpManager;
 import sk.maverick.harsha.hopin.Http.HttpResponse;
 import sk.maverick.harsha.hopin.Http.RequestParams;
+import sk.maverick.harsha.hopin.Models.Request;
 import sk.maverick.harsha.hopin.Util.ConnectionManager;
 import sk.maverick.harsha.hopin.Util.SharedPrefs;
 
-public class MyService extends Service {
-    private final static String TAG = "MyService";
+
+public class CheckForEditEventService extends Service {
+    private final static String TAG = "CHECKFOREDITEVENT";
     static int var = 1;
     int Unique = 8798;
     public static final String MyPREFERENCES = "MyPrefs" ;
@@ -53,11 +53,12 @@ public class MyService extends Service {
 
         if (ConnectionManager.isConnected(this) && isLogged) {
             RequestParams requestParams = new RequestParams();
-            requestParams.setUri(App.getIp() + "notification/"+ SharedPrefs.getStringValue(getApplicationContext(), "username"));
+            requestParams.setUri(App.getIp() + "editupdate/"+ SharedPrefs.getStringValue(getApplicationContext(), "username"));
             new NotifyUserAsync().execute(requestParams);
         }
         return START_NOT_STICKY;
     }
+
 
     @Override
     public void onDestroy() {
@@ -66,25 +67,27 @@ public class MyService extends Service {
 
     }
 
-    private void NotifyUser() {
+    private void NotifyUser(Request request) {
         NotificationManager notificationManager;
 
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.cancel(Unique);
 
-        Intent intent = new Intent(getApplicationContext(), Home.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
+        Intent intent = new Intent(getApplicationContext(), Event.class);
+        Log.v(TAG,"Sending eventid to the activity"+request.getEventid());
+        intent.putExtra("eventid", request.getEventid());
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Notification notificationBuiler = new Notification.Builder(getApplicationContext())
-                .setContentTitle("HOP IN Notification")
-                .setContentText("Ride Requested")
+        Notification notificationBuilder = new Notification.Builder(getApplicationContext())
+                .setContentTitle("Request Notification")
+                .setContentText(request.getCreateduser()+" made changes to "+request.getEventname()+" event")
                 .setSmallIcon(R.drawable.idea)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .build();
 
-        notificationManager.notify(Unique, notificationBuiler);
+        notificationManager.notify(Unique, notificationBuilder);
     }
 
     private class NotifyUserAsync extends AsyncTask<RequestParams, Void, HttpResponse> {
@@ -115,10 +118,24 @@ public class MyService extends Service {
             } else if (response.getStatusCode() == 200) {
 
                 // get the fragment_requests and create a notification
-                String result = response.getBody();
-
-                NotifyUser();
+                Request request = parseRespone(response.getBody());
+                NotifyUser(request);
             }
         }
+    }
+
+    private Request parseRespone(String result) {
+
+        Log.v(TAG, result);
+        Moshi moshi = new Moshi.Builder().build();
+        JsonAdapter<Request> jsonAdapter = moshi.adapter(sk.maverick.harsha.hopin.Models.Request.class);
+        Request request = null;
+        try {
+             request = jsonAdapter.fromJson(result);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return request;
     }
 }

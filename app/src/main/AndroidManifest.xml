@@ -122,6 +122,8 @@
 
         <service android:name=".MyService" />
         <service android:name=".NotifyRequesterService" />
+        <service android:name=".CheckForEditEventService"/>
+        <service android:name=".CheckForEventService"/>
 
         <activity
             android:name=".EventRequest"

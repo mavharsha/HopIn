@@ -162,7 +162,7 @@ public class Security extends AppCompatActivity {
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
 
         String provider = locationManager.getBestProvider(criteria,true);
-        locationManager.requestLocationUpdates(provider, 1000, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, locationListener);
         Toast.makeText(Security.this, "Enabling location", Toast.LENGTH_SHORT).show();
     }
 
@@ -178,6 +178,8 @@ public class Security extends AppCompatActivity {
         econtact2.setText(restoredcontact2);
         econtactnum1.setText(restoredcontactnum1);
         econtactnum2.setText(restoredcontactnum2);
+       /* latitude = sk.maverick.harsha.hopin.Models.Location.getLatitude();
+        longitude = sk.maverick.harsha.hopin.Models.Location.getLongitude();*/
         getLocation();
     }
 
