@@ -7,7 +7,7 @@ github.com/mavharsha
 
 
 ##Few Screenshots
-<img src="https://github.com/mavharsha/HopIn/blob/master/Screenshots/Login.png "Login"" width="30%"></img> 
+![picture](https://github.com/mavharsha/HopIn/blob/master/Screenshots/Login.png "Login"" width="30%")
 <img src="https://github.com/mavharsha/HopIn/blob/master/Screenshots/SignUp.png "SignUp"" width="30%"></img> 
 <img src="https://github.com/mavharsha/HopIn/blob/master/Screenshots/Navbar.png "Navigation Drawer"" width="30%"></img> 
 
